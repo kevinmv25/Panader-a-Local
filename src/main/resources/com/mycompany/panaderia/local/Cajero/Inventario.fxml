@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="760.0"
+            prefWidth="1200.0"
+            style="-fx-background-color: #F4CC79;"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.mycompany.panaderia.local.Controllers.InventarioController">
+
+    <VBox spacing="0.0"
+          prefWidth="1200.0"
+          prefHeight="760.0"
+          AnchorPane.topAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0">
+
+        <!-- ENCABEZADO -->
+        <HBox alignment="CENTER_LEFT"
+              spacing="30.0"
+              minHeight="105.0"
+              prefHeight="105.0"
+              style="-fx-background-color: #FFF8EC;">
+
+            <padding>
+                <Insets top="0.0" right="55.0" bottom="0.0" left="55.0"/>
+            </padding>
+
+            <VBox alignment="CENTER_LEFT" spacing="2.0">
+                <Label text="El Lirio Rojo"
+                       style="-fx-font-family: 'Georgia'; -fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #422817;"/>
+                <Label text="PANADERÍA ARTESANAL"
+                       style="-fx-font-size: 10px; -fx-text-fill: #6B4A2E;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox alignment="CENTER_RIGHT" spacing="32.0">
+                <Label text="Inicio"
+                       style="-fx-font-size: 16px; -fx-text-fill: #422817;"/>
+                <Label text="Nosotros"
+                       style="-fx-font-size: 16px; -fx-text-fill: #422817;"/>
+                <Label text="Menú"
+                       style="-fx-font-size: 16px; -fx-text-fill: #422817;"/>
+                <Label text="Tienda"
+                       style="-fx-font-size: 16px; -fx-text-fill: #422817;"/>
+            </HBox>
+        </HBox>
+
+        <!-- PANEL DE INVENTARIO -->
+        <VBox spacing="22.0"
+              VBox.vgrow="ALWAYS"
+              style="-fx-background-color: #FFF8EC; -fx-background-radius: 22px; -fx-border-color: #E9BD6B; -fx-border-radius: 22px; -fx-border-width: 1px;">
+
+            <VBox.margin>
+                <Insets top="32.0" right="36.0" bottom="35.0" left="36.0"/>
+            </VBox.margin>
+
+            <padding>
+                <Insets top="24.0" right="28.0" bottom="28.0" left="28.0"/>
+            </padding>
+
+            <!-- BUSCADOR -->
+            <HBox alignment="CENTER_RIGHT" minHeight="54.0">
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10.0"
+                      prefWidth="300.0"
+                      minHeight="46.0"
+                      style="-fx-background-color: #FFF8EC; -fx-background-radius: 22px; -fx-border-color: #E9BD6B; -fx-border-radius: 22px;">
+
+                    <padding>
+                        <Insets left="14.0" right="14.0"/>
+                    </padding>
+
+                    <Label text="⌕"
+                           style="-fx-font-size: 27px; -fx-text-fill: #422817;"/>
+
+                    <TextField fx:id="txtBuscarMaterial"
+                               promptText="Buscar material..."
+                               onAction="#buscarMaterial"
+                               HBox.hgrow="ALWAYS"
+                               style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: #422817; -fx-prompt-text-fill: #9B8468;"/>
+                </HBox>
+            </HBox>
+
+            <!-- TABLA -->
+            <TableView fx:id="tablaMateriales"
+                       VBox.vgrow="ALWAYS"
+                       prefHeight="500.0"
+                       style="-fx-background-color: transparent; -fx-border-color: transparent;">
+
+                <columns>
+                    <TableColumn fx:id="colNombreMaterial"
+                                 text="Material"
+                                 prefWidth="480.0"
+                                 minWidth="180.0"/>
+
+                    <TableColumn fx:id="colUnidad"
+                                 text="Unidad"
+                                 prefWidth="280.0"
+                                 minWidth="100.0"/>
+
+                    <TableColumn fx:id="colExistencia"
+                                 text="Existencia"
+                                 prefWidth="240.0"
+                                 minWidth="120.0"/>
+                </columns>
+
+                <placeholder>
+                    <Label text="No se encontraron materiales."
+                           style="-fx-text-fill: #6B4A2E; -fx-font-size: 15px;"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </VBox>
+</AnchorPane>
