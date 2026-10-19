@@ -1,3 +1,4 @@
+
 package com.mycompany.panaderia.local;
 
 import javafx.application.Application;
@@ -8,16 +9,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("/com/mycompany/panaderia/local/Cajero/RegistroPedidos.fxml")
+        );
+
+        Parent root = loader.load();
+
+        scene = new Scene(root, 1200, 760);
+
+        stage.setTitle("El Lirio Rojo - Inventario");
         stage.setScene(scene);
         stage.show();
     }
@@ -27,12 +34,13 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource(fxml + ".fxml")
+        );
+        return loader.load();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }
