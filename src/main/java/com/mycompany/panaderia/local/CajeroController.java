@@ -9,12 +9,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.control.Label;
 
 public class CajeroController {
 
     @FXML private Button btnSalir;
     @FXML private Button btnEditarPedido;
     @FXML private Button btnIrRegistro;
+    @FXML private Label lblPrecio1;
+    
 
     @FXML
     public void initialize() {

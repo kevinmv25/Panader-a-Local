@@ -42,59 +42,56 @@
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-padding: 15;" BorderPane.alignment="CENTER">
          <children>
             <TextField promptText="Buscar producto..." />
-            <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-               <content>
-                  <FlowPane hgap="15.0" style="-fx-padding: 5;" vgap="15.0">
-                     <children>
+            <FlowPane hgap="15.0" style="-fx-padding: 5;" vgap="15.0">
+               <children>
 
-                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                     <children>
+                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
                            <children>
-                              <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                                 <children>
-                                    <ImageView fx:id="imgPan1" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </StackPane>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Concha" />
-                              <Label style="-fx-font-size: 12px;" text="\$10.00" textFill="#555555" />
+                              <ImageView fx:id="imgPan1" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                           <children>
-                              <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                                 <children>
-                                    <ImageView fx:id="imgPan2" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </StackPane>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Oreja" />
-                              <Label style="-fx-font-size: 12px;" text="\$12.00" textFill="#555555" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                           <children>
-                              <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                                 <children>
-                                    <ImageView fx:id="imgPan3" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </StackPane>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Croissant" />
-                              <Label style="-fx-font-size: 12px;" text="\$18.00" textFill="#555555" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                           <children>
-                              <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                                 <children>
-                                    <ImageView fx:id="imgPan4" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </StackPane>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Muffin" />
-                              <Label style="-fx-font-size: 12px;" text="\$20.00" textFill="#555555" />
-                           </children>
-                        </VBox>
+                        </StackPane>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Conchas" />
+                        <Label fx:id="lblPrecio1" style="-fx-font-size: 12px;" text="\$10.00" textFill="#555555" VBox.vgrow="ALWAYS" />
                      </children>
-                  </FlowPane>
-               </content>
-            </ScrollPane>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                     <children>
+                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
+                           <children>
+                              <ImageView fx:id="imgPan2" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Oreja" />
+                        <Label style="-fx-font-size: 12px;" text="\$12.00" textFill="#555555" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                     <children>
+                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
+                           <children>
+                              <ImageView fx:id="imgPan3" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Croissantt" />
+                        <Label style="-fx-font-size: 12px;" text="\$18.00" textFill="#555555" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                     <children>
+                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
+                           <children>
+                              <ImageView fx:id="imgPan4" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </StackPane>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Muffin" />
+                        <Label style="-fx-font-size: 12px;" text="\$20.00" textFill="#555555" />
+                     </children>
+                  </VBox>
+               </children>
+            </FlowPane>
+            <ScrollPane fitToWidth="true" prefViewportHeight="600.0" prefViewportWidth="600.0" style="-fx-background: transparent; -fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </center>
