@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #3E2419;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.LoginController">
+    <top>
+        <FlowPane alignment="CENTER" hgap="90" prefWrapLength="1200" style="-fx-background-color: #FFF3E7; -fx-padding: 18 30; -fx-border-color: #E3C8B1; -fx-border-width: 0 0 1 0;" vgap="12">
+            <children>
+                <VBox alignment="CENTER_LEFT" spacing="3">
+                    <children>
+                        <Label style="-fx-font-family: Georgia; -fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #762C1E;" text="El Lirio Rojo" />
+                        <Label style="-fx-font-size: 10px; -fx-text-fill: #AA5937;" text="PANADERIA ARTESANAL" />
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER" spacing="24">
+                    <children>
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #A74625; -fx-cursor: hand;" text="Inicio" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: #432A22; -fx-cursor: hand;" text="Menu" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: #432A22; -fx-cursor: hand;" text="Tienda" />
+                    </children>
+                </HBox>
+            </children>
+        </FlowPane>
+    </top>
+
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #42271C; -fx-background-color: #42271C; -fx-border-width: 0;" vbarPolicy="AS_NEEDED">
+            <content>
+                <StackPane style="-fx-background-color: linear-gradient(to bottom right, #2B170F 0%, #68412A 45%, #A16A3B 100%);">
+                    <children>
+                        <TilePane alignment="CENTER" hgap="40" maxWidth="1200" orientation="HORIZONTAL" prefColumns="2" tileAlignment="CENTER" vgap="35">
+                            <padding>
+                                <Insets bottom="45" left="25" right="25" top="45" />
+                            </padding>
+                            <children>
+                                <VBox alignment="CENTER_LEFT" maxWidth="440" prefWidth="440" spacing="22">
+                                    <children>
+                                        <Label style="-fx-font-family: Georgia; -fx-font-size: 57px; -fx-font-weight: bold; -fx-text-fill: #FFF4E5;" text="El Lirio Rojo" wrapText="true" />
+                                        <Label style="-fx-font-family: Georgia; -fx-font-size: 26px; -fx-font-style: italic; -fx-text-fill: #F1D6B8;" text="Tradicion que endulza cada momento" wrapText="true" />
+                                        <Region prefHeight="10" />
+                                        <Region prefHeight="15" />
+                                        <Region prefHeight="12" />
+                                    </children>
+                                </VBox>
+
+                                <VBox alignment="TOP_CENTER" maxWidth="390" prefWidth="390" spacing="15" style="-fx-background-color: #FFF0E1; -fx-background-radius: 26; -fx-padding: 30 28 30 28; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.30), 20, 0.2, 0, 8);">
+                                    <children>
+                                        <Label style="-fx-font-size: 30px; -fx-text-fill: #AD562E;" text="✦" />
+                                        <Label style="-fx-font-family: Georgia; -fx-font-size: 19px; -fx-text-fill: #854331;" text="El Lirio Rojo" />
+                                        <Separator prefWidth="150" />
+                                        <Region prefHeight="8" />
+
+                                        <Label alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-text-fill: #4D3126;" text="Tu Correo" />
+                                        <TextField fx:id="txtCorreo" maxWidth="Infinity" prefHeight="44" promptText="ejemplo@correo.com" style="-fx-background-color: #FFF9F2; -fx-background-radius: 10; -fx-border-color: #D3B9A5; -fx-border-radius: 10; -fx-padding: 10; -fx-font-size: 14px;" />
+
+                                        <Label alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-font-size: 14px; -fx-text-fill: #4D3126;" text="Contraseña" />
+                                        <PasswordField fx:id="txtPassword" maxWidth="Infinity" prefHeight="44" promptText="Contraseña" style="-fx-background-color: #FFF9F2; -fx-background-radius: 10; -fx-border-color: #D3B9A5; -fx-border-radius: 10; -fx-padding: 10; -fx-font-size: 14px;" />
+
+                                        <Region prefHeight="8" />
+
+                                        <Button fx:id="btnIniciar" maxWidth="Infinity" mnemonicParsing="false" prefHeight="48" style="-fx-background-color: #B95127; -fx-background-radius: 25; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-cursor: hand;" text="INICIAR" />
+                                        
+                                        <Button fx:id="btnCajero" maxWidth="Infinity" mnemonicParsing="false" prefHeight="48" style="-fx-background-color: #FFF0E1; -fx-background-radius: 25; -fx-border-color: #A74725; -fx-border-width: 1.5; -fx-border-radius: 25; -fx-text-fill: #81341E; -fx-font-size: 15px; -fx-font-weight: bold; -fx-cursor: hand;" text="Entrar como cajero    -&gt;" />
+
+                                        <Label fx:id="lblMensaje" alignment="CENTER" maxWidth="Infinity" style="-fx-text-fill: #BE3527; -fx-font-size: 12px;" text="" wrapText="true" />
+
+                                        <Separator />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </TilePane>
+                    </children>
+                </StackPane>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

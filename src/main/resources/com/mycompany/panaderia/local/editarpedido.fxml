@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="550.0" prefWidth="650.0" style="-fx-background-color: rgba(0, 0, 0, 0.4);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.EditarPedidoController">
+   <children>
+      <VBox layoutX="25.0" layoutY="25.0" prefHeight="500.0" prefWidth="600.0" spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+         <children>          
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Editar pedido" />
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnCerrarX" mnemonicParsing="false" text="X" />
+               </children>
+            </HBox>
+
+            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn prefWidth="150.0" text="Producto" />
+                <TableColumn prefWidth="90.0" text="Precio" />
+                <TableColumn prefWidth="100.0" text="Cantidad" />
+                <TableColumn prefWidth="90.0" text="Subtotal" />
+                  <TableColumn prefWidth="80.0" text="Acciones" />
+              </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: #ffcdd2; -fx-text-fill: #b71c1c;" text="Cancelar pedido completo" />
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <Label style="-fx-font-weight: bold;" text="Total:" />
+                  <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="\$0.00" />
+               </children>
+            </HBox>
+
+            <Label style="-fx-font-size: 11px;" text="Motivo de cancelación o modificación (opcional):" />
+            <TextArea prefHeight="60.0" prefWidth="200.0" promptText="Escribe un motivo..." />
+
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+               <children>
+                  <Button fx:id="btnCerrar" mnemonicParsing="false" style="-fx-background-color: #e0e0e0;" text="Cerrar" />
+                  <Button fx:id="btnGuardar" mnemonicParsing="false" style="-fx-background-color: #4e342e; -fx-text-fill: white;" text="Guardar cambios" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
