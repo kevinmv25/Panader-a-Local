@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="760.0"
+            prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.panaderia.local.Controllers.RegistroPedidosController"
+            style="-fx-background-color: #F4CC79;">
+
+    <BorderPane AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
+
+        <top>
+            <VBox spacing="10.0"
+                  style="-fx-background-color: #FFF8EC;
+                         -fx-padding: 18 25 18 25;
+                         -fx-border-color: #E9BD6B;
+                         -fx-border-width: 0 0 1 0;">
+
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <VBox spacing="3.0">
+                        <Label text="EL LIRIO ROJO"
+                               style="-fx-font-size: 25px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #422817;"/>
+
+                        <Label text="PANADERÍA ARTESANAL"
+                               style="-fx-font-size: 11px;
+                                      -fx-text-fill: #6B4A2E;"/>
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <Label text="Gestión de pedidos"
+                           style="-fx-font-size: 14px;
+                                  -fx-text-fill: #6B4A2E;"/>
+                </HBox>
+
+                <Separator/>
+
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                    <Label text="Pedidos"
+                           style="-fx-font-weight: bold;
+                                  -fx-text-fill: #422817;"/>
+                    <Label text="/"
+                           style="-fx-text-fill: #6B4A2E;"/>
+                    <Label text="Registrar pedido"
+                           style="-fx-text-fill: #6B4A2E;"/>
+                </HBox>
+            </VBox>
+        </top>
+
+        <center>
+            <ScrollPane fitToWidth="true"
+                        pannable="true">
+
+                <content>
+                    <VBox spacing="18.0">
+                        <padding>
+                            <Insets top="22.0"
+                                    right="25.0"
+                                    bottom="25.0"
+                                    left="25.0"/>
+                        </padding>
+
+                        <VBox spacing="5.0">
+                            <Label text="Registrar pedido"
+                                   style="-fx-font-size: 25px;
+                                          -fx-font-weight: bold;
+                                          -fx-text-fill: #422817;"/>
+
+                            <Label text="Registra los datos del cliente y los productos solicitados."
+                                   wrapText="true"
+                                   style="-fx-font-size: 13px;
+                                          -fx-text-fill: #6B4A2E;"/>
+                        </VBox>
+
+                        <!-- DATOS DEL CLIENTE -->
+                        <VBox spacing="14.0"
+                              style="-fx-background-color: #FFF8EC;
+                                     -fx-background-radius: 12;
+                                     -fx-border-color: #E9BD6B;
+                                     -fx-border-radius: 12;
+                                     -fx-padding: 20;">
+
+                            <Label text="Datos del cliente"
+                                   style="-fx-font-size: 18px;
+                                          -fx-font-weight: bold;
+                                          -fx-text-fill: #422817;"/>
+
+                            <GridPane hgap="15.0" vgap="12.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50.0"
+                                                       hgrow="ALWAYS"/>
+                                    <ColumnConstraints percentWidth="50.0"
+                                                       hgrow="ALWAYS"/>
+                                </columnConstraints>
+
+                                <Label text="Nombre del cliente"
+                                       GridPane.columnIndex="0"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <TextField fx:id="txtNombreCliente"
+                                           promptText="Nombre completo"
+                                           maxWidth="Infinity"
+                                           GridPane.columnIndex="0"
+                                           GridPane.rowIndex="1"/>
+
+                                <Label text="Teléfono de contacto"
+                                       GridPane.columnIndex="1"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <TextField fx:id="txtTelefono"
+                                           promptText="Número de teléfono"
+                                           maxWidth="Infinity"
+                                           GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+
+                                <Label text="Fecha de entrega"
+                                       GridPane.columnIndex="0"
+                                       GridPane.rowIndex="2"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <DatePicker fx:id="dpFechaEntrega"
+                                            promptText="Seleccionar fecha"
+                                            maxWidth="Infinity"
+                                            GridPane.columnIndex="0"
+                                            GridPane.rowIndex="3"/>
+
+                                <Label text="Tipo de pedido"
+                                       GridPane.columnIndex="1"
+                                       GridPane.rowIndex="2"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <ComboBox fx:id="cbTipoPedido"
+                                          promptText="Seleccionar tipo"
+                                          maxWidth="Infinity"
+                                          GridPane.columnIndex="1"
+                                          GridPane.rowIndex="3"/>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- PRODUCTOS -->
+                        <VBox spacing="14.0"
+                              style="-fx-background-color: #FFF8EC;
+                                     -fx-background-radius: 12;
+                                     -fx-border-color: #E9BD6B;
+                                     -fx-border-radius: 12;
+                                     -fx-padding: 20;">
+
+                            <Label text="Productos del pedido"
+                                   style="-fx-font-size: 18px;
+                                          -fx-font-weight: bold;
+                                          -fx-text-fill: #422817;"/>
+
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="55.0"
+                                                       hgrow="ALWAYS"/>
+                                    <ColumnConstraints percentWidth="20.0"
+                                                       hgrow="ALWAYS"/>
+                                    <ColumnConstraints percentWidth="25.0"
+                                                       hgrow="ALWAYS"/>
+                                </columnConstraints>
+
+                                <Label text="Tipo de pan"
+                                       GridPane.columnIndex="0"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <Label text="Cantidad"
+                                       GridPane.columnIndex="1"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <Label text="Precio unitario ($)"
+                                       GridPane.columnIndex="2"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <ComboBox fx:id="cbTipoPan"
+                                          promptText="Seleccionar pan"
+                                          maxWidth="Infinity"
+                                          GridPane.columnIndex="0"
+                                          GridPane.rowIndex="1"/>
+
+                                <Spinner fx:id="spCantidad"
+                                         editable="true"
+                                         GridPane.columnIndex="1"
+                                         GridPane.rowIndex="1"/>
+
+                                <TextField fx:id="txtPrecioUnitario"
+                                           promptText="0.00"
+                                           maxWidth="Infinity"
+                                           GridPane.columnIndex="2"
+                                           GridPane.rowIndex="1"/>
+                            </GridPane>
+
+                            <HBox alignment="CENTER_RIGHT">
+                                <Button fx:id="btnAgregarProducto"
+                                        text="Agregar producto"
+                                        style="-fx-background-color: #FFE7AD;
+                                               -fx-text-fill: #422817;
+                                               -fx-font-weight: bold;
+                                               -fx-background-radius: 8;
+                                               -fx-padding: 10 16;"/>
+                            </HBox>
+
+                            <TableView fx:id="tablaProductos"
+                                       prefHeight="180.0">
+                                <columns>
+                                    <TableColumn fx:id="colProducto"
+                                                 text="Producto"
+                                                 prefWidth="260.0"/>
+
+                                    <TableColumn fx:id="colCantidad"
+                                                 text="Cantidad"
+                                                 prefWidth="100.0"/>
+
+                                    <TableColumn fx:id="colPrecio"
+                                                 text="Precio unitario"
+                                                 prefWidth="150.0"/>
+
+                                    <TableColumn fx:id="colSubtotal"
+                                                 text="Subtotal"
+                                                 prefWidth="130.0"/>
+                                </columns>
+                            </TableView>
+
+                            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                                <Label text="TOTAL:"
+                                       style="-fx-font-size: 17px;
+                                              -fx-font-weight: bold;
+                                              -fx-text-fill: #422817;"/>
+
+                                <Label fx:id="lblTotal"
+                                       text="Total: 0.00 MXN"
+                                       style="-fx-font-size: 21px;
+                                              -fx-font-weight: bold;
+                                              -fx-text-fill: #422817;
+                                              -fx-background-color: #FFE7AD;
+                                              -fx-background-radius: 8;
+                                              -fx-padding: 8 12;"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- OBSERVACIONES -->
+                        <VBox spacing="10.0"
+                              style="-fx-background-color: #FFF8EC;
+                                     -fx-background-radius: 12;
+                                     -fx-border-color: #E9BD6B;
+                                     -fx-border-radius: 12;
+                                     -fx-padding: 20;">
+
+                            <Label text="Observaciones del pedido"
+                                   style="-fx-font-size: 17px;
+                                          -fx-font-weight: bold;
+                                          -fx-text-fill: #422817;"/>
+
+                            <TextArea fx:id="txtObservaciones"
+                                      promptText="Indicaciones especiales para el pedido..."
+                                      prefRowCount="3"
+                                      wrapText="true"/>
+                        </VBox>
+
+                        <!-- ACCIONES -->
+                        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                            <Button fx:id="btnLimpiar"
+                                    text="Limpiar formulario"
+                                    style="-fx-background-color: #FFF8EC;
+                                           -fx-text-fill: #422817;
+                                           -fx-border-color: #E9BD6B;
+                                           -fx-border-radius: 8;
+                                           -fx-background-radius: 8;
+                                           -fx-padding: 11 18;"/>
+
+                            <Button fx:id="btnGuardarPedido"
+                                    text="Registrar pedido"
+                                    style="-fx-background-color: #422817;
+                                           -fx-text-fill: #FFF8EC;
+                                           -fx-font-weight: bold;
+                                           -fx-background-radius: 8;
+                                           -fx-padding: 11 22;"/>
+                        </HBox>
+
+                        <!-- PEDIDOS RECIENTES -->
+                        <VBox spacing="10.0"
+                              style="-fx-background-color: #FFF8EC;
+                                     -fx-background-radius: 12;
+                                     -fx-border-color: #E9BD6B;
+                                     -fx-border-radius: 12;
+                                     -fx-padding: 18;">
+
+                            <Label text="Pedidos recientes"
+                                   style="-fx-font-size: 18px;
+                                          -fx-font-weight: bold;
+                                          -fx-text-fill: #422817;"/>
+
+                            <Label text="Consulta los pedidos registrados en una página independiente."
+                                   wrapText="true"
+                                   style="-fx-text-fill: #6B4A2E;"/>
+
+                            <HBox alignment="CENTER_RIGHT">
+                                <Button fx:id="btnVerPedidosRecientes"
+                                        text="Ver pedidos recientes"
+                                        style="-fx-background-color: #FFE7AD;
+                                               -fx-text-fill: #422817;
+                                               -fx-font-weight: bold;
+                                               -fx-background-radius: 8;
+                                               -fx-padding: 11 18;"/>
+                            </HBox>
+                        </VBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </center>
+
+    </BorderPane>
+</AnchorPane>
