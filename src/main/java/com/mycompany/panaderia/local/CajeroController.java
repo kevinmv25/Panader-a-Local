@@ -38,7 +38,7 @@ public class CajeroController {
                 Stage modalStage = new Stage();
                 modalStage.initModality(Modality.APPLICATION_MODAL);
                 modalStage.setTitle("EditarPedido");
-                modalStage.setScene(new Scene(root));
+                modalStage.setScene(new Scene(root, 1280, 720));
                 modalStage.show();
             } catch (IOException e) {
                 e.printStackTrace();
