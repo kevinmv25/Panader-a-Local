@@ -18,39 +18,27 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-
-        // INICIAR SESION COMO ADMINISTRADOR
         btnIniciar.setOnAction(event -> {
-
             String correo = txtCorreo.getText();
             String password = txtPassword.getText();
 
-            if (correo.equals("angel@gmail.com")
-                    && password.equals("1234")) {
-
+            if (correo.equals("admon@gmail.com") && password.equals("1234")) {
                 try {
-                    App.validarAdministrador(correo, password);
-                    App.mostrar("loginAdministrador");
-
+                    App.mostrar("Administrador/loginAdministrador"); 
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
-
             } else {
-                lblMensaje.setText(
-                    "Credenciales incorrectas o usuario no autorizado."
-                );
+                lblMensaje.setText("Credenciales incorrectas o usuario no autorizado.");
             }
         });
 
-        // ENTRAR COMO CAJERO
+        // Botón Entrar como Cajero
         btnCajero.setOnAction(event -> {
-
             try {
-                App.mostrar("cajeropedido");
-
+                App.mostrar("cajeropedido"); 
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         });
     }
