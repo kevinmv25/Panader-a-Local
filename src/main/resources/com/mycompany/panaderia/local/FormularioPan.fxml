@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.FormularioPanController" prefWidth="760.0" prefHeight="580.0" style="-fx-background-color: #F7F7F7;">
+
+    <!-- ENCABEZADO -->
+    <top>
+        <VBox spacing="5" style="-fx-background-color: #1D1B1A;">
+            <padding>
+                <Insets top="22" bottom="22" left="30" right="30" />
+            </padding>
+            <children>
+                <Label text="EL LIRIO ROJO" style="-fx-text-fill: #F39817; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                <Label fx:id="lblTitulo" text="Modificar Pan" style="-fx-text-fill: white; -fx-font-size: 25px; -fx-font-weight: bold;" />
+                <Label fx:id="lblSubtitulo" text="Actualiza la informacion del producto" style="-fx-text-fill: #D0D0D0; -fx-font-size: 12px;" />
+            </children>
+        </VBox>
+    </top>
+
+    <!-- CUERPO -->
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #F7F7F7; -fx-background-color: #F7F7F7;">
+            <content>
+                <HBox spacing="24">
+                    <padding>
+                        <Insets top="25" bottom="25" left="30" right="30" />
+                    </padding>
+                    <children>
+
+                        <!-- FORMULARIO IZQUIERDO -->
+                        <VBox spacing="16" prefWidth="400">
+                            <children>
+                                <Label text="Nombre del pan" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                <TextField fx:id="txtNombre" promptText="Ej. Concha" prefHeight="39" style="-fx-background-color: white; -fx-border-color: #DADADA; -fx-border-radius: 6; -fx-background-radius: 6;" />
+
+                                <Label text="Descripcion" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                <TextArea fx:id="txtDescripcion" promptText="Describe las caracteristicas del pan..." prefHeight="105" wrapText="true" style="-fx-background-color: white; -fx-border-color: #DADADA; -fx-border-radius: 6;" />
+
+                                <Label text="Precio de venta" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                <HBox spacing="10">
+                                    <children>
+                                        <Label text="\$" style="-fx-font-size: 21px; -fx-font-weight: bold; -fx-text-fill: #E68000;" />
+                                        <TextField fx:id="txtPrecio" promptText="0.00" prefHeight="39" prefWidth="330" style="-fx-background-color: white; -fx-border-color: #DADADA; -fx-border-radius: 6; -fx-background-radius: 6;" />
+                                    </children>
+                                </HBox>
+
+                                <Label text="Fotografia del producto" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                <TextField fx:id="txtFoto" promptText="Sin fotografia seleccionada" editable="false" prefHeight="38" style="-fx-background-color: #EEEEEE; -fx-background-radius: 6;" />
+                                <Button fx:id="btnSeleccionarFoto" text="Seleccionar imagen" onAction="#seleccionarFoto" prefHeight="36" style="-fx-background-color: #F2E4D0; -fx-text-fill: #9C5700; -fx-font-weight: bold; -fx-background-radius: 6;" />
+                                <Label text="Formatos: JPG, JPEG y PNG" style="-fx-text-fill: #888888; -fx-font-size: 11px;" />
+                            </children>
+                        </VBox>
+
+                        <!-- VISTA PREVIA DERECHA -->
+                        <VBox spacing="12" prefWidth="250">
+                            <children>
+                                <Label text="Vista previa" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                                <StackPane prefWidth="245" prefHeight="210" style="-fx-background-color: #E8D0AC; -fx-background-radius: 10;">
+                                    <children>
+                                        <Label fx:id="lblSinImagen" text="Sin Imagen" style="-fx-text-fill: #805F3B; -fx-font-size: 14px;" />
+                                        <ImageView fx:id="imgVistaPrevia" fitWidth="225" fitHeight="195" preserveRatio="true" />
+                                    </children>
+                                </StackPane>
+
+                                <VBox spacing="6" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 13;">
+                                    <children>
+                                        <Label text="Informacion" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                        <Label text="Los cambios se guardaran en el catalogo de la panaderia." wrapText="true" style="-fx-text-fill: #777777; -fx-font-size: 12px;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </HBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <!-- BOTONES INFERIORES -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="12" prefHeight="78" style="-fx-background-color: white; -fx-border-color: #E8E8E8; -fx-border-width: 1 0 0 0;">
+            <padding>
+                <Insets top="15" bottom="15" left="30" right="30" />
+            </padding>
+            <children>
+                <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" prefWidth="115" prefHeight="40" style="-fx-background-color: #EEEEEE; -fx-text-fill: #333333; -fx-font-weight: bold; -fx-background-radius: 7;" />
+                <Button fx:id="btnGuardar" text="Guardar Cambios" onAction="#guardarPan" prefWidth="155" prefHeight="40" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 7;" />
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

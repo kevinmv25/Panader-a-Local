@@ -1,93 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: #FAFAFA; -fx-padding: 15;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.AdminController">
-   <!-- Cabecera Superior del Panel de Administrador -->
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="40.0" style="-fx-background-color: #333333; -fx-padding: 0 15 0 15;" BorderPane.alignment="CENTER">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.CatalogoPanesController">
+   <left>
+      <VBox prefWidth="235.0" spacing="12.0" style="-fx-background-color: #1D1B1A;">
+         <padding>
+            <Insets bottom="20.0" left="15.0" right="15.0" top="22.0" />
+         </padding>
          <children>
-            <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="PANEL DE ADMINISTRACIÓN · EL LIRIO ROJO" textFill="WHITE" />
-            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <VBox spacing="5.0">
                <children>
-                  <Button fx:id="btnCerrarSesion" mnemonicParsing="false" style="-fx-background-color: #666666; -fx-text-fill: white; -fx-font-size: 10px;" text="Cerrar Sesión" />
+                  <Label style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;" text="EL LIRIO ROJO" />
+                  <Label style="-fx-text-fill: #F39817; -fx-font-size: 12px;" text="Panel de Administrador" />
                </children>
-            </HBox>
+            </VBox>
+            <Separator />
+            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Resumen de Ventas " />
+            <Button prefHeight="50.0" prefWidth="205.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Catalogo de Panes " />
+            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Produccion y Merma " />
+            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Historial de Pedidos " />
+            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Control de Insumos " />
+            <Region VBox.vgrow="ALWAYS" />
+            <Separator />
+            <Button fx:id="btnCerrarSesion" onAction="#cerrarSesion" prefHeight="42.0" prefWidth="205.0" style="-fx-background-color: #383331; -fx-text-fill: white; -fx-background-radius: 8;" text="Cerrar Sesion" />
          </children>
-      </HBox>
-   </top>
-
+      </VBox>
+   </left>
    <center>
-      <VBox spacing="8.0" BorderPane.alignment="CENTER">
+      <VBox spacing="0.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-size: 11px; -fx-font-weight: bold;" text="HU17 · VISTA DE GESTIÓN Y NEGOCIO" textFill="#666666" />
-            
-            <!-- Contenedor Principal del Panel -->
-            <BorderPane prefHeight="550.0" prefWidth="920.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-width: 1;">
-               
-               <!-- Menú de Opciones del Administrador (Lateral Izquierdo) -->
-               <left>
-                  <VBox prefWidth="180.0" spacing="6.0" style="-fx-background-color: #EAEAEA; -fx-padding: 12;" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" prefHeight="90.0" spacing="15.0" style="-fx-background-color: white;">
+               <padding>
+                  <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+               </padding>
+               <children>
+                  <VBox spacing="5.0">
                      <children>
-                        <Label style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 0 0 5 0;" text="MENÚ GERENCIAL" textFill="#555555" />
-                        <Button maxWidth="Infinity" style="-fx-background-color: #777777; -fx-text-fill: white; -fx-font-size: 11px;" text="Resumen del Negocio" />
-                        <Button maxWidth="Infinity" style="-fx-background-color: #DDDDDD; -fx-font-size: 11px;" text="Inventario de Panes" />
-                        <Button maxWidth="Infinity" style="-fx-background-color: #DDDDDD; -fx-font-size: 11px;" text="Historial de Ventas" />
-                        <Button maxWidth="Infinity" style="-fx-background-color: #DDDDDD; -fx-font-size: 11px;" text="Gestión de Empleados" />
-                        <Button maxWidth="Infinity" style="-fx-background-color: #DDDDDD; -fx-font-size: 11px;" text="Reportes y Finanzas" />
+                        <Label style="-fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #202020;" text="Catalogo y Gestion de Panes" />
+                        <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" text="Registra, edita y administra los productos de la panaderia" />
                      </children>
                   </VBox>
-               </left>
-
-               <!-- Área Central con la Información del Negocio -->
-               <center>
-                  <VBox spacing="12.0" style="-fx-padding: 15;" BorderPane.alignment="CENTER">
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label style="-fx-text-fill: #D77700; -fx-background-color: #FFF3E0; -fx-padding: 10; -fx-background-radius: 7;" text="HOLA ADMINISTRADOR" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white;">
+               <padding>
+                  <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+               </padding>
+               <children>
+                  <TextField fx:id="txtBuscarPan" prefHeight="40.0" prefWidth="330.0" promptText="Buscar pan por nombre..." style="-fx-background-color: #F8F8F8; -fx-background-radius: 8; -fx-border-color: #DDDDDD; -fx-border-radius: 8;" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnAgregarPan" prefHeight="42.0" prefWidth="185.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Registrar Nuevo Pan" />
+               </children>
+            </HBox>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #F7F7F7;" VBox.vgrow="ALWAYS">
+               <content>
+                  <FlowPane fx:id="contenedorPanes" hgap="18.0" prefWrapLength="800.0" style="-fx-background-color: #F7F7F7;" vgap="18.0">
+                     <padding>
+                        <Insets bottom="30.0" left="25.0" right="20.0" top="25.0" />
+                     </padding>
                      <children>
-                        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Resumen de Operaciones y Métricas" textFill="#333333" />
-                        
-                        <!-- Bloque de Tarjetas de Indicadores (KPIs) -->
-                        <HBox spacing="15.0">
+                        <VBox prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E5E5; -fx-border-radius: 12;">
                            <children>
-                              <VBox prefHeight="70.0" prefWidth="220.0" spacing="4.0" style="-fx-background-color: #EFEFEF; -fx-border-color: #DDDDDD; -fx-padding: 10;">
+                              <StackPane prefHeight="125.0" style="-fx-background-color: #E8D0AC; -fx-background-radius: 12 12 0 0;">
                                  <children>
-                                    <Label style="-fx-font-size: 10px; -fx-font-weight: bold;" text="VENTAS TOTALES DEL DÍA" textFill="#666666" />
-                                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="\$3,450.00" textFill="#333333" />
+                                    <Label style="-fx-text-fill: #6B4B2D;" text="Sin Imagen" />
+                                 </children>
+                              </StackPane>
+                              <VBox spacing="8.0" style="-fx-padding: 12;">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Conchas" />
+                                    <Label style="-fx-text-fill: #E68000; -fx-font-weight: bold;" text="\$12.00" />
+                                    <Label text="Pan dulce tradicional" wrapText="true" />
+                                    <Label style="-fx-text-fill: #00A779;" text="Disponible" />
+                                    <Button fx:id="btnModificarConchas" maxWidth="Infinity" text="Modificar" />
                                  </children>
                               </VBox>
-                              <VBox prefHeight="70.0" prefWidth="220.0" spacing="4.0" style="-fx-background-color: #EFEFEF; -fx-border-color: #DDDDDD; -fx-padding: 10;">
-                                 <children>
-                                    <Label style="-fx-font-size: 10px; -fx-font-weight: bold;" text="PEDIDOS REGISTRADOS" textFill="#666666" />
-                                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="48" textFill="#333333" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-
-                        <!-- Tabla de Actividad Reciente / Información del Negocio -->
-                        <VBox spacing="5.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label style="-fx-font-size: 12px; -fx-font-weight: bold;" text="Últimas Transacciones del Negocio" textFill="#444444" />
-                              <TableView prefHeight="250.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                <columns>
-                                  <TableColumn prefWidth="90.0" text="ID Pedido" />
-                                  <TableColumn prefWidth="120.0" text="Hora" />
-                                  <TableColumn prefWidth="140.0" text="Cajero" />
-                                  <TableColumn prefWidth="130.0" text="Total" />
-                                  <TableColumn prefWidth="130.0" text="Estado" />
-                                </columns>
-                              </TableView>
                            </children>
                         </VBox>
                      </children>
-                  </VBox>
-               </center>
-            </BorderPane>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
    </center>

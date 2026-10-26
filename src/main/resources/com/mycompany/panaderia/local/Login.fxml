@@ -28,8 +28,6 @@
                 <HBox alignment="CENTER" spacing="24">
                     <children>
                         <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #A74625; -fx-cursor: hand;" text="Inicio" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: #432A22; -fx-cursor: hand;" text="Menu" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: #432A22; -fx-cursor: hand;" text="Tienda" />
                     </children>
                 </HBox>
             </children>

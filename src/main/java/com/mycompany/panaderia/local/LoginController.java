@@ -1,3 +1,4 @@
+
 package com.mycompany.panaderia.local;
 
 import java.io.IOException;
@@ -17,28 +18,39 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+
+        // INICIAR SESION COMO ADMINISTRADOR
         btnIniciar.setOnAction(event -> {
+
             String correo = txtCorreo.getText();
             String password = txtPassword.getText();
 
-            // Validación temporal sin Base de Datos aún
-            if (correo.equals("angel@gmail.com") && password.equals("1234")) {
+            if (correo.equals("angel@gmail.com")
+                    && password.equals("1234")) {
+
                 try {
-                    App.mostrar("loginAdministrador"); 
+                    App.validarAdministrador(correo, password);
+                    App.mostrar("loginAdministrador");
+
                 } catch (IOException ex) {
-                    System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    ex.printStackTrace();
                 }
+
             } else {
-                lblMensaje.setText("Credenciales incorrectas o usuario no autorizado.");
+                lblMensaje.setText(
+                    "Credenciales incorrectas o usuario no autorizado."
+                );
             }
         });
 
-        // Botón Entrar como Cajero
+        // ENTRAR COMO CAJERO
         btnCajero.setOnAction(event -> {
+
             try {
-                App.mostrar("cajeropedido"); 
+                App.mostrar("cajeropedido");
+
             } catch (IOException ex) {
-                System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                ex.printStackTrace();
             }
         });
     }
