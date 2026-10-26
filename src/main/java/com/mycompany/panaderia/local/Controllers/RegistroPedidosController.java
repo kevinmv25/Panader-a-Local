@@ -5,7 +5,9 @@ import com.panaderialocal.conexion.RegistroPedidosDAO;
 import com.panaderialocal.conexion.RegistroPedidosDAO.DetallePedido;
 import com.panaderialocal.conexion.RegistroPedidosDAO.Pan;
 import com.panaderialocal.conexion.RegistroPedidosDAO.PedidoReciente;
+import com.mycompany.panaderia.local.App;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class RegistroPedidosController implements Initializable {
     @FXML private Button btnLimpiar;
     @FXML private Button btnGuardarPedido;
     @FXML private Button btnVerPedidosRecientes;
+    @FXML private Button btnRegresar;
 
     @FXML private TableView<DetallePedido> tablaProductos;
     @FXML private TableColumn<DetallePedido, String> colProducto;
@@ -102,6 +105,7 @@ public class RegistroPedidosController implements Initializable {
         btnLimpiar.setOnAction(e -> limpiarFormulario());
         btnGuardarPedido.setOnAction(e -> guardarPedido());
         btnVerPedidosRecientes.setOnAction(e -> mostrarPedidosRecientes());
+        btnRegresar.setOnAction(e -> regresarAInterfazAnterior());
 
         cargarPanes();
         actualizarTotal();
@@ -422,6 +426,19 @@ public class RegistroPedidosController implements Initializable {
                     Alert.AlertType.ERROR,
                     "Error al consultar pedidos",
                     ex.getMessage()
+            );
+        }
+    }
+
+    private void regresarAInterfazAnterior() {
+        try {
+            App.setRoot("cajeropedido");
+        } catch (IOException ex) {
+            mostrarAlerta(
+                    Alert.AlertType.ERROR,
+                    "No se pudo regresar",
+                    "No fue posible volver a la interfaz del cajero. "
+                            + ex.getMessage()
             );
         }
     }

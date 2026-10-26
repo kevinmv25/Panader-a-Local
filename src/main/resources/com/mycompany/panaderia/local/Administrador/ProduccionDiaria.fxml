@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="450.0" minWidth="700.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #FFF8EC;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.ProduccionDiariaController">
+
+    <HBox alignment="CENTER_LEFT" prefHeight="65.0" spacing="10.0" style="-fx-background-color: #FFF8EC;                  -fx-border-color: transparent transparent #E9BD6B transparent;                  -fx-border-width: 0 0 1 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <padding>
+            <Insets left="20.0" right="25.0" />
+        </padding>
+
+        <ImageView fx:id="imgLogo" fitHeight="66.0" fitWidth="95.0" preserveRatio="true">
+         <image>
+            <Image url="@../iconos/logo_el_lirio_rojo_hd.png" />
+         </image></ImageView>
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <Label style="-fx-font-family: 'Manrope';                       -fx-font-size: 12px;                       -fx-text-fill: #422817;" text="Administrador" />
+      <ImageView fitHeight="38.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../iconos/usuario_16x16.png" />
+         </image>
+      </ImageView>
+    </HBox>
+
+    <VBox alignment="CENTER_LEFT" prefHeight="635.0" prefWidth="158.0" spacing="12.0" style="-fx-background-color: #FFF8EC;                  -fx-border-color: transparent #E9BD6B transparent transparent;                  -fx-border-width: 0 1 0 0;                  -fx-padding: 10 8 10 8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="65.0">
+
+        <Region prefHeight="0.0" prefWidth="142.0" VBox.vgrow="ALWAYS" />
+
+        <HBox alignment="CENTER_LEFT" spacing="7.0">
+            <ImageView fx:id="imgInicio" fitHeight="15.0" fitWidth="15.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/hogar_16x16.png" />
+            </image></ImageView>
+            <Button maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #422817; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-alignment: CENTER_LEFT;" text="Inicio" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="7.0">
+            <ImageView fx:id="imgMateriales" fitHeight="15.0" fitWidth="15.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/materiales_16x16.png" />
+            </image></ImageView>
+            <Button maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #422817; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-alignment: CENTER_LEFT;" text="Materiales" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="7.0">
+            <ImageView fx:id="imgProductos" fitHeight="15.0" fitWidth="15.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/pan_16x16.png" />
+            </image></ImageView>
+            <Button maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #422817; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-alignment: CENTER_LEFT;" text="Productos" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="7.0">
+            <ImageView fx:id="imgVentas" fitHeight="15.0" fitWidth="15.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/carrito_compras_16x16.png" />
+            </image></ImageView>
+            <Button maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #422817; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-alignment: CENTER_LEFT;" text="Ventas" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="7.0" style="-fx-background-color: #FFE7AD;                      -fx-background-radius: 3;                      -fx-padding: 5 3 5 3;">
+
+            <ImageView fx:id="imgProduccion" fitHeight="17.0" fitWidth="18.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/estadistica_16x16.png" />
+            </image></ImageView>
+
+            <Button maxWidth="Infinity" prefHeight="24.0" prefWidth="110.0" style="-fx-background-color: transparent;                            -fx-text-fill: #422817;                            -fx-font-family: 'Manrope';                            -fx-font-size: 11px;                            -fx-font-weight: bold;                            -fx-alignment: CENTER_LEFT;" text="Producción diaria" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+    <VBox spacing="35.0" style="-fx-background-color: #FFF8EC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
+
+        <padding>
+            <Insets bottom="25.0" left="30.0" right="35.0" top="35.0" />
+        </padding>
+
+        <Label style="-fx-font-family: 'Fraunces';                       -fx-font-size: 22px;                       -fx-font-weight: bold;                       -fx-text-fill: #000000;" text="Producción diaria" />
+      <Pane onDragDetected="#abrirRegistro" prefHeight="107.0" prefWidth="884.0" />
+
+        <HBox alignment="CENTER" maxWidth="Infinity" spacing="22.0">
+
+            <Button fx:id="btnRegistrar" maxHeight="100.0" maxWidth="Infinity" minWidth="110.0" onAction="#abrirRegistro" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;                            -fx-border-color: #E9BD6B;                            -fx-border-width: 1px;                            -fx-background-radius: 3px;                            -fx-border-radius: 3px;                            -fx-padding: 8px;" HBox.hgrow="ALWAYS">
+
+                <graphic>
+                    <VBox alignment="CENTER" spacing="8.0">
+                        <Label style="-fx-font-family: 'Fraunces';                                       -fx-font-size: 14px;                                       -fx-font-weight: bold;                                       -fx-text-fill: #6B4A2E;" text="Registrar producción" wrapText="true" />
+                        <ImageView fx:id="imgRegistrar" fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../iconos/agregar_16x16.png" />
+                     </image></ImageView>
+                    </VBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnResumen" maxHeight="100.0" maxWidth="Infinity" minWidth="110.0" onAction="#abrirResumen" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;                            -fx-border-color: #E9BD6B;                            -fx-border-width: 1px;                            -fx-background-radius: 3px;                            -fx-border-radius: 3px;                            -fx-padding: 8px;" HBox.hgrow="ALWAYS">
+
+                <graphic>
+                    <VBox alignment="CENTER" spacing="8.0">
+                        <Label style="-fx-font-family: 'Fraunces';                                       -fx-font-size: 14px;                                       -fx-font-weight: bold;                                       -fx-text-fill: #6B4A2E;" text="Resumen del día" wrapText="true" />
+                        <ImageView fx:id="imgResumen" fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../iconos/estadistica_16x16.png" />
+                     </image></ImageView>
+                    </VBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnHistorial" maxHeight="100.0" maxWidth="Infinity" minWidth="110.0" onAction="#abrirHistorial" prefHeight="100.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;                            -fx-border-color: #E9BD6B;                            -fx-border-width: 1px;                            -fx-background-radius: 3px;                            -fx-border-radius: 3px;                            -fx-padding: 8px;" HBox.hgrow="ALWAYS">
+
+                <graphic>
+                    <VBox alignment="CENTER" spacing="8.0">
+                        <Label style="-fx-font-family: 'Fraunces';                                       -fx-font-size: 14px;                                       -fx-font-weight: bold;                                       -fx-text-fill: #6B4A2E;" text="Tabla de producción" wrapText="true" />
+                        <ImageView fx:id="imgHistorial" fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../iconos/lista_16x16.png" />
+                     </image></ImageView>
+                    </VBox>
+                </graphic>
+            </Button>
+
+        </HBox>
+    </VBox>
+
+</AnchorPane>

@@ -56,6 +56,14 @@
                     <Label text="Gestión de pedidos"
                            style="-fx-font-size: 14px;
                                   -fx-text-fill: #6B4A2E;"/>
+
+                    <Button fx:id="btnRegresar"
+                            text="Regresar"
+                            style="-fx-background-color: #422817;
+                                   -fx-text-fill: #FFF8EC;
+                                   -fx-font-weight: bold;
+                                   -fx-background-radius: 8;
+                                   -fx-padding: 9 16;"/>
                 </HBox>
 
                 <Separator/>
@@ -75,7 +83,6 @@
         <center>
             <ScrollPane fitToWidth="true"
                         pannable="true">
-
                 <content>
                     <VBox spacing="18.0">
                         <padding>

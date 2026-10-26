@@ -1,55 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="550.0" prefWidth="650.0" style="-fx-background-color: rgba(0, 0, 0, 0.4);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.EditarPedidoController">
-   <children>
-      <VBox layoutX="25.0" layoutY="25.0" prefHeight="500.0" prefWidth="600.0" spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-         <children>          
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Editar pedido" />
-                  <HBox HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnCerrarX" mnemonicParsing="false" text="X" />
-               </children>
-            </HBox>
+<AnchorPane prefHeight="600.0" prefWidth="850.0"
+            style="-fx-background-color: rgba(0, 0, 0, 0.4);"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.panaderia.local.EditarPedidoController">
 
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn prefWidth="150.0" text="Producto" />
-                <TableColumn prefWidth="90.0" text="Precio" />
-                <TableColumn prefWidth="100.0" text="Cantidad" />
-                <TableColumn prefWidth="90.0" text="Subtotal" />
-                  <TableColumn prefWidth="80.0" text="Acciones" />
-              </columns>
-            </TableView>
+    <children>
+        <VBox spacing="10.0"
+              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;"
+              AnchorPane.topAnchor="20.0"
+              AnchorPane.bottomAnchor="20.0"
+              AnchorPane.leftAnchor="20.0"
+              AnchorPane.rightAnchor="20.0">
 
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
-               <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #ffcdd2; -fx-text-fill: #b71c1c;" text="Cancelar pedido completo" />
-                  <HBox HBox.hgrow="ALWAYS" />
-                  <Label style="-fx-font-weight: bold;" text="Total:" />
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="\$0.00" />
-               </children>
-            </HBox>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Gestionar pedido"
+                               style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnCerrarX" text="X" onAction="#cerrar" />
+                    </children>
+                </HBox>
 
-            <Label style="-fx-font-size: 11px;" text="Motivo de cancelación o modificación (opcional):" />
-            <TextArea prefHeight="60.0" prefWidth="200.0" promptText="Escribe un motivo..." />
+                <Label text="Selecciona el pedido:" />
 
-            <HBox alignment="CENTER_RIGHT" spacing="10.0">
-               <children>
-                  <Button fx:id="btnCerrar" mnemonicParsing="false" style="-fx-background-color: #e0e0e0;" text="Cerrar" />
-                  <Button fx:id="btnGuardar" mnemonicParsing="false" style="-fx-background-color: #4e342e; -fx-text-fill: white;" text="Guardar cambios" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+                <ComboBox fx:id="cmbPedidos"
+                          maxWidth="Infinity"
+                          promptText="Selecciona un pedido" />
+
+                <Button fx:id="btnCargar"
+                        text="Cargar pedido"
+                        onAction="#cargarPedido" />
+
+                <TableView fx:id="tablaDetalles"
+                           prefHeight="220.0"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colProducto" text="Producto" prefWidth="200.0" />
+                        <TableColumn fx:id="colPrecio" text="Precio" prefWidth="110.0" />
+                        <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="110.0" />
+                        <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="120.0" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Total:"
+                               style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                        <Label fx:id="lblTotal"
+                               text="0.00"
+                               style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="Adelanto:" />
+                        <TextField fx:id="txtAdelanto" prefWidth="100.0" />
+                        <Button fx:id="btnGuardarAdelanto"
+                                text="Guardar adelanto"
+                                onAction="#guardarAdelanto" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Saldo pendiente:"
+                               style="-fx-font-weight: bold; -fx-font-size: 15px;" />
+                        <Label fx:id="lblSaldo"
+                               text="0.00"
+                               style="-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #b71c1c;" />
+                    </children>
+                </HBox>
+
+                <Label text="Motivo o comentario (opcional):" />
+
+                <TextArea fx:id="txtMotivo"
+                          prefHeight="65.0"
+                          promptText="Escribe un comentario..." />
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnCancelarPedido"
+                                text="Cancelar pedido completo"
+                                style="-fx-background-color: #ffcdd2; -fx-text-fill: #b71c1c;"
+                                onAction="#cancelarPedido" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnCerrar" text="Cerrar" onAction="#cerrar" />
+                        <Button fx:id="btnCompletar"
+                                text="Marcar como completado"
+                                style="-fx-background-color: #2e7d32; -fx-text-fill: white;"
+                                onAction="#completarPedido" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

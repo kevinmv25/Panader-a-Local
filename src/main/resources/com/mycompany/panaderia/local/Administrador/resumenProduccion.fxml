@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="450.0" minWidth="700.0" prefHeight="525.0" prefWidth="1035.0" style="-fx-background-color: #FFF8EC;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.ResumenProduccionController">
+
+    <HBox alignment="CENTER_LEFT" prefHeight="69.0" spacing="10.0" style="-fx-background-color: #FFF8EC; -fx-border-color: #F8E5C1; -fx-border-width: 0 0 1 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="4.0" left="40.0" right="14.0" top="4.0" />
+        </padding>
+        <ImageView fx:id="imgLogo" fitHeight="60.0" fitWidth="62.0" preserveRatio="true">
+         <image>
+            <Image url="@../iconos/logo_el_lirio_rojo_hd.png" />
+         </image></ImageView>
+        <Region HBox.hgrow="ALWAYS" />
+        <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Administrador" />
+        <ImageView fx:id="imgAdministrador" fitHeight="32.0" fitWidth="32.0" preserveRatio="true">
+         <image>
+            <Image url="@../iconos/usuario_16x16.png" />
+         </image></ImageView>
+    </HBox>
+
+    <VBox maxWidth="160.0" minWidth="160.0" prefWidth="160.0" spacing="0.0" style="-fx-background-color: #FFF8EC; -fx-border-color: #F8E5C1; -fx-border-width: 0 1 0 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="69.0">
+
+        <Region minHeight="38.0" VBox.vgrow="ALWAYS" />
+
+        <HBox alignment="CENTER_LEFT" prefHeight="42.0" spacing="8.0" style="-fx-padding: 0 7 0 7;">
+            <ImageView fx:id="imgInicio" fitHeight="21.0" fitWidth="21.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/hogar_16x16.png" />
+            </image></ImageView>
+            <Button alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 13px; -fx-text-fill: #6B4A2E; -fx-padding: 5 0 5 0;" text="Inicio" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="8.0" style="-fx-padding: 0 7 0 7;">
+            <ImageView fx:id="imgMateriales" fitHeight="21.0" fitWidth="21.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/materiales_16x16.png" />
+            </image></ImageView>
+            <Button alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 13px; -fx-text-fill: #6B4A2E; -fx-padding: 5 0 5 0;" text="Materiales" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="8.0" style="-fx-padding: 0 7 0 7;">
+            <ImageView fx:id="imgProductos" fitHeight="21.0" fitWidth="21.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/pan_16x16.png" />
+            </image></ImageView>
+            <Button alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 13px; -fx-text-fill: #6B4A2E; -fx-padding: 5 0 5 0;" text="Productos" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="8.0" style="-fx-padding: 0 7 0 7;">
+            <ImageView fx:id="imgVentas" fitHeight="21.0" fitWidth="21.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/carrito_compras_16x16.png" />
+            </image></ImageView>
+            <Button alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 13px; -fx-text-fill: #6B4A2E; -fx-padding: 5 0 5 0;" text="Ventas" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="34.0" spacing="8.0" style="-fx-background-color: #FFE7AD; -fx-background-radius: 5; -fx-padding: 0 7 0 7;">
+            <ImageView fx:id="imgProduccion" fitHeight="21.0" fitWidth="21.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/estadistica_16x16.png" />
+            </image></ImageView>
+            <Button alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #422817; -fx-padding: 5 0 5 0;" text="Producción diaria" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <Region VBox.vgrow="ALWAYS" />
+    </VBox>
+
+    <AnchorPane style="-fx-background-color: #FFF8EC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="23.0">
+            <ImageView fx:id="imgRegresar" fitHeight="29.0" fitWidth="29.0" preserveRatio="true" />
+            <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Resumen del día" />
+        </HBox>
+
+        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="215.0" spacing="6.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #F8E5C1; -fx-border-radius: 6; -fx-background-radius: 6;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+            <ImageView fx:id="imgCalendario" fitHeight="18.0" fitWidth="18.0" preserveRatio="true">
+            <image>
+               <Image url="@../iconos/calendario_16x16.png" />
+            </image></ImageView>
+            <DatePicker fx:id="dpFecha" prefHeight="27.0" prefWidth="170.0" style="-fx-background-color: transparent; -fx-font-family: 'Manrope'; -fx-font-size: 12px;" />
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="96.0">
+
+            <HBox alignment="CENTER_LEFT" minWidth="110.0" prefHeight="119.0" spacing="12.0" style="-fx-background-color: #F8E5C1; -fx-background-radius: 7; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 3, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="8.0" left="9.0" right="6.0" top="8.0" />
+                </padding>
+                <ImageView fx:id="imgPanProducido" fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+               <image>
+                  <Image url="@../iconos/pan_16x16.png" />
+               </image></ImageView>
+                <VBox alignment="CENTER_LEFT" spacing="1.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Producidos" />
+                    <Label fx:id="lblProducidos" style="-fx-font-family: 'Manrope'; -fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #422817;" text="450" />
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="uds" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" minWidth="110.0" prefHeight="119.0" spacing="12.0" style="-fx-background-color: #F8E5C1; -fx-background-radius: 7; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 3, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="8.0" left="9.0" right="6.0" top="8.0" />
+                </padding>
+                <ImageView fx:id="imgPanVendido" fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+               <image>
+                  <Image url="@../iconos/carrito_compras_16x16.png" />
+               </image></ImageView>
+                <VBox alignment="CENTER_LEFT" spacing="1.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Vendidos" />
+                    <Label fx:id="lblVendidos" style="-fx-font-family: 'Manrope'; -fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #422817;" text="392" />
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="uds" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" minWidth="110.0" prefHeight="119.0" spacing="12.0" style="-fx-background-color: #F8E5C1; -fx-background-radius: 7; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 3, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="8.0" left="9.0" right="6.0" top="8.0" />
+                </padding>
+                <ImageView fx:id="imgSobrantes" fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+               <image>
+                  <Image url="@../iconos/lista_16x16.png" />
+               </image></ImageView>
+                <VBox alignment="CENTER_LEFT" spacing="1.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Sobrantes" />
+                    <Label fx:id="lblSobrantes" style="-fx-font-family: 'Manrope'; -fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #422817;" text="58" />
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="uds" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" minWidth="110.0" prefHeight="119.0" spacing="12.0" style="-fx-background-color: #F8E5C1; -fx-background-radius: 7; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 3, 0, 0, 2);" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="8.0" left="9.0" right="6.0" top="8.0" />
+                </padding>
+                <ImageView fx:id="imgMerma" fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+               <image>
+                  <Image url="@../iconos/estadistica_16x16.png" />
+               </image></ImageView>
+                <VBox alignment="CENTER_LEFT" spacing="1.0" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="Merma" />
+                    <Label fx:id="lblMerma" style="-fx-font-family: 'Manrope'; -fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #422817;" text="26" />
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #6B4A2E;" text="uds" />
+                </VBox>
+            </HBox>
+
+        </HBox>
+
+    </AnchorPane>
+
+</AnchorPane>
