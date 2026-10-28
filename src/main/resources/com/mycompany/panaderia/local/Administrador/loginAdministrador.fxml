@@ -14,88 +14,136 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.CatalogoPanesController">
-   <left>
-      <VBox prefWidth="235.0" spacing="12.0" style="-fx-background-color: #1D1B1A;">
-         <padding>
-            <Insets bottom="20.0" left="15.0" right="15.0" top="22.0" />
-         </padding>
-         <children>
-            <VBox spacing="5.0">
-               <children>
-                  <Label style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;" text="EL LIRIO ROJO" />
-                  <Label style="-fx-text-fill: #F39817; -fx-font-size: 12px;" text="Panel de Administrador" />
-               </children>
-            </VBox>
-            <Separator />
-            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Resumen de Ventas " />
-            <Button prefHeight="50.0" prefWidth="205.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Catalogo de Panes " />
-            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Produccion y Merma " />
-            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Historial de Pedidos " />
-            <Button prefHeight="45.0" prefWidth="205.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Control de Insumos " />
-            <Region VBox.vgrow="ALWAYS" />
-            <Separator />
-            <Button fx:id="btnCerrarSesion" onAction="#cerrarSesion" prefHeight="42.0" prefWidth="205.0" style="-fx-background-color: #383331; -fx-text-fill: white; -fx-background-radius: 8;" text="Cerrar Sesion" />
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox spacing="0.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="90.0" spacing="15.0" style="-fx-background-color: white;">
-               <padding>
-                  <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
-               </padding>
-               <children>
-                  <VBox spacing="5.0">
-                     <children>
-                        <Label style="-fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #202020;" text="Catalogo y Gestion de Panes" />
-                        <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" text="Registra, edita y administra los productos de la panaderia" />
-                     </children>
-                  </VBox>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Label style="-fx-text-fill: #D77700; -fx-background-color: #FFF3E0; -fx-padding: 10; -fx-background-radius: 7;" text="HOLA ADMINISTRADOR" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white;">
-               <padding>
-                  <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
-               </padding>
-               <children>
-                  <TextField fx:id="txtBuscarPan" prefHeight="40.0" prefWidth="330.0" promptText="Buscar pan por nombre..." style="-fx-background-color: #F8F8F8; -fx-background-radius: 8; -fx-border-color: #DDDDDD; -fx-border-radius: 8;" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnAgregarPan" prefHeight="42.0" prefWidth="185.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Registrar Nuevo Pan" />
-               </children>
-            </HBox>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #F7F7F7;" VBox.vgrow="ALWAYS">
-               <content>
-                  <FlowPane fx:id="contenedorPanes" hgap="18.0" prefWrapLength="800.0" style="-fx-background-color: #F7F7F7;" vgap="18.0">
-                     <padding>
-                        <Insets bottom="30.0" left="25.0" right="20.0" top="25.0" />
-                     </padding>
-                     <children>
-                        <VBox prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E5E5; -fx-border-radius: 12;">
-                           <children>
-                              <StackPane prefHeight="125.0" style="-fx-background-color: #E8D0AC; -fx-background-radius: 12 12 0 0;">
-                                 <children>
-                                    <Label style="-fx-text-fill: #6B4B2D;" text="Sin Imagen" />
-                                 </children>
-                              </StackPane>
-                              <VBox spacing="8.0" style="-fx-padding: 12;">
-                                 <children>
-                                    <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Conchas" />
-                                    <Label style="-fx-text-fill: #E68000; -fx-font-weight: bold;" text="\$12.00" />
-                                    <Label text="Pan dulce tradicional" wrapText="true" />
-                                    <Label style="-fx-text-fill: #00A779;" text="Disponible" />
-                                    <Button fx:id="btnModificarConchas" maxWidth="Infinity" text="Modificar" />
-                                 </children>
-                              </VBox>
-                           </children>
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox prefWidth="235.0" spacing="12.0" style="-fx-background-color: #1D1B1A;">
+
+            <padding>
+                <Insets bottom="20.0" left="15.0" right="15.0" top="22.0" />
+            </padding>
+
+            <children>
+
+                <VBox spacing="5.0">
+                    <children>
+                        <Label style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;" text="EL LIRIO ROJO" />
+
+                        <Label style="-fx-text-fill: #F39817; -fx-font-size: 12px;" text="Panel de Administrador" />
+                    </children>
+                </VBox>
+
+                <Separator />
+
+                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Inicio" />
+
+                <Button maxWidth="Infinity" prefHeight="50.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Catálogo de Panes" />
+
+                <Button fx:id="btnProduccion" maxWidth="Infinity" onAction="#abrirProduccion" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Producción" />
+
+                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Materiales" />
+
+                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Ventas" />
+
+                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Pedidos" />
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Separator />
+
+                <Button fx:id="btnCerrarSesion" maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #383331; -fx-text-fill: white; -fx-background-radius: 8;" text="Cerrar Sesión" />
+
+            </children>
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <center>
+        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+
+            <children>
+
+                <!-- ENCABEZADO -->
+                <HBox alignment="CENTER_LEFT" prefHeight="90.0" spacing="15.0" style="-fx-background-color: white;">
+
+                    <padding>
+                        <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+                    </padding>
+
+                    <children>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label style="-fx-font-size: 23px; -fx-font-weight: bold; -fx-text-fill: #202020;" text="Catalogo y Gestion de Panes" />
+
+                                <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" text="Registra, edita y administra los productos de la panaderia" />
+                            </children>
                         </VBox>
-                     </children>
-                  </FlowPane>
-               </content>
-            </ScrollPane>
-         </children>
-      </VBox>
-   </center>
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Label style="-fx-text-fill: #D77700; -fx-background-color: #FFF3E0; -fx-padding: 10; -fx-background-radius: 7;" text="HOLA ADMINISTRADOR" />
+                    </children>
+                </HBox>
+
+                <!-- BUSCADOR Y REGISTRO -->
+                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white;">
+
+                    <padding>
+                        <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+                    </padding>
+
+                    <children>
+                        <TextField fx:id="txtBuscarPan" prefHeight="40.0" prefWidth="330.0" promptText="Buscar pan por nombre..." style="-fx-background-color: #F8F8F8; -fx-background-radius: 8; -fx-border-color: #DDDDDD; -fx-border-radius: 8;" />
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button fx:id="btnAgregarPan" onAction="#abrirFormularioNuevo" prefHeight="42.0" prefWidth="185.0" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9;" text="Registrar Nuevo Pan" />
+                    </children>
+                </HBox>
+
+                <!-- CATÁLOGO DINÁMICO -->
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #F7F7F7;" VBox.vgrow="ALWAYS">
+
+                    <content>
+                        <FlowPane fx:id="contenedorPanes" hgap="18.0" prefWrapLength="800.0" style="-fx-background-color: #F7F7F7;" vgap="18.0">
+
+                            <padding>
+                                <Insets bottom="30.0" left="25.0" right="20.0" top="25.0" />
+                            </padding>
+
+                            <children>
+                                <!-- Tarjeta de ejemplo -->
+                                <VBox prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E5E5E5; -fx-border-radius: 12;">
+
+                                    <children>
+                                        <StackPane prefHeight="125.0" style="-fx-background-color: #E8D0AC; -fx-background-radius: 12 12 0 0;">
+                                            <children>
+                                                <Label style="-fx-text-fill: #6B4B2D;" text="Sin Imagen" />
+                                            </children>
+                                        </StackPane>
+
+                                        <VBox spacing="8.0" style="-fx-padding: 12;">
+                                            <children>
+                                                <Label style="-fx-font-weight: bold; -fx-font-size: 15px;" text="Conchas" />
+
+                                                <Label style="-fx-text-fill: #E68000; -fx-font-weight: bold;" text="\$12.00" />
+
+                                                <Label text="Pan dulce tradicional" wrapText="true" />
+
+                                                <Label style="-fx-text-fill: #00A779;" text="Disponible" />
+
+                                                <Button fx:id="btnModificarConchas" maxWidth="Infinity" text="Modificar" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </FlowPane>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+
 </BorderPane>

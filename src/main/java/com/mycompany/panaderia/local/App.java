@@ -1,4 +1,3 @@
-
 package com.mycompany.panaderia.local;
 
 import javafx.application.Application;

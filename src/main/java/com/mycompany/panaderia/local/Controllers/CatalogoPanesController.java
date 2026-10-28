@@ -9,230 +9,321 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.control.ButtonType;
-import java.util.Optional;
 
 public class CatalogoPanesController {
 
-    @FXML private TextField txtBuscarPan;
-    @FXML private Button btnAgregarPan;
-    @FXML private FlowPane contenedorPanes;
+    @FXML
+    private TextField txtBuscarPan;
+
+    @FXML
+    private Button btnAgregarPan;
+
+    @FXML
+    private Button btnProduccion;
+
+    @FXML
+    private Button btnCerrarSesion;
+
+    @FXML
+    private FlowPane contenedorPanes;
 
     private final PanDAO panDAO = new PanDAO();
+
     private List<Pan> panes;
 
     @FXML
     public void initialize() {
-
         cargarPanes();
 
         txtBuscarPan.textProperty().addListener(
-            (obs, anterior, nuevo) -> mostrarPanes(nuevo)
+            (observable, anterior, nuevo) -> mostrarPanes(nuevo)
         );
-
-        btnAgregarPan.setOnAction(e -> abrirFormulario(null));
     }
 
-    // CARGAR DESDE SQLITE
-    private void cargarPanes() {
+    @FXML
+    private void abrirFormularioNuevo(ActionEvent event) {
+        abrirFormulario(null);
+    }
+
+    /**
+     * Navega desde loginAdministrador.fxml
+     * hasta Administrador/ProduccionDiaria.fxml.
+     */
+    @FXML
+    private void abrirProduccion(ActionEvent event) {
+        cambiarPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
+        );
+    }
+
+    /**
+     * Regresa a Login.fxml al cerrar sesión.
+     */
+    @FXML
+    private void cerrarSesion(ActionEvent event) {
+        cambiarPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
+
+    private void cambiarPantalla(ActionEvent event, String rutaFXML) {
         try {
-            panes = panDAO.obtenerPanes();
-            mostrarPanes(txtBuscarPan.getText());
+            URL recurso = getClass().getResource(rutaFXML);
+
+            if (recurso == null) {
+                mostrarError(
+                    "Pantalla no encontrada",
+                    "No se encontró el archivo FXML.",
+                    "Ruta buscada: " + rutaFXML
+                );
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(recurso);
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (Exception e) {
-            mostrarError(e.getMessage());
+            mostrarError(
+                "Error de navegación",
+                "No fue posible abrir la pantalla solicitada.",
+                e.getMessage()
+            );
+
+            e.printStackTrace();
         }
     }
 
-    // BUSCAR PANES
-    private void mostrarPanes(String filtro) {
+    private void cargarPanes() {
+        try {
+            panes = panDAO.obtenerPanes();
 
+            mostrarPanes(
+                txtBuscarPan == null ? "" : txtBuscarPan.getText()
+            );
+
+        } catch (Exception e) {
+            mostrarError(
+                "Error al cargar los panes",
+                "No fue posible consultar los panes registrados.",
+                e.getMessage()
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void mostrarPanes(String textoBusqueda) {
         contenedorPanes.getChildren().clear();
 
-        String busqueda = filtro == null ? ""
-                : filtro.trim().toLowerCase(Locale.ROOT);
+        if (panes == null) {
+            return;
+        }
 
-        if (panes == null) return;
+        String filtro = textoBusqueda == null
+                ? ""
+                : textoBusqueda.trim().toLowerCase(Locale.ROOT);
 
         for (Pan pan : panes) {
+            if (pan == null || pan.getNombre() == null) {
+                continue;
+            }
 
-            if (pan.getNombre() != null &&
-                pan.getNombre().toLowerCase(Locale.ROOT).contains(busqueda)) {
-
+            if (pan.getNombre().toLowerCase(Locale.ROOT).contains(filtro)) {
                 contenedorPanes.getChildren().add(crearTarjeta(pan));
             }
         }
     }
 
-    // CREAR TARJETAS
     private VBox crearTarjeta(Pan pan) {
+        VBox tarjeta = new VBox(10);
+        tarjeta.setPadding(new Insets(15));
+        tarjeta.setPrefWidth(220);
+        tarjeta.setMaxWidth(220);
 
-        VBox tarjeta = new VBox();
-        tarjeta.setPrefWidth(180);
         tarjeta.setStyle(
-            "-fx-background-color: white; -fx-background-radius: 12;" +
-            "-fx-border-color: #E5E5E5; -fx-border-radius: 12;"
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 12;" +
+            "-fx-border-color: #E5E5E5;" +
+            "-fx-border-radius: 12;"
         );
 
-        StackPane zonaFoto = new StackPane();
-        zonaFoto.setPrefHeight(125);
-        zonaFoto.setMinHeight(125);
-        zonaFoto.setStyle("-fx-background-color: #E8D0AC;");
+        ImageView imagen = new ImageView();
+        imagen.setFitWidth(190);
+        imagen.setFitHeight(130);
+        imagen.setPreserveRatio(true);
+        imagen.setSmooth(true);
 
-        ImageView imagen = obtenerImagen(pan.getFoto());
+        Image imagenPan = obtenerImagen(pan.getFoto());
 
-        if (imagen != null) {
-            zonaFoto.getChildren().add(imagen);
-        } else {
-            zonaFoto.getChildren().add(new Label("Sin Imagen"));
+        if (imagenPan != null) {
+            imagen.setImage(imagenPan);
         }
 
-        VBox informacion = new VBox(8);
-        informacion.setPadding(new Insets(12));
-
-        Label nombre = new Label(pan.getNombre());
-        nombre.setWrapText(true);
-        nombre.setStyle("-fx-font-weight: bold; -fx-font-size: 15px;");
-
-        Label precio = new Label(
-            String.format(Locale.US, "$%.2f", pan.getPrecio())
+        Label lblNombre = new Label(pan.getNombre());
+        lblNombre.setWrapText(true);
+        lblNombre.setStyle(
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #1D1B1A;"
         );
-        precio.setStyle("-fx-text-fill: #E68000; -fx-font-weight: bold;");
 
-        Label descripcion = new Label(
+        Label lblPrecio = new Label("$" + pan.getPrecio());
+        lblPrecio.setStyle(
+            "-fx-font-size: 15px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #E68000;"
+        );
+
+        Label lblDescripcion = new Label(
             pan.getdescripcion() == null ? "" : pan.getdescripcion()
         );
-        descripcion.setWrapText(true);
-
-        Label estado = new Label("Disponible");
-        estado.setStyle("-fx-text-fill: #00A779;");
-
-        Button modificar = new Button("Modificar");
-        modificar.setMaxWidth(Double.MAX_VALUE);
-        modificar.setOnAction(e -> abrirFormulario(pan));
-
-        informacion.getChildren().addAll(
-            nombre, precio, descripcion, estado, modificar
+        lblDescripcion.setWrapText(true);
+        lblDescripcion.setStyle(
+            "-fx-font-size: 12px;" +
+            "-fx-text-fill: #666666;"
         );
 
-        tarjeta.getChildren().addAll(zonaFoto, informacion);
+        Button btnModificar = new Button("Modificar");
+        btnModificar.setMaxWidth(Double.MAX_VALUE);
+        btnModificar.setStyle(
+            "-fx-background-color: #E68000;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 8;" +
+            "-fx-cursor: hand;"
+        );
+
+        btnModificar.setOnAction(event -> abrirFormulario(pan));
+
+        tarjeta.getChildren().addAll(
+            imagen,
+            lblNombre,
+            lblPrecio,
+            lblDescripcion,
+            btnModificar
+        );
 
         return tarjeta;
     }
 
-    // MOSTRAR FOTOGRAFIAS
-    private ImageView obtenerImagen(String ruta) {
-
-        if (ruta == null || ruta.isBlank()) return null;
-
-        try {
-            String origen;
-            File archivo = new File(ruta);
-
-            if (archivo.isFile()) {
-                origen = archivo.toURI().toString();
-            } else if (ruta.startsWith("file:") ||
-                       ruta.startsWith("http:") ||
-                       ruta.startsWith("https:")) {
-                origen = ruta;
-            } else {
-                String recurso = ruta.startsWith("/") ? ruta : "/" + ruta;
-                URL url = getClass().getResource(recurso);
-                if (url == null) return null;
-                origen = url.toExternalForm();
-            }
-
-            Image imagen = new Image(origen, 180, 125, true, true, false);
-
-            if (imagen.isError()) return null;
-
-            ImageView vista = new ImageView(imagen);
-            vista.setFitWidth(180);
-            vista.setFitHeight(125);
-            vista.setPreserveRatio(true);
-
-            return vista;
-
-        } catch (Exception e) {
+    private Image obtenerImagen(String ruta) {
+        if (ruta == null || ruta.trim().isEmpty()) {
             return null;
         }
-    }
-
-    // ABRIR FORMULARIO PARA REGISTRAR O MODIFICAR
-    private void abrirFormulario(Pan pan) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource(
-                    "/com/mycompany/panaderia/local/FormularioPan.fxml"
-                )
-            );
+            String valor = ruta.trim();
 
-            Parent root = loader.load();
+            if (valor.startsWith("http://")
+                    || valor.startsWith("https://")
+                    || valor.startsWith("file:")) {
+                return new Image(valor, true);
+            }
 
-            FormularioPanController controller = loader.getController();
-//Hola
-            // Enviar el pan seleccionado y la accion de actualizar
-            controller.configurar(pan, this::cargarPanes);
+            File archivo = new File(valor);
 
-            Stage ventana = new Stage();
-            ventana.setTitle(pan == null ? "Registrar Pan" : "Modificar Pan");
+            if (archivo.exists() && archivo.isFile()) {
+                return new Image(archivo.toURI().toString(), true);
+            }
 
-            ventana.initModality(Modality.WINDOW_MODAL);
-            ventana.initOwner(btnAgregarPan.getScene().getWindow());
+            String rutaRecurso = valor.startsWith("/")
+                    ? valor
+                    : "/" + valor;
 
-            ventana.setScene(new Scene(root));
-            ventana.setResizable(false);
-            ventana.showAndWait();
+            URL recurso = getClass().getResource(rutaRecurso);
+
+            if (recurso != null) {
+                return new Image(recurso.toExternalForm(), true);
+            }
 
         } catch (Exception e) {
-            mostrarError(e.getMessage());
+            System.err.println(
+                "No se pudo cargar la imagen " + ruta + ": "
+                + e.getMessage()
+            );
+        }
+
+        return null;
+    }
+
+    private void abrirFormulario(Pan pan) {
+        try {
+            URL recurso = getClass().getResource(
+                "/com/mycompany/panaderia/local/FormularioPan.fxml"
+            );
+
+            if (recurso == null) {
+                mostrarError(
+                    "Formulario no encontrado",
+                    "No se encontró FormularioPan.fxml.",
+                    "Verifica la ubicación del archivo."
+                );
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(recurso);
+            Parent root = loader.load();
+
+            FormularioPanController controller =
+                    loader.getController();
+
+            controller.configurar(pan, this::cargarPanes);
+
+            Stage stage = new Stage();
+            stage.setTitle(
+                pan == null ? "Registrar pan" : "Modificar pan"
+            );
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            mostrarError(
+                "Error al abrir el formulario",
+                "No fue posible abrir el formulario del pan.",
+                e.getMessage()
+            );
+
             e.printStackTrace();
         }
     }
 
-    // MENSAJES DE ERROR
-    private void mostrarError(String mensaje) {
+    private void mostrarError(
+            String titulo,
+            String mensaje,
+            String detalle) {
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Catalogo de Panes");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje == null ? "Error desconocido" : mensaje);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(mensaje);
+        alerta.setContentText(detalle == null ? "" : detalle);
         alerta.showAndWait();
     }
-    
-    
-    @FXML
-    private void cerrarSesion(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(           
-                            "/com/mycompany/panaderia/local/Login.fxml"         
-                    )      
-            );       
-            Parent root = loader.load();       
-            Stage ventana = (Stage)
-                ((Button) event.getSource())
-                .getScene().getWindow();       
-            ventana.setScene(new Scene(root));     
-            ventana.setTitle("El Lirio Rojo - Iniciar Sesion");     
-            ventana.centerOnScreen();   
-        } catch (Exception e) {        
-            e.printStackTrace();   
-        }
-    }
-
-    
-    
 }
