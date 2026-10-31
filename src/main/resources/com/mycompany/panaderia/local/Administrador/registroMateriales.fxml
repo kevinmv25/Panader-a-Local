@@ -14,106 +14,46 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane
-    prefHeight="720.0"
-    prefWidth="1280.0"
-    style="-fx-background-color: #FFFFFF;"
-    xmlns="http://javafx.com/javafx/25"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.RegistroMaterialesController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.RegistroMaterialesController">
 
     <!-- SIDEBAR -->
     <left>
-        <VBox prefWidth="235.0" spacing="12.0"
-              style="-fx-background-color: #1D1B1A;">
+        <VBox prefWidth="235.0" spacing="12.0" style="-fx-background-color: #1D1B1A;">
 
             <padding>
-                <Insets bottom="20.0" left="15.0" right="15.0" top="22.0"/>
+                <Insets bottom="20.0" left="15.0" right="15.0" top="22.0" />
             </padding>
 
             <!-- IDENTIDAD -->
             <VBox spacing="5.0">
 
-                <Label
-                    text="EL LIRIO ROJO"
-                    style="-fx-text-fill: white;
-                           -fx-font-size: 21px;
-                           -fx-font-weight: bold;"/>
+                <Label style="-fx-text-fill: white;                            -fx-font-size: 21px;                            -fx-font-weight: bold;" text="EL LIRIO ROJO" />
 
-                <Label
-                    text="Panel de Administrador"
-                    style="-fx-text-fill: #F39817;
-                           -fx-font-size: 12px;"/>
+                <Label style="-fx-text-fill: #F39817;                            -fx-font-size: 12px;" text="Panel de Administrador" />
             </VBox>
 
-            <Separator/>
+            <Separator />
 
             <!-- OPCIONES DEL MENÚ -->
-            <Button
-                text="Inicio"
-                maxWidth="Infinity"
-                prefHeight="45.0"
-                style="-fx-background-color: transparent;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;"/>
+            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Inicio" />
 
-            <Button
-                text="Catálogo de Panes"
-                onAction="#abrirCatalogo"
-                maxWidth="Infinity"
-                prefHeight="50.0"
-                style="-fx-background-color: transparent;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;"/>
+            <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Catálogo de Panes" />
 
-            <Button
-                text="Producción"
-                onAction="#abrirProduccion"
-                maxWidth="Infinity"
-                prefHeight="50.0"
-                style="-fx-background-color: transparent;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;"/>
+            <Button maxWidth="Infinity" onAction="#abrirProduccion" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Producción" />
 
             <!-- OPCIÓN SELECCIONADA -->
-            <Button
-                text="Materiales"
-                onAction="#abrirMenuMateriales"
-                maxWidth="Infinity"
-                prefHeight="45.0"
-                style="-fx-background-color: #E68000;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;
-                       -fx-background-radius: 9;"/>
+            <Button maxWidth="Infinity" onAction="#abrirMenuMateriales" prefHeight="45.0" style="-fx-background-color: #E68000;                        -fx-text-fill: white;                        -fx-font-weight: bold;                        -fx-background-radius: 9;" text="Materiales" />
 
-            <Button
-                text="Ventas"
-                maxWidth="Infinity"
-                prefHeight="45.0"
-                style="-fx-background-color: transparent;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;"/>
+            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Ventas" />
 
-            <Button
-                text="Pedidos"
-                maxWidth="Infinity"
-                prefHeight="45.0"
-                style="-fx-background-color: transparent;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;"/>
+            <Button maxWidth="Infinity" onAction="#abrirInicio" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Pedidos" />
 
-            <Region VBox.vgrow="ALWAYS"/>
+            <Region VBox.vgrow="ALWAYS" />
 
-            <Separator/>
+            <Separator />
 
             <!-- CERRAR SESIÓN -->
-            <Button
-                text="Cerrar Sesión"
-                maxWidth="Infinity"
-                prefHeight="42.0"
-                style="-fx-background-color: #383331;
-                       -fx-text-fill: white;
-                       -fx-background-radius: 8;"/>
+            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
 
         </VBox>
     </left>
@@ -123,189 +63,67 @@
         <AnchorPane style="-fx-background-color: #FFFFFF;">
 
             <!-- ENCABEZADO -->
-            <Label
-                text="Registrar materiales"
-                layoutX="30.0"
-                layoutY="25.0"
-                style="-fx-font-family: 'Georgia';
-                       -fx-font-size: 30px;
-                       -fx-font-weight: bold;
-                       -fx-text-fill: #000000;"/>
+            <Label layoutX="30.0" layoutY="25.0" style="-fx-font-family: 'Georgia';                        -fx-font-size: 30px;                        -fx-font-weight: bold;                        -fx-text-fill: #000000;" text="Registrar materiales" />
 
-            <Label
-                text="HOLA ADMINISTRADOR"
-                AnchorPane.rightAnchor="25.0"
-                AnchorPane.topAnchor="21.0"
-                style="-fx-text-fill: #D77700;
-                       -fx-background-color: #FFF3E0;
-                       -fx-padding: 10 14 10 14;
-                       -fx-background-radius: 7;
-                       -fx-font-size: 12px;"/>
+            <Label style="-fx-text-fill: #D77700;                        -fx-background-color: #FFF3E0;                        -fx-padding: 10 14 10 14;                        -fx-background-radius: 7;                        -fx-font-size: 12px;" text="HOLA ADMINISTRADOR" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="21.0" />
 
             <!-- FORMULARIO DE REGISTRO -->
-            <HBox
-                alignment="BOTTOM_LEFT"
-                spacing="30.0"
-                AnchorPane.topAnchor="85.0"
-                AnchorPane.leftAnchor="25.0"
-                AnchorPane.rightAnchor="25.0">
+            <HBox alignment="BOTTOM_LEFT" spacing="30.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="85.0">
 
                 <!-- MATERIAL -->
                 <VBox spacing="7.0" HBox.hgrow="ALWAYS">
 
-                    <Label
-                        text="Material a agregar"
-                        style="-fx-font-family: 'Manrope';
-                               -fx-font-size: 13px;
-                               -fx-font-weight: bold;
-                               -fx-text-fill: #1D1B1A;"/>
+                    <Label style="-fx-font-family: 'Manrope';                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-text-fill: #1D1B1A;" text="Material a agregar" />
 
-                    <TextField
-                        fx:id="txtMaterial"
-                        promptText="Nombre del material"
-                        prefHeight="38.0"
-                        style="-fx-background-color: #F7F7F7;
-                               -fx-background-radius: 6;
-                               -fx-border-color: #CCCCCC;
-                               -fx-border-radius: 6;
-                               -fx-font-family: 'Manrope';
-                               -fx-font-size: 12px;"/>
+                    <TextField fx:id="txtMaterial" prefHeight="38.0" promptText="Nombre del material" style="-fx-background-color: #F7F7F7;                                -fx-background-radius: 6;                                -fx-border-color: #CCCCCC;                                -fx-border-radius: 6;                                -fx-font-family: 'Manrope';                                -fx-font-size: 12px;" />
                 </VBox>
 
                 <!-- CANTIDAD -->
                 <VBox spacing="7.0" HBox.hgrow="ALWAYS">
 
-                    <Label
-                        text="Cantidad"
-                        style="-fx-font-family: 'Manrope';
-                               -fx-font-size: 13px;
-                               -fx-font-weight: bold;
-                               -fx-text-fill: #1D1B1A;"/>
+                    <Label style="-fx-font-family: 'Manrope';                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-text-fill: #1D1B1A;" text="Cantidad" />
 
-                    <TextField
-                        fx:id="txtCantidad"
-                        promptText="Cantidad"
-                        prefHeight="38.0"
-                        style="-fx-background-color: #F7F7F7;
-                               -fx-background-radius: 6;
-                               -fx-border-color: #CCCCCC;
-                               -fx-border-radius: 6;
-                               -fx-font-family: 'Manrope';
-                               -fx-font-size: 12px;"/>
+                    <TextField fx:id="txtCantidad" prefHeight="38.0" promptText="Cantidad" style="-fx-background-color: #F7F7F7;                                -fx-background-radius: 6;                                -fx-border-color: #CCCCCC;                                -fx-border-radius: 6;                                -fx-font-family: 'Manrope';                                -fx-font-size: 12px;" />
                 </VBox>
 
                 <!-- UNIDAD DE MEDIDA -->
                 <VBox spacing="7.0" HBox.hgrow="ALWAYS">
 
-                    <Label
-                        text="Unidad de medida"
-                        style="-fx-font-family: 'Manrope';
-                               -fx-font-size: 13px;
-                               -fx-font-weight: bold;
-                               -fx-text-fill: #1D1B1A;"/>
+                    <Label style="-fx-font-family: 'Manrope';                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-text-fill: #1D1B1A;" text="Unidad de medida" />
 
-                    <ComboBox
-                        fx:id="cmbUnidad"
-                        promptText="Seleccionar unidad"
-                        prefHeight="38.0"
-                        maxWidth="Infinity"
-                        style="-fx-font-family: 'Manrope';
-                               -fx-font-size: 12px;"/>
+                    <ComboBox fx:id="cmbUnidad" maxWidth="Infinity" prefHeight="38.0" promptText="Seleccionar unidad" style="-fx-font-family: 'Manrope';                                -fx-font-size: 12px;" />
                 </VBox>
 
                 <!-- AGREGAR -->
-                <Button
-                    text="Agregar"
-                    onAction="#agregarMaterial"
-                    prefWidth="120.0"
-                    minWidth="100.0"
-                    prefHeight="38.0"
-                    style="-fx-background-color: #E68000;
-                           -fx-text-fill: white;
-                           -fx-font-family: 'Manrope';
-                           -fx-font-size: 12px;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 7;
-                           -fx-cursor: hand;"/>
+                <Button minWidth="100.0" onAction="#agregarMaterial" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #E68000;                            -fx-text-fill: white;                            -fx-font-family: 'Manrope';                            -fx-font-size: 12px;                            -fx-font-weight: bold;                            -fx-background-radius: 7;                            -fx-cursor: hand;" text="Agregar" />
 
             </HBox>
 
             <!-- TABLA DE MATERIALES -->
-            <TableView
-                fx:id="tablaMateriales"
-                AnchorPane.topAnchor="155.0"
-                AnchorPane.leftAnchor="25.0"
-                AnchorPane.rightAnchor="25.0"
-                AnchorPane.bottomAnchor="85.0"
-                style="-fx-background-color: #FFFFFF;
-                       -fx-border-color: #E5E5E5;
-                       -fx-background-radius: 5;
-                       -fx-border-radius: 5;">
+            <TableView fx:id="tablaMateriales" style="-fx-background-color: #FFFFFF;                        -fx-border-color: #E5E5E5;                        -fx-background-radius: 5;                        -fx-border-radius: 5;" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="155.0">
 
                 <columns>
 
-                    <TableColumn
-                        fx:id="colMaterial"
-                        text="Material"
-                        minWidth="120.0"
-                        prefWidth="250.0"/>
+                    <TableColumn fx:id="colMaterial" minWidth="120.0" prefWidth="250.0" text="Material" />
 
-                    <TableColumn
-                        fx:id="colCantidad"
-                        text="Cantidad"
-                        minWidth="100.0"
-                        prefWidth="180.0"/>
+                    <TableColumn fx:id="colCantidad" minWidth="100.0" prefWidth="180.0" text="Cantidad" />
 
-                    <TableColumn
-                        fx:id="colUnidadMedida"
-                        text="Unidad de medida"
-                        minWidth="140.0"
-                        prefWidth="250.0"/>
+                    <TableColumn fx:id="colUnidadMedida" minWidth="140.0" prefWidth="250.0" text="Unidad de medida" />
 
                 </columns>
 
                 <placeholder>
-                    <Label
-                        text="Agrega materiales para comenzar."
-                        style="-fx-text-fill: #77716D;
-                               -fx-font-family: 'Manrope';
-                               -fx-font-size: 14px;"/>
+                    <Label style="-fx-text-fill: #77716D;                                -fx-font-family: 'Manrope';                                -fx-font-size: 14px;" text="Agrega materiales para comenzar." />
                 </placeholder>
 
             </TableView>
 
             <!-- BOTONES INFERIORES -->
-            <HBox
-                alignment="CENTER_RIGHT"
-                spacing="25.0"
-                AnchorPane.bottomAnchor="20.0"
-                AnchorPane.rightAnchor="25.0">
+            <HBox alignment="CENTER_RIGHT" spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="25.0">
 
-                <Button
-                    text="Cancelar"
-                    onAction="#cancelarRegistro"
-                    prefWidth="115.0"
-                    prefHeight="40.0"
-                    style="-fx-background-color: #383331;
-                           -fx-text-fill: white;
-                           -fx-font-family: 'Manrope';
-                           -fx-font-size: 12px;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 7;
-                           -fx-cursor: hand;"/>
+                <Button onAction="#cancelarRegistro" prefHeight="40.0" prefWidth="115.0" style="-fx-background-color: #383331;                            -fx-text-fill: white;                            -fx-font-family: 'Manrope';                            -fx-font-size: 12px;                            -fx-font-weight: bold;                            -fx-background-radius: 7;                            -fx-cursor: hand;" text="Cancelar" />
 
-                <Button
-                    text="Guardar"
-                    onAction="#guardarMateriales"
-                    prefWidth="115.0"
-                    prefHeight="40.0"
-                    style="-fx-background-color: #E68000;
-                           -fx-text-fill: white;
-                           -fx-font-family: 'Manrope';
-                           -fx-font-size: 12px;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 7;
-                           -fx-cursor: hand;"/>
+                <Button onAction="#guardarMateriales" prefHeight="40.0" prefWidth="115.0" style="-fx-background-color: #E68000;                            -fx-text-fill: white;                            -fx-font-family: 'Manrope';                            -fx-font-size: 12px;                            -fx-font-weight: bold;                            -fx-background-radius: 7;                            -fx-cursor: hand;" text="Guardar" />
 
             </HBox>
 

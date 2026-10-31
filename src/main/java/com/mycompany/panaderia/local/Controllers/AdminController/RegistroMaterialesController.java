@@ -322,6 +322,14 @@ public class RegistroMaterialesController implements Initializable {
                 "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
         );
     }
+    
+    @FXML
+    private void abrirInicio(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
 
     // ==========================================
     // CAMBIAR DE INTERFAZ

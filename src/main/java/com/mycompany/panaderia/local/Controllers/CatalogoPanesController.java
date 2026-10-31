@@ -75,6 +75,14 @@ public class CatalogoPanesController {
     }
     
     @FXML
+    private void abrirInicio(ActionEvent event) {
+        cambiarPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
+    
+    @FXML
     private void abrirMenuMateriales(ActionEvent event) {
         cambiarPantalla(
             event,
@@ -92,6 +100,8 @@ public class CatalogoPanesController {
             "/com/mycompany/panaderia/local/Login.fxml"
         );
     }
+    
+    
 
     private void cambiarPantalla(ActionEvent event, String rutaFXML) {
         try {

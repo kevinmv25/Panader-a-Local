@@ -140,6 +140,14 @@ public class HistorialProduccionController {
             "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
         );
     }
+    
+    @FXML
+    private void abrirInicio(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
 
     /**
      * Cambia de pantalla en la misma ventana.

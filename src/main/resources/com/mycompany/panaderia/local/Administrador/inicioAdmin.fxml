@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.InicioAdminController">
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox prefWidth="235.0" spacing="12.0" style="-fx-background-color: #1D1B1A;">
+
+            <padding>
+                <Insets bottom="20.0" left="15.0" right="15.0" top="22.0" />
+            </padding>
+
+            <VBox spacing="5.0">
+                <Label style="-fx-text-fill: white;                            -fx-font-size: 21px;                            -fx-font-weight: bold;" text="EL LIRIO ROJO" />
+
+                <Label style="-fx-text-fill: #F39817;                            -fx-font-size: 12px;" text="Panel de Administrador" />
+            </VBox>
+
+            <Separator />
+
+            <!-- INICIO SELECCIONADO -->
+            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: #E68000;                        -fx-text-fill: white;                        -fx-font-weight: bold;                        -fx-background-radius: 9;" text="Inicio" />
+
+            <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Catálogo de Panes" />
+
+            <Button maxWidth="Infinity" onAction="#abrirProduccion" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Producción" />
+
+            <Button maxWidth="Infinity" onAction="#abrirMenuMateriales" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Materiales" />
+
+            <Button maxWidth="Infinity" onAction="#abrirVentas" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Ventas" />
+
+            <Button maxWidth="Infinity" onAction="#abrirPedidos" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Pedidos" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Separator />
+
+            <Button maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
+
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <center>
+        <AnchorPane style="-fx-background-color: #FFFFFF;">
+
+            <!-- ENCABEZADO -->
+            <StackPane prefHeight="75.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+                <!-- ELEMENTOS LATERALES -->
+                <HBox alignment="CENTER_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+                    <padding>
+                        <Insets left="20.0" right="25.0" />
+                    </padding>
+
+                    <Label style="-fx-font-family: 'Georgia';                                -fx-font-size: 21px;                                -fx-font-weight: bold;                                -fx-text-fill: #000000;" text="Bienvenido!" />
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Label style="-fx-text-fill: #D77700;                                -fx-background-color: #FFF3E0;                                -fx-padding: 10 14 10 14;                                -fx-background-radius: 7;                                -fx-font-size: 12px;" text="HOLA ADMINISTRADOR" />
+                </HBox>
+
+                <!-- TÍTULO CENTRADO -->
+                <Label alignment="CENTER" maxWidth="178.0" prefHeight="40.0" prefWidth="178.0" style="-fx-background-color: #1D1B1A;                            -fx-text-fill: white;                            -fx-font-family: 'Georgia';                            -fx-font-size: 16px;                            -fx-font-weight: bold;                            -fx-padding: 10 12 10 12;" text="Alerta de pedidos" />
+            </StackPane>
+
+            <!-- ÁREA DESPLAZABLE -->
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;                        -fx-background: transparent;                        -fx-border-color: transparent;" vbarPolicy="AS_NEEDED" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="75.0">
+
+                <VBox fillWidth="true" spacing="22.0" style="-fx-background-color: white;">
+
+                    <padding>
+                        <Insets bottom="20.0" left="8.0" right="20.0" top="0.0" />
+                    </padding>
+
+                    <!-- FECHA Y CANTIDAD -->
+                    <HBox alignment="CENTER_LEFT" minHeight="38.0" spacing="6.0" style="-fx-background-color: #F2F0EF;                                -fx-background-radius: 8;                                -fx-padding: 10 14 10 14;">
+
+                        <Label fx:id="lblFechaActual" style="-fx-font-size: 12px;                                    -fx-font-weight: bold;                                    -fx-text-fill: #1D1B1A;" />
+
+                        <Label fx:id="lblCantidadAlertas" style="-fx-font-size: 9px;                                    -fx-font-weight: bold;                                    -fx-text-fill: #1D1B1A;" />
+                    </HBox>
+
+                    <!-- SIN PEDIDOS -->
+                    <Label fx:id="lblSinPedidos" managed="false" maxWidth="Infinity" style="-fx-background-color: #F2F0EF;                                -fx-background-radius: 7;                                -fx-padding: 20;                                -fx-font-size: 13px;                                -fx-text-fill: #77716D;" text="No hay pedidos próximos a vencer." visible="false" />
+
+                    <!-- TARJETAS DINÁMICAS -->
+                    <VBox fx:id="contenedorPedidos" fillWidth="true" spacing="20.0" />
+
+                </VBox>
+            </ScrollPane>
+        </AnchorPane>
+    </center>
+</BorderPane>

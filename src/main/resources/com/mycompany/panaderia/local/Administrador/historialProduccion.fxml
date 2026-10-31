@@ -10,253 +10,119 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane
-    minHeight="450.0"
-    minWidth="700.0"
-    prefHeight="675.0"
-    prefWidth="1200.0"
-    style="-fx-background-color: #F7F7F7;"
-    xmlns="http://javafx.com/javafx/25"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.HistorialProduccionController">
+<AnchorPane minHeight="450.0" minWidth="700.0" prefHeight="675.0" prefWidth="1200.0" style="-fx-background-color: #F7F7F7;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.HistorialProduccionController">
 
     <!-- BARRA LATERAL -->
-    <VBox
-        prefWidth="218.0"
-        minWidth="218.0"
-        spacing="0.0"
-        style="-fx-background-color: #1D1B1A;"
-        AnchorPane.topAnchor="0.0"
-        AnchorPane.bottomAnchor="0.0"
-        AnchorPane.leftAnchor="0.0">
+    <VBox minWidth="218.0" prefWidth="218.0" spacing="0.0" style="-fx-background-color: #1D1B1A;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <VBox spacing="3.0" style="-fx-padding: 24 12 20 12;">
 
-            <Label
-                text="EL LIRIO ROJO"
-                style="-fx-font-family: 'Manrope'; -fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: white;" text="EL LIRIO ROJO" />
 
-            <Label
-                text="Panel de Administrador"
-                style="-fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #E68000;"/>
+            <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #E68000;" text="Panel de Administrador" />
 
-            <Region minHeight="12.0"/>
+            <Region minHeight="12.0" />
 
-            <Region
-                prefHeight="2.0"
-                minHeight="2.0"
-                style="-fx-background-color: #77716D;"/>
+            <Region minHeight="2.0" prefHeight="2.0" style="-fx-background-color: #77716D;" />
         </VBox>
 
         <VBox spacing="8.0" style="-fx-padding: 0 12 0 12;">
 
-            <Button
-                text="Inicio"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Inicio" />
 
-            <Button
-                text="Catálogo de Panes"
-                onAction="#abrirCatalogo"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Catálogo de Panes" />
 
-            <Button
-                text="Producción"
-                onAction="#volverProduccion"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: #E68000; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" onAction="#volverProduccion" prefHeight="43.0" style="-fx-background-color: #E68000; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Producción" />
 
-            <Button
-                text="Materiales"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Materiales" />
 
-            <Button
-                text="Ventas"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Ventas" />
 
-            <Button
-                text="Pedidos"
-                maxWidth="Infinity"
-                prefHeight="43.0"
-                style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" onAction="#abrirInicio" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Pedidos" />
         </VBox>
 
-        <Region VBox.vgrow="ALWAYS"/>
+        <Region VBox.vgrow="ALWAYS" />
 
         <VBox spacing="12.0" style="-fx-padding: 12;">
 
-            <Region
-                prefHeight="2.0"
-                minHeight="2.0"
-                style="-fx-background-color: #77716D;"/>
+            <Region minHeight="2.0" prefHeight="2.0" style="-fx-background-color: #77716D;" />
 
-            <Button
-                text="Cerrar Sesión"
-                maxWidth="Infinity"
-                prefHeight="42.0"
-                style="-fx-background-color: #373330; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: white; -fx-cursor: hand;"/>
+            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #373330; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: white; -fx-cursor: hand;" text="Cerrar Sesión" />
         </VBox>
     </VBox>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <AnchorPane
-        style="-fx-background-color: #F7F7F7;"
-        AnchorPane.leftAnchor="218.0"
-        AnchorPane.rightAnchor="0.0"
-        AnchorPane.topAnchor="0.0"
-        AnchorPane.bottomAnchor="0.0">
+    <AnchorPane style="-fx-background-color: #F7F7F7;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="218.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <!-- ENCABEZADO -->
-        <HBox
-            alignment="CENTER_LEFT"
-            prefHeight="76.0"
-            spacing="12.0"
-            style="-fx-background-color: white; -fx-border-color: #EAEAEA; -fx-border-width: 0 0 1 0; -fx-padding: 0 28 0 28;"
-            AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER_LEFT" prefHeight="76.0" spacing="12.0" style="-fx-background-color: white; -fx-border-color: #EAEAEA; -fx-border-width: 0 0 1 0; -fx-padding: 0 28 0 28;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-            <Label
-                text="El Lirio Rojo"
-                style="-fx-font-family: 'Fraunces'; -fx-font-size: 27px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;"/>
+            <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 27px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;" text="El Lirio Rojo" />
 
-            <Region HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS" />
 
-            <Label
-                text="HOLA ADMINISTRADOR"
-                style="-fx-background-color: #FFF3E0; -fx-background-radius: 8; -fx-padding: 11 14 11 14; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #B96A00;"/>
+            <Label style="-fx-background-color: #FFF3E0; -fx-background-radius: 8; -fx-padding: 11 14 11 14; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #B96A00;" text="HOLA ADMINISTRADOR" />
         </HBox>
 
         <!-- ÁREA DEL HISTORIAL -->
-        <VBox
-            spacing="22.0"
-            style="-fx-padding: 30 28 28 28;"
-            AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="76.0"
-            AnchorPane.bottomAnchor="0.0">
+        <VBox spacing="22.0" style="-fx-padding: 30 28 28 28;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="76.0">
 
             <!-- TÍTULO -->
             <VBox spacing="5.0">
 
-                <Label
-                    text="Historial de producción"
-                    style="-fx-font-family: 'Fraunces'; -fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;"/>
+                <Label style="-fx-font-family: 'Fraunces'; -fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;" text="Historial de producción" />
 
-                <Label
-                    text="Consulta y filtra los registros de producción por fecha."
-                    style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: #77716D;"/>
+                <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: #77716D;" text="Consulta y filtra los registros de producción por fecha." />
             </VBox>
 
             <!-- FILTROS -->
-            <HBox
-                alignment="CENTER_LEFT"
-                spacing="12.0"
-                style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #EAEAEA; -fx-border-radius: 10; -fx-padding: 18;">
+            <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #EAEAEA; -fx-border-radius: 10; -fx-padding: 18;">
 
                 <VBox spacing="7.0" HBox.hgrow="ALWAYS">
 
-                    <Label
-                        text="Desde"
-                        style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #37302B;"/>
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #37302B;" text="Desde" />
 
-                    <DatePicker
-                        fx:id="dpDesde"
-                        editable="true"
-                        maxWidth="Infinity"
-                        prefHeight="38.0"
-                        promptText="Fecha inicial"
-                        style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 7; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px;"/>
+                    <DatePicker fx:id="dpDesde" editable="true" maxWidth="Infinity" prefHeight="38.0" promptText="Fecha inicial" style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 7; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px;" />
                 </VBox>
 
                 <VBox spacing="7.0" HBox.hgrow="ALWAYS">
 
-                    <Label
-                        text="Hasta"
-                        style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #37302B;"/>
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #37302B;" text="Hasta" />
 
-                    <DatePicker
-                        fx:id="dpHasta"
-                        editable="true"
-                        maxWidth="Infinity"
-                        prefHeight="38.0"
-                        promptText="Fecha final"
-                        style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 7; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px;"/>
+                    <DatePicker fx:id="dpHasta" editable="true" maxWidth="Infinity" prefHeight="38.0" promptText="Fecha final" style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 7; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px;" />
                 </VBox>
 
-                <Button
-                    fx:id="btnAplicar"
-                    text="Aplicar filtros"
-                    onAction="#aplicarFiltros"
-                    minWidth="125.0"
-                    prefHeight="38.0"
-                    style="-fx-background-color: #E68000; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;"/>
+                <Button fx:id="btnAplicar" minWidth="125.0" onAction="#aplicarFiltros" prefHeight="38.0" style="-fx-background-color: #E68000; -fx-background-radius: 7; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Aplicar filtros" />
             </HBox>
 
             <!-- TABLA -->
-            <VBox
-                spacing="0.0"
-                VBox.vgrow="ALWAYS"
-                style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #E5E5E5; -fx-border-radius: 10; -fx-padding: 8;">
+            <VBox spacing="0.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #E5E5E5; -fx-border-radius: 10; -fx-padding: 8;" VBox.vgrow="ALWAYS">
 
-                <HBox
-                    alignment="CENTER_LEFT"
-                    spacing="5.0"
-                    style="-fx-padding: 8 8 14 8;">
+                <HBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-padding: 8 8 14 8;">
 
-                    <Label
-                        text="Registros de producción"
-                        style="-fx-font-family: 'Manrope'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;"/>
+                    <Label style="-fx-font-family: 'Manrope'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1D1B1A;" text="Registros de producción" />
 
-                    <Region HBox.hgrow="ALWAYS"/>
+                    <Region HBox.hgrow="ALWAYS" />
 
-                    <Label
-                        text="Historial"
-                        style="-fx-background-color: #FFF3E0; -fx-background-radius: 6; -fx-padding: 6 10 6 10; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #B96A00;"/>
+                    <Label style="-fx-background-color: #FFF3E0; -fx-background-radius: 6; -fx-padding: 6 10 6 10; -fx-font-family: 'Manrope'; -fx-font-size: 11px; -fx-text-fill: #B96A00;" text="Historial" />
                 </HBox>
 
-                <TableView
-                    fx:id="tablaHistorial"
-                    VBox.vgrow="ALWAYS"
-                    style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-family: 'Manrope'; -fx-font-size: 12px;">
+                <TableView fx:id="tablaHistorial" style="-fx-background-color: white; -fx-border-color: #E5E5E5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-family: 'Manrope'; -fx-font-size: 12px;" VBox.vgrow="ALWAYS">
 
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
 
                     <columns>
-                        <TableColumn
-                            fx:id="colFecha"
-                            prefWidth="150.0"
-                            text="Fecha"/>
+                        <TableColumn fx:id="colFecha" prefWidth="150.0" text="Fecha" />
 
-                        <TableColumn
-                            fx:id="colProducidos"
-                            prefWidth="140.0"
-                            text="Producidos"/>
+                        <TableColumn fx:id="colProducidos" prefWidth="140.0" text="Producidos" />
 
-                        <TableColumn
-                            fx:id="colVendidos"
-                            prefWidth="140.0"
-                            text="Vendidos"/>
+                        <TableColumn fx:id="colVendidos" prefWidth="140.0" text="Vendidos" />
 
-                        <TableColumn
-                            fx:id="colSobrante"
-                            prefWidth="140.0"
-                            text="Sobrante"/>
+                        <TableColumn fx:id="colSobrante" prefWidth="140.0" text="Sobrante" />
 
-                        <TableColumn
-                            fx:id="colMerma"
-                            prefWidth="120.0"
-                            text="Merma"/>
+                        <TableColumn fx:id="colMerma" prefWidth="120.0" text="Merma" />
                     </columns>
                 </TableView>
             </VBox>

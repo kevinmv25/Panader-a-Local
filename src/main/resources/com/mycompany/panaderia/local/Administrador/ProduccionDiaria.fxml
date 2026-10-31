@@ -28,7 +28,7 @@
 
             <Separator />
 
-            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                            -fx-text-fill: white;                            -fx-font-weight: bold;" text="Inicio" />
+            <Button maxWidth="Infinity" onAction="#abrirInicio" prefHeight="45.0" style="-fx-background-color: transparent;                            -fx-text-fill: white;                            -fx-font-weight: bold;" text="Inicio" />
 
             <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="50.0" style="-fx-background-color: transparent;                            -fx-text-fill: white;                            -fx-font-weight: bold;" text="Catálogo de Panes" />
 

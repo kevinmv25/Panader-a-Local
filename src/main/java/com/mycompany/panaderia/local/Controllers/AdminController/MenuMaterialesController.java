@@ -58,16 +58,16 @@ public class MenuMaterialesController {
             "/com/mycompany/panaderia/local/Cajero/Inventario.fxml"
         );
     }
-
-    /**
-     * Acción para regresar al inicio.
-     */
+    
     @FXML
-    private void abrirInicio(ActionEvent event) {
-        mostrarMensaje(
-            "La pantalla de Inicio todavía no está configurada."
+    private void abrirInicio(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
         );
     }
+
+   
 
     /**
      * Acción para abrir ventas.
@@ -98,6 +98,9 @@ public class MenuMaterialesController {
             "La función de Cerrar Sesión todavía no está configurada."
         );
     }
+    
+    
+    
 
     /**
      * Carga una pantalla en la ventana actual.

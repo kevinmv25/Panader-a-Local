@@ -145,6 +145,14 @@ public class AgregarProduccionController {
             "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
         );
     }
+    
+    @FXML
+    private void abrirInicio(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
 
     /**
      * Conserva la función del botón Cancelar.
