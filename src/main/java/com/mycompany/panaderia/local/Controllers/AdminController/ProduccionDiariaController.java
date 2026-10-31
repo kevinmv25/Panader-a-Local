@@ -58,6 +58,15 @@ public class ProduccionDiariaController {
             "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
         );
     }
+    
+    @FXML
+    private void abrirMenuMateriales(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
+
 
     /**
      * Carga una pantalla en la ventana actual.

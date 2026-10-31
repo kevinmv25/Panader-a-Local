@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane
+    prefHeight="720.0"
+    prefWidth="1280.0"
+    style="-fx-background-color: #FFFFFF;"
+    xmlns="http://javafx.com/javafx/25"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.MenuMaterialesController">
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox prefWidth="235.0" spacing="12.0"
+              style="-fx-background-color: #1D1B1A;">
+
+            <padding>
+                <Insets bottom="20.0" left="15.0" right="15.0" top="22.0"/>
+            </padding>
+
+            <!-- IDENTIDAD -->
+            <VBox spacing="5.0">
+
+                <Label
+                    text="EL LIRIO ROJO"
+                    style="-fx-text-fill: white;
+                           -fx-font-size: 21px;
+                           -fx-font-weight: bold;"/>
+
+                <Label
+                    text="Panel de Administrador"
+                    style="-fx-text-fill: #F39817;
+                           -fx-font-size: 12px;"/>
+            </VBox>
+
+            <Separator/>
+
+            <!-- OPCIONES DEL MENÚ -->
+            <Button
+                text="Inicio"
+                onAction="#abrirInicio"
+                maxWidth="Infinity"
+                prefHeight="45.0"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;"/>
+
+            <Button
+                text="Catálogo de Panes"
+                onAction="#abrirCatalogo"
+                maxWidth="Infinity"
+                prefHeight="50.0"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;"/>
+
+            <Button
+                text="Producción"
+                onAction="#abrirProduccion"
+                maxWidth="Infinity"
+                prefHeight="50.0"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;"/>
+
+            <!-- OPCIÓN SELECCIONADA -->
+            <Button
+                text="Materiales"
+                maxWidth="Infinity"
+                prefHeight="45.0"
+                style="-fx-background-color: #E68000;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 9;"/>
+
+            <Button
+                text="Ventas"
+                onAction="#abrirVentas"
+                maxWidth="Infinity"
+                prefHeight="45.0"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;"/>
+
+            <Button
+                text="Pedidos"
+                onAction="#abrirPedidos"
+                maxWidth="Infinity"
+                prefHeight="45.0"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Separator/>
+
+            <!-- CERRAR SESIÓN -->
+            <Button
+                text="Cerrar Sesión"
+                onAction="#cerrarSesion"
+                maxWidth="Infinity"
+                prefHeight="42.0"
+                style="-fx-background-color: #383331;
+                       -fx-text-fill: white;
+                       -fx-background-radius: 8;"/>
+
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <center>
+        <AnchorPane style="-fx-background-color: #FFFFFF;">
+
+            <!-- ENCABEZADO -->
+            <Label
+                text="Gestión de materiales"
+                layoutX="30.0"
+                layoutY="25.0"
+                style="-fx-font-family: 'Georgia';
+                       -fx-font-size: 30px;
+                       -fx-font-weight: bold;
+                       -fx-text-fill: #000000;"/>
+
+            <Label
+                text="HOLA ADMINISTRADOR"
+                AnchorPane.rightAnchor="25.0"
+                AnchorPane.topAnchor="21.0"
+                style="-fx-text-fill: #D77700;
+                       -fx-background-color: #FFF3E0;
+                       -fx-padding: 10 14 10 14;
+                       -fx-background-radius: 7;
+                       -fx-font-size: 12px;"/>
+
+            <!-- TARJETAS -->
+            <HBox
+                alignment="CENTER"
+                spacing="30.0"
+                AnchorPane.leftAnchor="25.0"
+                AnchorPane.rightAnchor="25.0"
+                AnchorPane.topAnchor="260.0">
+
+                <padding>
+                    <Insets bottom="0.0" top="0.0"/>
+                </padding>
+
+                <!-- AGREGAR MATERIALES -->
+                <Button
+                    text="Agregar materiales"
+                    maxWidth="Infinity"
+                    minWidth="0.0"
+                    prefHeight="170.0"
+                    onAction="#abrirAgregarMateriales"
+                    style="-fx-background-color: #F0EEEE;
+                           -fx-background-radius: 2;
+                           -fx-border-color: transparent;
+                           -fx-text-fill: #000000;
+                           -fx-font-family: 'Georgia';
+                           -fx-font-size: 22px;
+                           -fx-font-weight: bold;
+                           -fx-alignment: CENTER;
+                           -fx-text-alignment: CENTER;
+                           -fx-cursor: hand;"
+                    wrapText="true"
+                    HBox.hgrow="ALWAYS"/>
+
+                <!-- TABLA DE MATERIALES -->
+                <Button
+                    text="Tabla de materiales"
+                    maxWidth="Infinity"
+                    minWidth="0.0"
+                    prefHeight="170.0"
+                    onAction="#abrirTablaMateriales"
+                    style="-fx-background-color: #F0EEEE;
+                           -fx-background-radius: 2;
+                           -fx-border-color: transparent;
+                           -fx-text-fill: #000000;
+                           -fx-font-family: 'Georgia';
+                           -fx-font-size: 22px;
+                           -fx-font-weight: bold;
+                           -fx-alignment: CENTER;
+                           -fx-text-alignment: CENTER;
+                           -fx-cursor: hand;"
+                    wrapText="true"
+                    HBox.hgrow="ALWAYS"/>
+
+            </HBox>
+
+        </AnchorPane>
+    </center>
+
+</BorderPane>

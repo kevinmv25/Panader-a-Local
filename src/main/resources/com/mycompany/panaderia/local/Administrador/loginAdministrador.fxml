@@ -41,7 +41,7 @@
 
                 <Button fx:id="btnProduccion" maxWidth="Infinity" onAction="#abrirProduccion" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Producción" />
 
-                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Materiales" />
+                <Button maxWidth="Infinity" onAction="#abrirMenuMateriales" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Materiales" />
 
                 <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Ventas" />
 

@@ -73,6 +73,14 @@ public class CatalogoPanesController {
             "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
         );
     }
+    
+    @FXML
+    private void abrirMenuMateriales(ActionEvent event) {
+        cambiarPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
 
     /**
      * Regresa a Login.fxml al cerrar sesión.

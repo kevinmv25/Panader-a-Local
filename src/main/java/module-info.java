@@ -3,6 +3,7 @@ module com.mycompany.panaderia.local {
     requires javafx.fxml;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires java.base;
 
     opens com.mycompany.panaderia.local to javafx.fxml;
     opens com.mycompany.panaderia.local.Controllers to javafx.fxml;
