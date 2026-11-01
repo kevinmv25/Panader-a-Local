@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="resumen-root" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.ResumenVentasController">
+
+    <stylesheets>
+        <URL value="@../estilos/resumenVentas.css" />
+    </stylesheets>
+
+    <!-- ENCABEZADO -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14.0">
+            <padding>
+                <Insets bottom="14.0" left="34.0" right="34.0" top="22.0" />
+            </padding>
+            <children>
+                <VBox spacing="4.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#volverInicio" styleClass="boton-volver" text="←  Volver al inicio" />
+                        <Label styleClass="resumen-titulo" text="Resumen de ventas" />
+                        <Label fx:id="lblFecha" styleClass="resumen-fecha" />
+                    </children>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <ComboBox fx:id="cmbPeriodo" prefHeight="42.0" prefWidth="170.0" styleClass="combo-primario" />
+                <ComboBox fx:id="cmbMetodo" prefHeight="42.0" prefWidth="170.0" styleClass="combo-secundario" />
+            </children>
+        </HBox>
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-resumen" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox spacing="18.0" styleClass="resumen-contenido">
+                    <padding>
+                        <Insets bottom="30.0" left="34.0" right="34.0" top="6.0" />
+                    </padding>
+                    <children>
+
+                        <!-- TARJETAS -->
+                        <HBox spacing="18.0">
+                            <children>
+                                <HBox alignment="TOP_LEFT" maxWidth="Infinity" minHeight="130.0" prefWidth="400.0" spacing="15.0" styleClass="kpi-primaria" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="42.0" minWidth="42.0" styleClass="kpi-icono-primaria" text="\$" />
+                                        <VBox spacing="5.0">
+                                            <children>
+                                                <Label styleClass="kpi-etiqueta-primaria" text="Ventas totales" />
+                                                <Label fx:id="lblTotalVentas" styleClass="kpi-valor" text="\$0.00" />
+                                                <Label fx:id="lblVariacion" styleClass="kpi-variacion" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <HBox alignment="TOP_LEFT" maxWidth="Infinity" minHeight="130.0" prefWidth="300.0" spacing="15.0" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="42.0" minWidth="42.0" styleClass="kpi-icono" text="≡" />
+                                        <VBox spacing="5.0">
+                                            <children>
+                                                <Label styleClass="kpi-etiqueta" text="Método principal" />
+                                                <Label fx:id="lblMetodoPrincipal" styleClass="kpi-valor-oscuro" text="—" />
+                                                <Label fx:id="lblMetodoPct" styleClass="kpi-detalle" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <HBox alignment="TOP_LEFT" maxWidth="Infinity" minHeight="130.0" prefWidth="300.0" spacing="15.0" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="42.0" minWidth="42.0" styleClass="kpi-icono-acento" text="#" />
+                                        <VBox spacing="5.0">
+                                            <children>
+                                                <Label styleClass="kpi-etiqueta" text="Total de ventas" />
+                                                <Label fx:id="lblNumVentas" styleClass="kpi-valor-oscuro" text="0" />
+                                                <Label fx:id="lblTicketPromedio" styleClass="kpi-detalle" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+
+                        <!-- GRAFICA + METODOS DE PAGO -->
+                        <HBox spacing="18.0">
+                            <children>
+                                <VBox styleClass="panel" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" styleClass="panel-encabezado">
+                                            <children>
+                                                <VBox spacing="3.0">
+                                                    <children>
+                                                        <Label fx:id="lblTituloGrafica" styleClass="panel-titulo" text="Ventas por hora" />
+                                                        <Label styleClass="panel-subtitulo" text="Comportamiento de ingresos en el periodo" />
+                                                    </children>
+                                                </VBox>
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <VBox alignment="CENTER_RIGHT" spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="mini-etiqueta" text="TOTAL ACUMULADO" />
+                                                        <Label fx:id="lblTotalAcumulado" styleClass="total-acumulado" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                        <AreaChart fx:id="chartVentas" animated="false" legendVisible="false" prefHeight="275.0" styleClass="grafica-ventas" verticalGridLinesVisible="false">
+                                            <xAxis>
+                                                <CategoryAxis fx:id="ejeX" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis fx:id="ejeY" />
+                                            </yAxis>
+                                        </AreaChart>
+                                    </children>
+                                </VBox>
+
+                                <VBox maxWidth="430.0" minWidth="430.0" prefWidth="430.0" styleClass="panel">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" styleClass="panel-encabezado">
+                                            <children>
+                                                <VBox spacing="3.0">
+                                                    <children>
+                                                        <Label styleClass="panel-titulo" text="Métodos de pago" />
+                                                        <Label styleClass="panel-subtitulo" text="Distribución del total cobrado" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="panel-cuerpo">
+                                            <children>
+                                                <StackPane maxHeight="180.0" maxWidth="180.0" minHeight="180.0" minWidth="180.0" prefHeight="180.0" prefWidth="180.0">
+                                                    <children>
+                                                        <PieChart fx:id="pieMetodos" animated="false" labelsVisible="false" legendVisible="false" startAngle="90.0" styleClass="pie-metodos" />
+                                                        <Circle mouseTransparent="true" radius="44.0" styleClass="donut-hueco" />
+                                                        <VBox alignment="CENTER" maxHeight="50.0" maxWidth="80.0" mouseTransparent="true">
+                                                            <children>
+                                                                <Label fx:id="lblDonutTotal" styleClass="donut-valor" />
+                                                                <Label styleClass="donut-etiqueta" text="Total" />
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </StackPane>
+                                                <VBox fx:id="vboxMetodos" spacing="12.0" HBox.hgrow="ALWAYS" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- ULTIMAS VENTAS + PRODUCTOS -->
+                        <HBox spacing="18.0">
+                            <children>
+                                <VBox styleClass="panel" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" styleClass="panel-encabezado">
+                                            <children>
+                                                <VBox spacing="3.0">
+                                                    <children>
+                                                        <Label styleClass="panel-titulo" text="Últimas ventas" />
+                                                        <Label styleClass="panel-subtitulo" text="Movimientos recientes de la caja" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                        <VBox styleClass="panel-cuerpo">
+                                            <children>
+                                                <TableView fx:id="tablaVentas" fixedCellSize="38.0" maxHeight="265.0" minHeight="265.0" prefHeight="265.0" styleClass="tabla-ventas">
+                                                    <columns>
+                                                        <TableColumn fx:id="colFolio" resizable="false" sortable="false" text="FOLIO" />
+                                                        <TableColumn fx:id="colHora" resizable="false" sortable="false" text="HORA" />
+                                                        <TableColumn fx:id="colDetalle" resizable="false" sortable="false" text="DETALLE" />
+                                                        <TableColumn fx:id="colMetodo" resizable="false" sortable="false" text="MÉTODO" />
+                                                        <TableColumn fx:id="colTotal" resizable="false" sortable="false" text="TOTAL" />
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+
+                                <VBox maxWidth="430.0" minWidth="430.0" prefWidth="430.0" styleClass="panel">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" styleClass="panel-encabezado">
+                                            <children>
+                                                <VBox spacing="3.0">
+                                                    <children>
+                                                        <Label styleClass="panel-titulo" text="Productos más vendidos" />
+                                                        <Label styleClass="panel-subtitulo" text="Por número de unidades" />
+                                                    </children>
+                                                </VBox>
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Label styleClass="mini-insignia" text="Top 4" />
+                                            </children>
+                                        </HBox>
+                                        <VBox fx:id="vboxProductos" styleClass="panel-cuerpo" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

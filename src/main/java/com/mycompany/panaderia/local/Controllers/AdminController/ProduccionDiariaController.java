@@ -38,6 +38,16 @@ public class ProduccionDiariaController {
     }
 
     /**
+     * Acción para abrir ventas.
+     */
+    @FXML
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
+    /**
      * Abre el historial de producción.
      */
     @FXML

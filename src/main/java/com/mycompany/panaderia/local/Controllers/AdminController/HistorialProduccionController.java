@@ -129,6 +129,16 @@ public class HistorialProduccionController {
             "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
         );
     }
+    /**
+     * Abre Ventas
+     */
+    @FXML
+    private void abrirVentas(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
 
     /**
      * Regresa a la pantalla de producción diaria.

@@ -11,9 +11,12 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage stage;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage primaryStage) throws IOException {
+        stage = primaryStage;
+
         FXMLLoader loader = new FXMLLoader(
                 App.class.getResource("/com/mycompany/panaderia/local/Login.fxml")
         );
@@ -21,6 +24,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         scene = new Scene(root, 1280, 720); // Medidas originales de tu ventana de login
+        Tema.aplicar(scene);
 
         stage.setTitle("El Lirio Rojo - Iniciar Sesión");
         stage.setScene(scene);
@@ -28,7 +32,16 @@ public class App extends Application {
     }
 
     public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        Parent root = loadFXML(fxml);
+
+        // Usa la escena que se está mostrando AHORA en la ventana
+        // (otras pantallas pueden haber creado una Scene nueva).
+        Scene actual = (stage != null && stage.getScene() != null)
+                ? stage.getScene()
+                : scene;
+
+        actual.setRoot(root);
+        Tema.aplicar(actual);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

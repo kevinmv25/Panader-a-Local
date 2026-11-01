@@ -155,6 +155,16 @@ public class AgregarProduccionController {
     }
 
     /**
+     * Acción para abrir ventas.
+     */
+    @FXML
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
+    /**
      * Conserva la función del botón Cancelar.
      */
     @FXML

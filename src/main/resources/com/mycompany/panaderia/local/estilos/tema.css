@@ -1,0 +1,318 @@
+/* ============================================================
+   Tema El Lirio Rojo - JavaFX CSS
+   Se define la paleta una sola vez en .root y se reutiliza.
+   ============================================================ */
+
+.root {
+    -c-cafe-oscuro:  #422817;
+    -c-cafe-medio:   #6B4A2E;
+    -c-amarillo:     #F4CC79;
+    -c-crema:        #FFF8EC;
+    -c-crema-calido: #F8E5C1;
+    -c-amarillo-sua: #FFE7AD;
+    -c-dorado:       #E9BD6B;
+    -c-negro:        #1D1B1A;
+    -c-naranja:      #E88709;
+    -c-beige:        #EAD2AE;
+    -c-error:        #B3261E;
+}
+
+/* ---------- Login: fondo y barra superior ---------- */
+
+.fondo-oscuro {
+    -fx-background-color: -c-cafe-oscuro;
+}
+
+.barra-superior {
+    -fx-background-color: -c-crema;
+    -fx-padding: 18 30;
+    -fx-border-color: -c-beige;
+    -fx-border-width: 0 0 1 0;
+}
+
+.marca-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.marca-subtitulo {
+    -fx-font-size: 10px;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+.boton-nav {
+    -fx-background-color: transparent;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-cursor: hand;
+}
+.boton-nav:hover {
+    -fx-text-fill: -c-naranja;
+}
+
+.scroll-fondo {
+    -fx-background: -c-cafe-oscuro;
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-border-width: 0;
+}
+
+.fondo-degradado {
+    -fx-background-color: linear-gradient(to bottom right,
+        -c-negro 0%, -c-cafe-oscuro 45%, -c-cafe-medio 100%);
+}
+
+.hero-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 57px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-crema;
+}
+
+.hero-lema {
+    -fx-font-family: Georgia;
+    -fx-font-size: 26px;
+    -fx-font-style: italic;
+    -fx-text-fill: -c-dorado;
+}
+
+/* ---------- Tarjeta de login ---------- */
+
+.tarjeta-login {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 26;
+    -fx-padding: 30 28 30 28;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.30), 20, 0.2, 0, 8);
+}
+
+.tarjeta-icono {
+    -fx-font-size: 30px;
+    -fx-text-fill: -c-naranja;
+}
+
+.tarjeta-marca {
+    -fx-font-family: Georgia;
+    -fx-font-size: 19px;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.etiqueta-campo {
+    -fx-font-size: 14px;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.campo-texto {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-beige;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-prompt-text-fill: derive(-c-cafe-medio, 40%);
+}
+.campo-texto:focused {
+    -fx-border-color: -c-naranja;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.boton-primario {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-background-radius: 25;
+    -fx-text-fill: -c-crema;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.boton-primario:hover   { -fx-background-color: -c-cafe-medio; }
+.boton-primario:pressed { -fx-background-color: -c-negro; }
+
+.boton-secundario {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 25;
+    -fx-border-color: -c-dorado;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 25;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.boton-secundario:hover   { -fx-background-color: -c-amarillo-sua; }
+.boton-secundario:pressed { -fx-background-color: -c-crema-calido; }
+
+.mensaje-error {
+    -fx-text-fill: -c-error;
+    -fx-font-size: 12px;
+}
+
+.separator .line {
+    -fx-border-color: -c-beige;
+}
+
+/* ============================================================
+   Panel de administrador (inicioAdmin.fxml)
+   ============================================================ */
+
+.menu-lateral {
+    -fx-background-color: -c-negro;
+}
+
+.menu-marca {
+    -fx-text-fill: -c-crema;
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+}
+
+.menu-subtitulo {
+    -fx-text-fill: -c-amarillo;
+    -fx-font-size: 12px;
+}
+
+.menu-lateral .separator .line {
+    -fx-border-color: -c-cafe-oscuro;
+}
+
+.menu-boton {
+    -fx-background-color: transparent;
+    -fx-text-fill: -c-crema;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-cursor: hand;
+}
+.menu-boton:hover {
+    -fx-background-color: -c-cafe-oscuro;
+}
+
+.menu-boton-activo {
+    -fx-background-color: -c-naranja;
+    -fx-text-fill: -c-negro;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+}
+
+.menu-cerrar {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-text-fill: -c-crema;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.menu-cerrar:hover {
+    -fx-background-color: -c-cafe-medio;
+}
+
+.contenido-admin {
+    -fx-background-color: -c-crema;
+}
+
+.saludo {
+    -fx-font-family: 'Georgia';
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.chip-admin {
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-background-color: -c-amarillo-sua;
+    -fx-padding: 10 14 10 14;
+    -fx-background-radius: 7;
+    -fx-font-size: 12px;
+}
+
+.titulo-alerta {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-text-fill: -c-crema;
+    -fx-font-family: 'Georgia';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 12 10 12;
+}
+
+.scroll-transparente {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.panel-scroll {
+    -fx-background-color: -c-crema;
+}
+
+.barra-fecha {
+    -fx-background-color: -c-crema-calido;
+    -fx-background-radius: 8;
+    -fx-padding: 10 14 10 14;
+}
+
+.fecha-texto {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.cantidad-texto {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+.aviso-vacio {
+    -fx-background-color: -c-crema-calido;
+    -fx-background-radius: 7;
+    -fx-padding: 20;
+    -fx-font-size: 13px;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+/* ---------- Tarjetas de pedidos (se crean desde Java) ---------- */
+
+.tarjeta-pedido {
+    -fx-background-color: -c-crema;
+    -fx-border-color: -c-beige;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.10), 8, 0.1, 0, 2);
+}
+
+.tarjeta-pedido .separator .line {
+    -fx-border-color: -c-beige;
+}
+
+.pedido-numero {
+    -fx-font-family: 'Georgia';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.pedido-total {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.pedido-tiempo {
+    -fx-background-color: -c-amarillo-sua;
+    -fx-background-radius: 4;
+    -fx-padding: 4 9 4 9;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.boton-ver {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-text-fill: -c-crema;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+.boton-ver:hover {
+    -fx-background-color: -c-cafe-medio;
+}

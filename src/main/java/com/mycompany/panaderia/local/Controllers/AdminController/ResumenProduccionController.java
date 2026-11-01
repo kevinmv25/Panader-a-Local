@@ -90,6 +90,16 @@ public class ResumenProduccionController {
     }
 
     /**
+     * Acción para abrir ventas.
+     */
+    @FXML
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
+    /**
      * Regresa a la pantalla de producción diaria.
      */
     @FXML

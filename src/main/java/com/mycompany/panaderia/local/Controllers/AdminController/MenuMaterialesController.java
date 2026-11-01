@@ -73,9 +73,10 @@ public class MenuMaterialesController {
      * Acción para abrir ventas.
      */
     @FXML
-    private void abrirVentas(ActionEvent event) {
-        mostrarMensaje(
-            "La pantalla de Ventas todavía no está configurada."
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
         );
     }
 

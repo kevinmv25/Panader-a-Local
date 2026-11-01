@@ -5,6 +5,7 @@ import com.mycompany.panaderia.local.Pan;
 import panaderialocal.conexion.PanDAO;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +57,15 @@ public class CatalogoPanesController {
             (observable, anterior, nuevo) -> mostrarPanes(nuevo)
         );
     }
-
+    
+@FXML
+    private void abrirCatalogo(ActionEvent event) {
+        cambiarPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
+        );
+    }
+    
     @FXML
     private void abrirFormularioNuevo(ActionEvent event) {
         abrirFormulario(null);
@@ -89,6 +98,16 @@ public class CatalogoPanesController {
             "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
         );
     }
+    /**
+     * Acción para abrir ventas.
+     */
+    @FXML
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
 
     /**
      * Regresa a Login.fxml al cerrar sesión.
@@ -101,7 +120,35 @@ public class CatalogoPanesController {
         );
     }
     
-    
+    // ==========================================
+    // CAMBIAR DE INTERFAZ
+    // ==========================================
+
+    private void abrirPantalla(ActionEvent event, String ruta)
+            throws IOException {
+
+        URL recurso = getClass().getResource(ruta);
+
+        if (recurso == null) {
+
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Pantalla no encontrada");
+            alerta.setHeaderText("No se pudo abrir la pantalla.");
+            alerta.setContentText("Verifica la ruta: " + ruta);
+            alerta.showAndWait();
+
+            return;
+        }
+
+        Parent root = FXMLLoader.load(recurso);
+
+        Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+        stage.setScene(new Scene(root));
+        stage.show();
+    }    
 
     private void cambiarPantalla(ActionEvent event, String rutaFXML) {
         try {

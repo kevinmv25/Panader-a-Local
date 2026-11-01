@@ -1,0 +1,402 @@
+/* ============================================================
+   Pantalla: Resumen de ventas (Administrador)
+   Autocontenida: no depende de tema.css
+   ============================================================ */
+
+.resumen-root {
+    -fx-cafe-oscuro: #422817;
+    -fx-cafe-medio: #6B4A2E;
+    -fx-amarillo: #F4CC79;
+    -fx-crema: #FFF8EC;
+    -fx-crema-calido: #F8E5C1;
+    -fx-amarillo-sua: #FFE7AD;
+    -fx-dorado: #E9BD6B;
+    -fx-negro: #1D1B1A;
+    -fx-naranja: #E88709;
+    -fx-beige: #EAD2AE;
+
+    -fx-background-color: -fx-amarillo;
+    -fx-font-family: "Segoe UI", "System";
+}
+
+/* ---------- Encabezado ---------- */
+
+.resumen-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+
+.resumen-fecha {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+
+.boton-volver {
+    -fx-background-color: -fx-crema;
+    -fx-background-radius: 8;
+    -fx-border-color: -fx-beige;
+    -fx-border-radius: 8;
+    -fx-text-fill: -fx-cafe-oscuro;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+}
+.boton-volver:hover {
+    -fx-background-color: -fx-amarillo-sua;
+}
+
+.combo-primario {
+    -fx-background-color: -fx-cafe-oscuro;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.combo-primario > .list-cell {
+    -fx-text-fill: -fx-crema;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.combo-primario > .arrow-button {
+    -fx-background-color: transparent;
+}
+.combo-primario > .arrow-button > .arrow {
+    -fx-background-color: -fx-crema;
+}
+
+.combo-secundario {
+    -fx-background-color: -fx-crema;
+    -fx-background-radius: 10;
+    -fx-border-color: -fx-beige;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.combo-secundario > .list-cell {
+    -fx-text-fill: -fx-cafe-oscuro;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.combo-secundario > .arrow-button {
+    -fx-background-color: transparent;
+}
+.combo-secundario > .arrow-button > .arrow {
+    -fx-background-color: -fx-cafe-oscuro;
+}
+
+/* ---------- Contenedor con scroll ---------- */
+
+.scroll-resumen {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-resumen > .viewport {
+    -fx-background-color: transparent;
+}
+.resumen-contenido {
+    -fx-background-color: transparent;
+}
+
+/* ---------- Tarjetas (KPI) ---------- */
+
+.kpi-card, .kpi-primaria {
+    -fx-background-radius: 15;
+    -fx-padding: 24 23 22 23;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.12), 14, 0.1, 0, 4);
+}
+
+.kpi-card {
+    -fx-background-color: -fx-crema;
+    -fx-border-color: -fx-beige;
+    -fx-border-radius: 15;
+}
+
+.kpi-primaria {
+    -fx-background-color: linear-gradient(to bottom right, -fx-cafe-medio, -fx-cafe-oscuro);
+}
+
+.kpi-icono, .kpi-icono-acento, .kpi-icono-primaria {
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-background-radius: 11;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+.kpi-icono         { -fx-background-color: -fx-crema-calido; -fx-text-fill: -fx-cafe-medio; }
+.kpi-icono-acento  { -fx-background-color: -fx-amarillo-sua; -fx-text-fill: -fx-naranja; }
+.kpi-icono-primaria{ -fx-background-color: rgba(255,248,236,0.16); -fx-text-fill: -fx-amarillo; }
+
+.kpi-etiqueta          { -fx-font-size: 13px; -fx-text-fill: -fx-cafe-medio; }
+.kpi-etiqueta-primaria { -fx-font-size: 13px; -fx-text-fill: -fx-beige; }
+
+.kpi-valor {
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-crema;
+}
+.kpi-valor-oscuro {
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+
+.kpi-variacion {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-amarillo;
+}
+.kpi-detalle {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+
+/* ---------- Paneles ---------- */
+
+.panel {
+    -fx-background-color: -fx-crema;
+    -fx-background-radius: 15;
+    -fx-border-color: -fx-beige;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.12), 14, 0.1, 0, 4);
+}
+
+.panel-encabezado {
+    -fx-background-color: -fx-crema-calido;
+    -fx-background-radius: 15 15 0 0;
+    -fx-padding: 20 25 16 25;
+}
+
+.panel-cuerpo {
+    -fx-padding: 18 25 20 25;
+}
+
+.panel-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+.panel-subtitulo {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+
+.mini-etiqueta {
+    -fx-font-size: 10px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+.total-acumulado {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+
+.mini-insignia {
+    -fx-background-color: -fx-amarillo-sua;
+    -fx-background-radius: 5;
+    -fx-padding: 4 9;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+
+.aviso-vacio {
+    -fx-background-color: -fx-crema-calido;
+    -fx-background-radius: 7;
+    -fx-padding: 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-cafe-medio;
+    -fx-max-width: infinity;
+}
+
+/* ---------- Grafica de ventas ---------- */
+
+.grafica-ventas {
+    -fx-background-color: transparent;
+    -fx-padding: 14 22 10 14;
+}
+.grafica-ventas .chart-plot-background {
+    -fx-background-color: transparent;
+}
+.grafica-ventas .chart-horizontal-grid-lines {
+    -fx-stroke: -fx-beige;
+    -fx-stroke-dash-array: 3 5;
+}
+.grafica-ventas .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.grafica-ventas .axis {
+    -fx-tick-label-fill: -fx-cafe-medio;
+    -fx-font-size: 10px;
+}
+.grafica-ventas .axis-tick-mark,
+.grafica-ventas .axis-minor-tick-mark {
+    -fx-stroke: transparent;
+}
+.grafica-ventas .chart-series-area-line {
+    -fx-stroke: -fx-naranja;
+    -fx-stroke-width: 3px;
+}
+.grafica-ventas .chart-series-area-fill {
+    -fx-fill: rgba(232, 135, 9, 0.22);
+}
+.grafica-ventas .chart-area-symbol {
+    -fx-background-color: -fx-naranja, -fx-crema;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 6px;
+    -fx-padding: 4px;
+}
+
+/* ---------- Donut de metodos de pago ---------- */
+
+.pie-metodos {
+    -fx-background-color: transparent;
+}
+.pie-metodos .chart-pie {
+    -fx-border-color: -fx-crema;
+    -fx-border-width: 2;
+}
+.pie-metodos .default-color0.chart-pie { -fx-pie-color: -fx-cafe-oscuro; }
+.pie-metodos .default-color1.chart-pie { -fx-pie-color: -fx-naranja; }
+.pie-metodos .default-color2.chart-pie { -fx-pie-color: -fx-dorado; }
+.pie-metodos .default-color3.chart-pie { -fx-pie-color: -fx-beige; }
+
+.donut-hueco {
+    -fx-fill: -fx-crema;
+}
+.donut-valor {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+.donut-etiqueta {
+    -fx-font-size: 10px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+
+.marcador {
+    -fx-background-radius: 4;
+}
+.marcador-0 { -fx-background-color: -fx-cafe-oscuro; }
+.marcador-1 { -fx-background-color: -fx-naranja; }
+.marcador-2 { -fx-background-color: -fx-dorado; }
+.marcador-3 { -fx-background-color: -fx-beige; }
+
+.metodo-nombre {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+.metodo-monto {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+.porcentaje {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-medio;
+}
+
+/* ---------- Tabla de ultimas ventas ---------- */
+
+.tabla-ventas {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-control-inner-background: -fx-crema;
+    -fx-table-cell-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.tabla-ventas .column-header-background {
+    -fx-background-color: -fx-crema-calido;
+    -fx-background-radius: 8;
+}
+.tabla-ventas .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 34;
+    -fx-border-color: transparent;
+}
+.tabla-ventas .column-header .label {
+    -fx-text-fill: -fx-cafe-medio;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+.tabla-ventas .filler {
+    -fx-background-color: transparent;
+}
+.tabla-ventas .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -fx-beige transparent;
+}
+.tabla-ventas .table-row-cell:filled:hover {
+    -fx-background-color: rgba(255, 231, 173, 0.45);
+}
+.tabla-ventas .table-row-cell:filled:selected {
+    -fx-background-color: -fx-amarillo-sua;
+}
+.tabla-ventas .table-cell {
+    -fx-text-fill: -fx-cafe-medio;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 10 0 10;
+}
+.tabla-ventas .table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+.tabla-ventas .placeholder .label {
+    -fx-text-fill: -fx-cafe-medio;
+    -fx-font-size: 13px;
+}
+
+.insignia {
+    -fx-background-radius: 5;
+    -fx-padding: 4 8 4 8;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+.insignia-efectivo       { -fx-background-color: -fx-crema-calido; -fx-text-fill: -fx-cafe-oscuro; }
+.insignia-tarjeta        { -fx-background-color: -fx-cafe-medio;   -fx-text-fill: -fx-crema; }
+.insignia-transferencia {
+    -fx-background-color: -fx-amarillo-sua;
+    -fx-text-fill: -fx-cafe-oscuro;
+    -fx-border-color: -fx-naranja;
+    -fx-border-radius: 5;
+}
+
+/* ---------- Productos mas vendidos ---------- */
+
+.producto-fila {
+    -fx-padding: 10 0 10 0;
+    -fx-border-color: transparent transparent -fx-beige transparent;
+}
+
+.rango {
+    -fx-background-radius: 8;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.rango-1 { -fx-background-color: -fx-dorado;        -fx-text-fill: -fx-cafe-oscuro; }
+.rango-2 { -fx-background-color: -fx-amarillo-sua; -fx-text-fill: -fx-cafe-oscuro; }
+.rango-3 { -fx-background-color: -fx-beige;         -fx-text-fill: -fx-cafe-medio; }
+.rango-4 { -fx-background-color: -fx-crema-calido; -fx-text-fill: -fx-cafe-medio; }
+
+.producto-nombre {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}
+.producto-detalle {
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-cafe-medio;
+}
+.producto-total {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-cafe-oscuro;
+}

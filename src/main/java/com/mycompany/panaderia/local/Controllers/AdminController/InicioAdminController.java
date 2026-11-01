@@ -1,6 +1,7 @@
 
 package com.mycompany.panaderia.local.Controllers.AdminController;
 
+import com.mycompany.panaderia.local.App;
 import com.panaderialocal.conexion.RegistroPedidosDAO;
 import com.panaderialocal.conexion.RegistroPedidosDAO.PedidoReciente;
 import com.panaderialocal.conexion.RegistroPedidosDAO.DetallePedido;
@@ -608,14 +609,13 @@ public class InicioAdminController implements Initializable {
     }
 
     @FXML
-    private void abrirVentas(ActionEvent event) {
-
-        mostrarAlerta(
-                Alert.AlertType.INFORMATION,
-                "Ventas",
-                "La pantalla de ventas todavía no está configurada."
-        );
+    private void abrirVentas(ActionEvent event) throws IOException {
+    abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+    );
     }
+
 
     @FXML
     private void abrirPedidos(ActionEvent event) {
@@ -628,14 +628,9 @@ public class InicioAdminController implements Initializable {
         );
     }
 
-    @FXML
-    private void cerrarSesion(ActionEvent event) {
-
-        mostrarAlerta(
-                Alert.AlertType.INFORMATION,
-                "Cerrar sesión",
-                "Configura aquí la navegación hacia el inicio de sesión."
-        );
+@FXML
+private void cerrarSesion(ActionEvent event) throws IOException {
+    App.cerrarSesion();
     }
 
     // ==========================================
@@ -699,4 +694,5 @@ public class InicioAdminController implements Initializable {
 
         alerta.showAndWait();
     }
+    
 }

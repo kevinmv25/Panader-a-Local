@@ -31,11 +31,11 @@
 
             <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Catálogo de Panes" />
 
-            <Button maxWidth="Infinity" onAction="#volverProduccion" prefHeight="43.0" style="-fx-background-color: #E68000; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Producción" />
-
+            <Button maxWidth="Infinity" onAction="#volverProduccion" prefHeight="43.0" style="-fx-background-color: #E68000; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Producción" />            
+            
             <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Materiales" />
 
-            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Ventas" />
+            <Button maxWidth="Infinity" onAction="#abrirVentas" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Ventas" />
 
             <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Pedidos" />
         </VBox>
