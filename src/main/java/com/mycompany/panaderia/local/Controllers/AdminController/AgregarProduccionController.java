@@ -1,3 +1,4 @@
+
 package com.mycompany.panaderia.local.Controllers.AdminController;
 
 import com.panaderialocal.conexion.DAO.ProduccionDAO;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -36,8 +38,24 @@ public class AgregarProduccionController {
 
     @FXML
     public void initialize() {
+
+        // Establecer la fecha actual.
         dpFecha.setValue(LocalDate.now());
 
+        // Bloquear los días anteriores a la fecha actual.
+        dpFecha.setDayCellFactory(param -> new DateCell() {
+
+            @Override
+            public void updateItem(LocalDate fecha, boolean empty) {
+                super.updateItem(fecha, empty);
+
+                if (empty || fecha.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
+
+        // Cargar los tipos de pan.
         try {
             List<String[]> panes = produccionDAO.obtenerPanes();
 
@@ -59,6 +77,7 @@ public class AgregarProduccionController {
     @FXML
     private void guardarProduccion(ActionEvent event) {
 
+        // Validar campos vacíos.
         if (cmbTipoPan.getValue() == null
                 || txtCantidad.getText().trim().isEmpty()
                 || dpFecha.getValue() == null) {
@@ -70,12 +89,37 @@ public class AgregarProduccionController {
             return;
         }
 
-        try {
-            int cantidad = Integer.parseInt(
-                txtCantidad.getText().trim()
-            );
+        // Validar que la fecha no sea anterior a hoy.
+        if (dpFecha.getValue().isBefore(LocalDate.now())) {
 
+            mostrarAlerta(
+                "Fecha inválida",
+                "No puedes registrar una producción con una fecha anterior a hoy."
+            );
+            return;
+        }
+
+        // Validar que solamente se introduzcan números.
+        String cantidadTexto = txtCantidad.getText().trim();
+
+        for (int i = 0; i < cantidadTexto.length(); i++) {
+
+            if (!Character.isDigit(cantidadTexto.charAt(i))) {
+
+                mostrarAlerta(
+                    "Cantidad inválida",
+                    "Solo se permiten números enteros."
+                );
+                return;
+            }
+        }
+
+        try {
+            int cantidad = Integer.parseInt(cantidadTexto);
+
+            // Validar que la cantidad sea mayor que cero.
             if (cantidad <= 0) {
+
                 mostrarAlerta(
                     "Cantidad inválida",
                     "La cantidad debe ser mayor que cero."
@@ -83,6 +127,7 @@ public class AgregarProduccionController {
                 return;
             }
 
+            // Obtener el ID del pan seleccionado.
             int idPan = Integer.parseInt(
                 cmbTipoPan.getValue().split(" - ", 2)[0]
             );
@@ -92,6 +137,7 @@ public class AgregarProduccionController {
             produccion.setIdPan(idPan);
             produccion.setCantidadProducida(cantidad);
 
+            // Registrar la producción.
             if (produccionDAO.registrarProduccion(produccion)) {
 
                 mostrarAlerta(
@@ -102,6 +148,7 @@ public class AgregarProduccionController {
                 cerrarVentana(event);
 
             } else {
+
                 mostrarAlerta(
                     "Error",
                     "No se pudo registrar la producción."
@@ -109,12 +156,14 @@ public class AgregarProduccionController {
             }
 
         } catch (NumberFormatException e) {
+
             mostrarAlerta(
                 "Cantidad inválida",
-                "Introduce una cantidad entera."
+                "Introduce una cantidad entera válida."
             );
 
         } catch (SQLException e) {
+
             mostrarAlerta(
                 "Error",
                 "No se pudo guardar la producción: "
@@ -145,7 +194,7 @@ public class AgregarProduccionController {
             "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
         );
     }
-    
+
     @FXML
     private void abrirInicio(ActionEvent event) {
         abrirPantalla(
@@ -159,11 +208,12 @@ public class AgregarProduccionController {
      */
     @FXML
     private void abrirVentas(ActionEvent event) throws IOException {
-    abrirPantalla(
+        abrirPantalla(
             event,
             "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
         );
     }
+
     /**
      * Conserva la función del botón Cancelar.
      */
