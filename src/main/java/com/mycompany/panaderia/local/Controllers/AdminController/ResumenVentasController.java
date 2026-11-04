@@ -70,6 +70,7 @@ public class ResumenVentasController implements Initializable {
     @FXML private VBox vboxMetodos;
 
     // ---------- Tabla ----------
+    
     @FXML private TableView<VentaReciente> tablaVentas;
     @FXML private TableColumn<VentaReciente, String> colFolio;
     @FXML private TableColumn<VentaReciente, String> colHora;
@@ -114,7 +115,7 @@ public class ResumenVentasController implements Initializable {
         cmbPeriodo.setValue("Hoy");
 
         cmbMetodo.setItems(FXCollections.observableArrayList(
-                "Todos", "Efectivo", "Tarjeta", "Transferencia"));
+                "Todos", "Efectivo", "Tarjeta", "Transferencia", "Pedidos"));
         cmbMetodo.setValue("Todos");
 
         cmbPeriodo.valueProperty().addListener(
@@ -169,7 +170,7 @@ public class ResumenVentasController implements Initializable {
                 "No hay ventas para este periodo o método de pago."));
 
         colFolio.setCellValueFactory(c -> new SimpleStringProperty(
-                "#" + String.format("%04d", c.getValue().getFolio())));
+        c.getValue().getEtiquetaFolio()));
 
         colHora.setCellValueFactory(c -> new SimpleStringProperty(
                 periodoDeUnDia

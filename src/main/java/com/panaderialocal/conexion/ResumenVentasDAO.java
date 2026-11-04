@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,7 +14,15 @@ import java.util.TreeMap;
 
 /**
  * Consultas para la pantalla "Resumen de ventas".
- * Solo LEE de las tablas ventas, detalle_venta y panes.
+ *
+ * Los ingresos salen de dos lugares:
+ *   1) ventas de caja       -> tablas ventas / detalle_venta
+ *   2) pedidos COMPLETADOS  -> tablas pedidos / detalle_pedido
+ *
+ * Para saber cuando se completo un pedido se usa la columna
+ * pedidos.fecha_completado, que este DAO crea solo (una vez) junto con un
+ * trigger que la llena cuando el estado pasa a Completado. Los pedidos que ya
+ * estaban completados antes usan su fecha de entrega.
  */
 public class ResumenVentasDAO {
 
@@ -22,20 +31,54 @@ public class ResumenVentasDAO {
     // CajeroController ya guarda la hora local, cambia "localtime" por "+0 minutes".
     private static final String AJUSTE_HORA = "localtime";
 
-    private static final String HORA =
+    private static final String HORA_VENTA =
             "datetime(v.fecha_hora, '" + AJUSTE_HORA + "')";
 
-    private static final String FILTRO_FECHAS =
-            "date(" + HORA + ") BETWEEN ? AND ?";
+    private static final String HORA_PEDIDO =
+            "datetime(p.fecha_completado, '" + AJUSTE_HORA + "')";
+
+    // Etiqueta con la que los pedidos aparecen como "metodo de pago"
+    public static final String METODO_PEDIDOS = "Pedidos";
+
+    // Todos los ingresos en una sola lista: una fila por venta o pedido
+    private static final String INGRESOS =
+            "SELECT 'venta' AS origen, v.id_venta AS id, v.total AS total, "
+            + "v.metodo_pago AS metodo, " + HORA_VENTA + " AS momento, "
+            + "date(" + HORA_VENTA + ") AS dia "
+            + "FROM ventas v "
+            + "UNION ALL "
+            + "SELECT 'pedido', p.id_pedido, p.total, '" + METODO_PEDIDOS + "', "
+            + "CASE WHEN p.fecha_completado IS NULL THEN NULL ELSE " + HORA_PEDIDO + " END, "
+            + "COALESCE(date(" + HORA_PEDIDO + "), date(p.fecha_entrega)) "
+            + "FROM pedidos p "
+            + "WHERE p.estado IN ('Completado', 'Entregado')";
+
+    // Todos los renglones de producto vendidos (ventas + pedidos completados)
+    private static final String DETALLES =
+            "SELECT dv.id_pan AS id_pan, dv.cantidad AS cantidad, "
+            + "dv.subtotal AS subtotal, date(" + HORA_VENTA + ") AS dia "
+            + "FROM detalle_venta dv "
+            + "INNER JOIN ventas v ON v.id_venta = dv.id_venta "
+            + "UNION ALL "
+            + "SELECT dp.id_pan, dp.cantidad, dp.cantidad * pa.precio, "
+            + "COALESCE(date(" + HORA_PEDIDO + "), date(p.fecha_entrega)) "
+            + "FROM detalle_pedido dp "
+            + "INNER JOIN pedidos p ON p.id_pedido = dp.id_pedido "
+            + "INNER JOIN panes pa ON pa.id_pan = dp.id_pan "
+            + "WHERE p.estado IN ('Completado', 'Entregado')";
+
+    private static final String FILTRO_FECHAS = "i.dia BETWEEN ? AND ?";
+
+    private static boolean esquemaListo = false;
 
     // ---------------------------------------------------------
-    // TOTAL DE VENTAS Y NUMERO DE VENTAS
+    // TOTAL DE INGRESOS Y NUMERO DE VENTAS/PEDIDOS
     // ---------------------------------------------------------
     public Totales obtenerTotales(LocalDate desde, LocalDate hasta)
             throws SQLException {
 
-        String sql = "SELECT COALESCE(SUM(v.total), 0), COUNT(*) "
-                + "FROM ventas v WHERE " + FILTRO_FECHAS;
+        String sql = "SELECT COALESCE(SUM(i.total), 0), COUNT(*) "
+                + "FROM (" + INGRESOS + ") i WHERE " + FILTRO_FECHAS;
 
         try (Connection con = conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -51,7 +94,7 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // TOTAL POR METODO DE PAGO
+    // TOTAL POR METODO DE PAGO (los pedidos van aparte)
     // ---------------------------------------------------------
     public Map<String, Double> totalesPorMetodo(
             LocalDate desde, LocalDate hasta) throws SQLException {
@@ -60,12 +103,13 @@ public class ResumenVentasDAO {
         resultado.put("Efectivo", 0.0);
         resultado.put("Tarjeta", 0.0);
         resultado.put("Transferencia", 0.0);
+        resultado.put(METODO_PEDIDOS, 0.0);
 
         double otros = 0;
 
-        String sql = "SELECT v.metodo_pago, SUM(v.total) "
-                + "FROM ventas v WHERE " + FILTRO_FECHAS
-                + " GROUP BY v.metodo_pago";
+        String sql = "SELECT i.metodo, SUM(i.total) "
+                + "FROM (" + INGRESOS + ") i WHERE " + FILTRO_FECHAS
+                + " GROUP BY i.metodo";
 
         try (Connection con = conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -95,15 +139,18 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // VENTAS POR HORA DEL DIA (indice 0..23)
+    // INGRESOS POR HORA DEL DIA (indice 0..23)
+    // Solo cuentan las filas que tienen hora (los pedidos completados
+    // antes de crear fecha_completado no la tienen).
     // ---------------------------------------------------------
     public double[] ventasPorHora(LocalDate desde, LocalDate hasta)
             throws SQLException {
 
         double[] horas = new double[24];
 
-        String sql = "SELECT CAST(strftime('%H', " + HORA + ") AS INTEGER), "
-                + "SUM(v.total) FROM ventas v WHERE " + FILTRO_FECHAS
+        String sql = "SELECT CAST(strftime('%H', i.momento) AS INTEGER), "
+                + "SUM(i.total) FROM (" + INGRESOS + ") i "
+                + "WHERE i.momento IS NOT NULL AND " + FILTRO_FECHAS
                 + " GROUP BY 1";
 
         try (Connection con = conectar();
@@ -126,16 +173,16 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // VENTAS POR DIA
+    // INGRESOS POR DIA
     // ---------------------------------------------------------
     public Map<LocalDate, Double> ventasPorDia(
             LocalDate desde, LocalDate hasta) throws SQLException {
 
         Map<LocalDate, Double> dias = new TreeMap<>();
 
-        String sql = "SELECT date(" + HORA + "), SUM(v.total) "
-                + "FROM ventas v WHERE " + FILTRO_FECHAS
-                + " GROUP BY date(" + HORA + ")";
+        String sql = "SELECT i.dia, SUM(i.total) "
+                + "FROM (" + INGRESOS + ") i WHERE " + FILTRO_FECHAS
+                + " GROUP BY i.dia";
 
         try (Connection con = conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -155,7 +202,7 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // ULTIMAS VENTAS (metodo = null significa "todos")
+    // ULTIMOS MOVIMIENTOS (metodo = null significa "todos")
     // ---------------------------------------------------------
     public List<VentaReciente> ultimasVentas(
             LocalDate desde, LocalDate hasta,
@@ -163,17 +210,18 @@ public class ResumenVentasDAO {
 
         List<VentaReciente> ventas = new ArrayList<>();
 
-        String sql = "SELECT v.id_venta, "
-                + "strftime('%d/%m', " + HORA + "), "
-                + "strftime('%H:%M', " + HORA + "), "
-                + "v.metodo_pago, v.total, "
-                + "COUNT(dv.id_detalle_venta) "
-                + "FROM ventas v "
-                + "LEFT JOIN detalle_venta dv ON dv.id_venta = v.id_venta "
-                + "WHERE " + FILTRO_FECHAS
-                + (metodo != null ? " AND v.metodo_pago = ?" : "")
-                + " GROUP BY v.id_venta "
-                + "ORDER BY v.fecha_hora DESC, v.id_venta DESC LIMIT ?";
+        String filtroMetodo = metodo != null ? " AND i.metodo = ?" : "";
+
+        String sql = "SELECT i.origen, i.id, strftime('%d/%m', i.dia), "
+                + "COALESCE(strftime('%H:%M', i.momento), '—'), "
+                + "i.metodo, i.total, "
+                + "CASE WHEN i.origen = 'venta' "
+                + "THEN (SELECT COUNT(*) FROM detalle_venta d WHERE d.id_venta = i.id) "
+                + "ELSE (SELECT COUNT(*) FROM detalle_pedido d WHERE d.id_pedido = i.id) END "
+                + "FROM (" + INGRESOS + ") i "
+                + "WHERE " + FILTRO_FECHAS + filtroMetodo
+                + " ORDER BY COALESCE(i.momento, i.dia || ' 00:00:00') DESC, i.id DESC "
+                + "LIMIT ?";
 
         try (Connection con = conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -189,12 +237,13 @@ public class ResumenVentasDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ventas.add(new VentaReciente(
-                            rs.getInt(1),
-                            rs.getString(2),
+                            rs.getString(1),
+                            rs.getInt(2),
                             rs.getString(3),
                             rs.getString(4),
-                            rs.getDouble(5),
-                            rs.getInt(6)
+                            rs.getString(5),
+                            rs.getDouble(6),
+                            rs.getInt(7)
                     ));
                 }
             }
@@ -204,7 +253,7 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // PRODUCTOS MAS VENDIDOS
+    // PRODUCTOS MAS VENDIDOS (ventas + pedidos completados)
     // ---------------------------------------------------------
     public List<ProductoTop> productosTop(
             LocalDate desde, LocalDate hasta, int limite)
@@ -212,13 +261,12 @@ public class ResumenVentasDAO {
 
         List<ProductoTop> productos = new ArrayList<>();
 
-        String sql = "SELECT p.nombre, SUM(dv.cantidad), SUM(dv.subtotal) "
-                + "FROM detalle_venta dv "
-                + "INNER JOIN ventas v ON v.id_venta = dv.id_venta "
-                + "INNER JOIN panes p ON p.id_pan = dv.id_pan "
-                + "WHERE " + FILTRO_FECHAS
-                + " GROUP BY p.id_pan "
-                + "ORDER BY SUM(dv.cantidad) DESC, SUM(dv.subtotal) DESC "
+        String sql = "SELECT p.nombre, SUM(d.cantidad), SUM(d.subtotal) "
+                + "FROM (" + DETALLES + ") d "
+                + "INNER JOIN panes p ON p.id_pan = d.id_pan "
+                + "WHERE d.dia BETWEEN ? AND ? "
+                + "GROUP BY p.id_pan "
+                + "ORDER BY SUM(d.cantidad) DESC, SUM(d.subtotal) DESC "
                 + "LIMIT ?";
 
         try (Connection con = conectar();
@@ -243,7 +291,7 @@ public class ResumenVentasDAO {
     }
 
     // ---------------------------------------------------------
-    // CONEXION
+    // CONEXION + PREPARACION DE LA BASE (una sola vez)
     // ---------------------------------------------------------
     private Connection conectar() throws SQLException {
 
@@ -253,7 +301,58 @@ public class ResumenVentasDAO {
             throw new SQLException("No fue posible conectar con SQLite.");
         }
 
+        try {
+            asegurarEsquema(con);
+        } catch (SQLException ex) {
+            con.close();
+            throw ex;
+        }
+
         return con;
+    }
+
+    /**
+     * Agrega pedidos.fecha_completado y un trigger que la llena sola cuando
+     * un pedido pasa a Completado. No modifica ni borra ningun dato.
+     */
+    private static synchronized void asegurarEsquema(Connection con)
+            throws SQLException {
+
+        if (esquemaListo) {
+            return;
+        }
+
+        boolean existeColumna = false;
+
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("PRAGMA table_info(pedidos)")) {
+
+            while (rs.next()) {
+                if ("fecha_completado".equalsIgnoreCase(rs.getString("name"))) {
+                    existeColumna = true;
+                }
+            }
+        }
+
+        if (!existeColumna) {
+            try (Statement st = con.createStatement()) {
+                st.execute("ALTER TABLE pedidos ADD COLUMN fecha_completado TEXT");
+            }
+        }
+
+        try (Statement st = con.createStatement()) {
+            st.execute("CREATE TRIGGER IF NOT EXISTS trg_pedido_completado "
+                    + "AFTER UPDATE OF estado ON pedidos "
+                    + "WHEN NEW.estado IN ('Completado', 'Entregado') "
+                    + "AND OLD.estado NOT IN ('Completado', 'Entregado') "
+                    + "AND NEW.fecha_completado IS NULL "
+                    + "BEGIN "
+                    + "UPDATE pedidos SET fecha_completado = CURRENT_TIMESTAMP "
+                    + "WHERE id_pedido = NEW.id_pedido; "
+                    + "END");
+        }
+
+        esquemaListo = true;
     }
 
     // ---------------------------------------------------------
@@ -284,6 +383,7 @@ public class ResumenVentasDAO {
 
     public static class VentaReciente {
 
+        private final String origen;   // "venta" o "pedido"
         private final int folio;
         private final String fecha;
         private final String hora;
@@ -291,8 +391,9 @@ public class ResumenVentasDAO {
         private final double total;
         private final int productos;
 
-        public VentaReciente(int folio, String fecha, String hora,
-                String metodo, double total, int productos) {
+        public VentaReciente(String origen, int folio, String fecha,
+                String hora, String metodo, double total, int productos) {
+            this.origen = origen;
             this.folio = folio;
             this.fecha = fecha;
             this.hora = hora;
@@ -301,12 +402,20 @@ public class ResumenVentasDAO {
             this.productos = productos;
         }
 
+        public String getOrigen() { return origen; }
         public int getFolio() { return folio; }
         public String getFecha() { return fecha; }
         public String getHora() { return hora; }
         public String getMetodo() { return metodo; }
         public double getTotal() { return total; }
         public int getProductos() { return productos; }
+
+        /** "#0045" para ventas de caja y "#PED-0012" para pedidos. */
+        public String getEtiquetaFolio() {
+            return "pedido".equals(origen)
+                    ? String.format("#PED-%04d", folio)
+                    : String.format("#%04d", folio);
+        }
     }
 
     public static class ProductoTop {
