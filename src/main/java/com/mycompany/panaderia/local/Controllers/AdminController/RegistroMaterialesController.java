@@ -31,10 +31,6 @@ import javafx.stage.Stage;
 
 public class RegistroMaterialesController implements Initializable {
 
-    // ==========================================
-    // CAMPOS DEL FORMULARIO
-    // ==========================================
-
     @FXML
     private TextField txtMaterial;
 
@@ -43,10 +39,6 @@ public class RegistroMaterialesController implements Initializable {
 
     @FXML
     private ComboBox<String> cmbUnidad;
-
-    // ==========================================
-    // TABLA
-    // ==========================================
 
     @FXML
     private TableView<MaterialRegistro> tablaMateriales;
@@ -60,23 +52,14 @@ public class RegistroMaterialesController implements Initializable {
     @FXML
     private TableColumn<MaterialRegistro, String> colUnidadMedida;
 
-    // ==========================================
-    // DAO Y LISTA TEMPORAL
-    // ==========================================
-
     private final InventarioDAO inventarioDAO = new InventarioDAO();
 
     private final ObservableList<MaterialRegistro> listaMateriales =
             FXCollections.observableArrayList();
 
-    // ==========================================
-    // INICIALIZACIÓN
-    // ==========================================
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        // CONFIGURAR COLUMNAS SIN PropertyValueFactory
         colMaterial.setCellValueFactory(
                 datos -> new ReadOnlyStringWrapper(
                         datos.getValue().getMaterial()
@@ -95,10 +78,8 @@ public class RegistroMaterialesController implements Initializable {
                 )
         );
 
-        // CONECTAR LA LISTA CON LA TABLA
         tablaMateriales.setItems(listaMateriales);
 
-        // UNIDADES DE MEDIDA
         cmbUnidad.setItems(FXCollections.observableArrayList(
                 "KG",
                 "Gramos",
@@ -110,10 +91,6 @@ public class RegistroMaterialesController implements Initializable {
         ));
     }
 
-    // ==========================================
-    // AGREGAR MATERIAL A LA TABLA
-    // ==========================================
-
     @FXML
     private void agregarMaterial(ActionEvent event) {
 
@@ -121,7 +98,6 @@ public class RegistroMaterialesController implements Initializable {
         String cantidadTexto = txtCantidad.getText().trim();
         String unidad = cmbUnidad.getValue();
 
-        // VALIDAR CAMPOS VACÍOS
         if (material.isEmpty()
                 || cantidadTexto.isEmpty()
                 || unidad == null) {
@@ -134,7 +110,31 @@ public class RegistroMaterialesController implements Initializable {
             return;
         }
 
-        // VALIDAR CANTIDAD
+        for (int i = 0; i < material.length(); i++) {
+
+            char letra = material.charAt(i);
+
+            if (!((letra >= 'A' && letra <= 'Z')
+                    || (letra >= 'a' && letra <= 'z')
+                    || letra == ' '
+                    || letra == 'á' || letra == 'é'
+                    || letra == 'í' || letra == 'ó'
+                    || letra == 'ú'
+                    || letra == 'Á' || letra == 'É'
+                    || letra == 'Í' || letra == 'Ó'
+                    || letra == 'Ú'
+                    || letra == 'ñ' || letra == 'Ñ'
+                    || letra == 'ü' || letra == 'Ü')) {
+
+                mostrarAlerta(
+                        Alert.AlertType.WARNING,
+                        "Nombre inválido",
+                        "El nombre del material solo debe contener letras."
+                );
+                return;
+            }
+        }
+
         double cantidad;
 
         try {
@@ -142,7 +142,9 @@ public class RegistroMaterialesController implements Initializable {
                     cantidadTexto.replace(",", ".")
             );
 
-            if (!Double.isFinite(cantidad) || cantidad <= 0) {
+            if (Double.isNaN(cantidad)
+                    || Double.isInfinite(cantidad)
+                    || cantidad <= 0) {
 
                 mostrarAlerta(
                         Alert.AlertType.WARNING,
@@ -162,27 +164,19 @@ public class RegistroMaterialesController implements Initializable {
             return;
         }
 
-        // CREAR EL NUEVO MATERIAL
         MaterialRegistro nuevoMaterial = new MaterialRegistro(
                 material,
                 cantidadTexto,
                 unidad
         );
 
-        // AGREGARLO A LA LISTA OBSERVABLE
         listaMateriales.add(nuevoMaterial);
 
-        // ACTUALIZAR Y MOSTRAR EL NUEVO REGISTRO
         tablaMateriales.refresh();
         tablaMateriales.scrollTo(nuevoMaterial);
 
-        // LIMPIAR EL FORMULARIO
         limpiarCampos();
     }
-
-    // ==========================================
-    // GUARDAR TODOS LOS MATERIALES EN SQLITE
-    // ==========================================
 
     @FXML
     private void guardarMateriales(ActionEvent event) {
@@ -201,7 +195,6 @@ public class RegistroMaterialesController implements Initializable {
 
         try {
 
-            // CONVERTIR LOS REGISTROS AL MODELO DEL DAO
             for (MaterialRegistro material : listaMateriales) {
 
                 double cantidad = Double.parseDouble(
@@ -215,7 +208,6 @@ public class RegistroMaterialesController implements Initializable {
                 ));
             }
 
-            // GUARDAR TODOS EN UNA SOLA OPERACIÓN
             inventarioDAO.guardarMateriales(materialesGuardar);
 
             mostrarAlerta(
@@ -226,7 +218,6 @@ public class RegistroMaterialesController implements Initializable {
                     + " materiales en el inventario."
             );
 
-            // LIMPIAR DESPUÉS DE GUARDAR
             listaMateriales.clear();
             limpiarCampos();
 
@@ -248,10 +239,6 @@ public class RegistroMaterialesController implements Initializable {
             );
         }
     }
-
-    // ==========================================
-    // CANCELAR REGISTRO
-    // ==========================================
 
     @FXML
     private void cancelarRegistro(ActionEvent event) {
@@ -279,10 +266,6 @@ public class RegistroMaterialesController implements Initializable {
         });
     }
 
-    // ==========================================
-    // LIMPIAR FORMULARIO
-    // ==========================================
-
     private void limpiarCampos() {
 
         txtMaterial.clear();
@@ -291,10 +274,6 @@ public class RegistroMaterialesController implements Initializable {
 
         txtMaterial.requestFocus();
     }
-
-    // ==========================================
-    // NAVEGACIÓN
-    // ==========================================
 
     @FXML
     private void abrirCatalogo(ActionEvent event) throws IOException {
@@ -322,27 +301,44 @@ public class RegistroMaterialesController implements Initializable {
                 "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
         );
     }
-    
+
     @FXML
     private void abrirInicio(ActionEvent event) throws IOException {
+
         abrirPantalla(
-            event,
-            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+                event,
+                "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
         );
     }
-    /**
-     * Acción para abrir ventas.
-     */
+
     @FXML
     private void abrirVentas(ActionEvent event) throws IOException {
-    abrirPantalla(
-            event,
-            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
         );
     }
-    // ==========================================
-    // CAMBIAR DE INTERFAZ
-    // ==========================================
+    
+    @FXML
+    private void cerrarSesion(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
+    
+    @FXML
+    private void inicioAdmin(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
+    
+    
 
     private void abrirPantalla(ActionEvent event, String ruta)
             throws IOException {
@@ -370,10 +366,6 @@ public class RegistroMaterialesController implements Initializable {
         stage.show();
     }
 
-    // ==========================================
-    // ALERTAS
-    // ==========================================
-
     private void mostrarAlerta(
             Alert.AlertType tipo,
             String titulo,
@@ -385,10 +377,6 @@ public class RegistroMaterialesController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-    // ==========================================
-    // MODELO PARA MOSTRAR LOS REGISTROS
-    // ==========================================
 
     public static class MaterialRegistro {
 

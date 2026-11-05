@@ -35,7 +35,7 @@
             <Separator />
 
             <!-- OPCIONES DEL MENÚ -->
-            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Inicio" />
+            <Button maxWidth="Infinity" onAction="#inicioAdmin" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Inicio" />
 
             <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Catálogo de Panes" />
 
@@ -53,7 +53,7 @@
             <Separator />
 
             <!-- CERRAR SESIÓN -->
-            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
+            <Button maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
 
         </VBox>
     </left>

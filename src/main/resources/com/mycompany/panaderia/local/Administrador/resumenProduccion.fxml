@@ -28,13 +28,13 @@
 
         <VBox spacing="8.0" style="-fx-padding: 0 12 0 12;">
 
-            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Inicio" />
+            <Button maxWidth="Infinity" onAction="#abrirInicio" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Inicio" />
 
             <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Catálogo de Panes" />
 
             <Button maxWidth="Infinity" onAction="#volverProduccion" prefHeight="43.0" style="-fx-background-color: #E68000; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Producción" />
 
-            <Button maxWidth="Infinity" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Materiales" />
+            <Button maxWidth="Infinity" onAction="#abrirMenuMateriales" prefHeight="43.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white; -fx-cursor: hand;" text="Materiales" />
 
             <Button maxWidth="Infinity" onAction="#abrirVentas" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Ventas" />  
 
@@ -47,7 +47,7 @@
 
             <Region minHeight="2.0" prefHeight="2.0" style="-fx-background-color: #77716D;" />
 
-            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #373330; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: white; -fx-cursor: hand;" text="Cerrar Sesión" />
+            <Button maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #373330; -fx-background-radius: 8; -fx-font-family: 'Manrope'; -fx-font-size: 12px; -fx-text-fill: white; -fx-cursor: hand;" text="Cerrar Sesión" />
         </VBox>
     </VBox>
 

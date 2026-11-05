@@ -34,16 +34,16 @@
             <Separator />
 
             <!-- OPCIONES DEL MENÚ -->
-            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Inicio" />
+            <Button maxWidth="Infinity" onAction="#inicioAdmin" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Inicio" />
 
-            <Button maxWidth="Infinity" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Catálogo de Panes" />
+            <Button maxWidth="Infinity" onAction="#abrirCatalogo" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Catálogo de Panes" />
 
-            <Button maxWidth="Infinity" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Producción" />
+            <Button maxWidth="Infinity" onAction="#abrirProduccion" prefHeight="50.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Producción" />
 
             <!-- OPCIÓN SELECCIONADA -->
-            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: #E68000;                        -fx-text-fill: white;                        -fx-font-weight: bold;                        -fx-background-radius: 9;" text="Materiales" />
+            <Button maxWidth="Infinity" onAction="#abrirMenuMateriales" prefHeight="45.0" style="-fx-background-color: #E68000;                        -fx-text-fill: white;                        -fx-font-weight: bold;                        -fx-background-radius: 9;" text="Materiales" />
 
-            <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Ventas" />
+            <Button maxWidth="Infinity" onAction="#abrirVentas" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Ventas" />
 
             <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent;                        -fx-text-fill: white;                        -fx-font-weight: bold;" text="Pedidos" />
 
@@ -52,7 +52,7 @@
             <Separator />
 
             <!-- CERRAR SESIÓN -->
-            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
+            <Button maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #383331;                        -fx-text-fill: white;                        -fx-background-radius: 8;" text="Cerrar Sesión" />
 
         </VBox>
     </left>

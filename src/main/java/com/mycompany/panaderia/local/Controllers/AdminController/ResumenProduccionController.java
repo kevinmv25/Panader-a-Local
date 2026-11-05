@@ -109,6 +109,31 @@ public class ResumenProduccionController {
             "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
         );
     }
+    
+    @FXML
+    private void abrirInicio(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
+    
+    @FXML
+    private void abrirMenuMateriales(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
+    
+    
+    @FXML
+    private void cerrarSesion(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
 
     /**
      * Navega a otra pantalla en la misma ventana.

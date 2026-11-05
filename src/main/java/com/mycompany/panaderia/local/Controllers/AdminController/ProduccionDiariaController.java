@@ -84,6 +84,14 @@ public class ProduccionDiariaController {
             "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
         );
     }
+    
+    @FXML
+    private void cerrarSesion(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
 
 
     /**

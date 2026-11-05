@@ -45,7 +45,7 @@
 
             <Separator />
 
-            <Button maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #383331;                            -fx-text-fill: white;                            -fx-background-radius: 8;" text="Cerrar Sesión" />
+            <Button maxWidth="Infinity" onAction="#cerrarSesion" prefHeight="42.0" style="-fx-background-color: #383331;                            -fx-text-fill: white;                            -fx-background-radius: 8;" text="Cerrar Sesión" />
 
         </VBox>
     </left>

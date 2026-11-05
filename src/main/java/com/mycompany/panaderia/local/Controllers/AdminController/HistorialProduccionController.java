@@ -139,6 +139,14 @@ public class HistorialProduccionController {
             "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
         );
     }
+    
+     @FXML
+    private void abrirMenuMateriales(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
 
     /**
      * Regresa a la pantalla de producción diaria.
@@ -158,6 +166,17 @@ public class HistorialProduccionController {
             "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
         );
     }
+    
+    @FXML
+    private void cerrarSesion(ActionEvent event) throws IOException {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
+
+    
+    
 
     /**
      * Cambia de pantalla en la misma ventana.

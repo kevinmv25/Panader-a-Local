@@ -183,6 +183,22 @@ public class AgregarProduccionController {
             "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
         );
     }
+    
+    @FXML
+    private void abrirMenuMateriales(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
+    
+    @FXML
+    private void cerrarSesion(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
 
     /**
      * Abre el catálogo de panes.

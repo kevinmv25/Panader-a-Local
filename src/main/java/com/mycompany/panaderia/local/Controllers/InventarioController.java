@@ -1,22 +1,32 @@
-
 package com.mycompany.panaderia.local.Controllers;
 
 import com.panaderialocal.conexion.InventarioDAO;
 import com.panaderialocal.conexion.InventarioDAO.Material;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.geometry.Pos;
+import javafx.stage.Stage;
 
 public class InventarioController implements Initializable {
 
@@ -52,19 +62,19 @@ public class InventarioController implements Initializable {
 
     private void configurarTabla() {
         colNombreMaterial.setCellValueFactory(
-            dato -> new javafx.beans.property.SimpleStringProperty(
+            dato -> new SimpleStringProperty(
                 dato.getValue().getNombre()
             )
         );
 
         colUnidad.setCellValueFactory(
-            dato -> new javafx.beans.property.SimpleStringProperty(
+            dato -> new SimpleStringProperty(
                 dato.getValue().getUnidad()
             )
         );
 
         colExistencia.setCellValueFactory(
-            dato -> new javafx.beans.property.SimpleDoubleProperty(
+            dato -> new SimpleDoubleProperty(
                 dato.getValue().getExistencia()
             )
         );
@@ -160,6 +170,92 @@ public class InventarioController implements Initializable {
         tablaMateriales.setItems(filtrados);
     }
 
+    @FXML
+    private void abrirCatalogo(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/loginAdministrador.fxml"
+        );
+    }
+
+    @FXML
+    private void abrirProduccion(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
+        );
+    }
+
+    @FXML
+    private void abrirMenuMateriales(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
+        );
+    }
+
+    @FXML
+    private void abrirInicio(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
+
+    @FXML
+    private void cerrarSesion(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Login.fxml"
+        );
+    }
+    
+    @FXML
+    private void abrirVentas(ActionEvent event) {
+        abrirPantalla(
+            event,
+            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+        );
+    }
+    
+    @FXML
+    private void inicioAdmin(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/inicioAdmin.fxml"
+        );
+    }
+
+    private void abrirPantalla(ActionEvent event, String ruta) {
+
+        try {
+            URL recurso = getClass().getResource(ruta);
+
+            if (recurso == null) {
+                mostrarError(
+                    "No se encontró el archivo: " + ruta
+                );
+                return;
+            }
+
+            Parent root = FXMLLoader.load(recurso);
+
+            Stage stage = (Stage) ((Node) event.getSource())
+                .getScene()
+                .getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarError(
+                "No se pudo abrir la pantalla:\n" + e.getMessage()
+            );
+            e.printStackTrace();
+        }
+    }
+
     private void mostrarError(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Error de inventario");
@@ -168,3 +264,4 @@ public class InventarioController implements Initializable {
         alerta.showAndWait();
     }
 }
+
