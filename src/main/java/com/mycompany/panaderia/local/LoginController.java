@@ -36,7 +36,7 @@ public class LoginController {
         // Botón Entrar como Cajero
         btnCajero.setOnAction(event -> {
             try {
-                App.mostrar("cajeropedido"); 
+                App.mostrar("Cajero/cajeropedido"); 
             } catch (IOException ex) {
                 System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
