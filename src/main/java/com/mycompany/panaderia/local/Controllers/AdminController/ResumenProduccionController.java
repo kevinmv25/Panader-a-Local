@@ -100,6 +100,18 @@ public class ResumenProduccionController {
         );
     }
     /**
+     * Acción para abrir pedidos.
+     */    
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }
+    
+    /**
      * Regresa a la pantalla de producción diaria.
      */
     @FXML

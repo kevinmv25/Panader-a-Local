@@ -618,13 +618,11 @@ public class InicioAdminController implements Initializable {
 
 
     @FXML
-    private void abrirPedidos(ActionEvent event) {
+    private void abrirPedidos(ActionEvent event) throws IOException {
 
-        mostrarAlerta(
-                Alert.AlertType.INFORMATION,
-                "Pedidos",
-                "La navegación a la pantalla de pedidos "
-                + "todavía no está configurada."
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
         );
     }
 

@@ -104,6 +104,14 @@ public class CatalogoPanesController {
         );
     }
 
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        cambiarPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    } 
 
     @FXML
     private void cerrarSesion(ActionEvent event) {

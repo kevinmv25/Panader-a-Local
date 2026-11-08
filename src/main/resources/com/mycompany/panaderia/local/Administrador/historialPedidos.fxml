@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="raiz" prefHeight="720.0" prefWidth="1280.0" styleClass="historial-root" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.Controllers.AdminController.HistorialPedidosController">
+    <children>
+
+        <!-- ================= PAGINA ================= -->
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-hist" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox spacing="16.0" styleClass="hist-contenido">
+                    <padding>
+                        <Insets bottom="40.0" left="48.0" right="48.0" top="30.0" />
+                    </padding>
+                    <children>
+
+                        <!-- ENCABEZADO -->
+                        <VBox spacing="22.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#volverInicio" styleClass="boton-volver" text="←  Regresar" />
+                                <HBox alignment="BOTTOM_LEFT" spacing="24.0">
+                                    <children>
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label styleClass="eyebrow" text="ADMINISTRACIÓN DE PEDIDOS" />
+                                                <Label styleClass="hist-titulo" text="Historial de pedidos" />
+                                                <Label styleClass="hist-subtitulo" text="Consulta, filtra y revisa el detalle de cada pedido." />
+                                            </children>
+                                        </VBox>
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <HBox alignment="CENTER" minWidth="220.0" spacing="15.0" styleClass="contador-pedidos">
+                                            <children>
+                                                <Label styleClass="contador-texto" text="Pedidos registrados" />
+                                                <Label fx:id="lblTotalRegistrados" styleClass="contador-numero" text="0" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- TARJETAS DE RESUMEN -->
+                        <HBox spacing="14.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="108.0" prefWidth="420.0" spacing="14.0" styleClass="tarjeta-destacada" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="43.0" minWidth="43.0" styleClass="icono-destacado" text="≡" />
+                                        <VBox spacing="3.0">
+                                            <children>
+                                                <Label styleClass="resumen-etiqueta-dest" text="Total visible" />
+                                                <Label fx:id="lblTotalVisible" styleClass="resumen-valor-dest" text="\$0.00" />
+                                                <Label styleClass="resumen-detalle-dest" text="Sin pedidos cancelados" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="108.0" prefWidth="340.0" spacing="14.0" styleClass="tarjeta-resumen" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="43.0" minWidth="43.0" styleClass="icono-resumen" text="✓" />
+                                        <VBox spacing="3.0">
+                                            <children>
+                                                <Label styleClass="resumen-etiqueta" text="Completados" />
+                                                <Label fx:id="lblCompletados" styleClass="resumen-valor" text="0" />
+                                                <Label styleClass="resumen-detalle" text="En esta selección" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minHeight="108.0" prefWidth="340.0" spacing="14.0" styleClass="tarjeta-resumen" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label alignment="CENTER" minHeight="43.0" minWidth="43.0" styleClass="icono-resumen-calido" text="◔" />
+                                        <VBox spacing="3.0">
+                                            <children>
+                                                <Label styleClass="resumen-etiqueta" text="Pendientes" />
+                                                <Label fx:id="lblPendientes" styleClass="resumen-valor" text="0" />
+                                                <Label styleClass="resumen-detalle" text="Requieren seguimiento" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+
+                        <!-- FILTROS -->
+                        <VBox spacing="19.0" styleClass="panel-filtros">
+                            <children>
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <VBox spacing="4.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                                    <children>
+                                                        <Label styleClass="filtros-titulo" text="Filtros" />
+                                                        <Label fx:id="lblFiltrosActivos" alignment="CENTER" managed="false" minHeight="19.0" minWidth="19.0" styleClass="filtros-contador" visible="false" />
+                                                    </children>
+                                                </HBox>
+                                                <Label styleClass="filtros-ayuda" text="Encuentra pedidos por cliente, fecha, estado o entrega." />
+                                            </children>
+                                        </VBox>
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Button mnemonicParsing="false" onAction="#limpiarFiltros" styleClass="boton-texto" text="Limpiar filtros" />
+                                    </children>
+                                </HBox>
+
+                                <HBox spacing="12.0">
+                                    <children>
+                                        <VBox maxWidth="Infinity" prefWidth="330.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="filtro-etiqueta" text="BUSCAR PEDIDO" />
+                                                <HBox fx:id="cajaBusqueda" alignment="CENTER_LEFT" minHeight="42.0" prefHeight="42.0" spacing="8.0" styleClass="caja-busqueda">
+                                                    <children>
+                                                        <Label styleClass="busqueda-icono" text="⌕" />
+                                                        <TextField fx:id="txtBuscar" promptText="Folio o nombre del cliente" styleClass="campo-busqueda" HBox.hgrow="ALWAYS" />
+                                                        <Button fx:id="btnBorrarBusqueda" managed="false" mnemonicParsing="false" onAction="#borrarBusqueda" styleClass="boton-borrar" text="✕" visible="false" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                        <VBox maxWidth="Infinity" prefWidth="200.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="filtro-etiqueta" text="FECHA DEL PEDIDO" />
+                                                <ComboBox fx:id="cmbFecha" maxWidth="Infinity" prefHeight="42.0" styleClass="combo-hist" />
+                                            </children>
+                                        </VBox>
+                                        <VBox maxWidth="Infinity" prefWidth="200.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="filtro-etiqueta" text="ESTADO" />
+                                                <ComboBox fx:id="cmbEstado" maxWidth="Infinity" prefHeight="42.0" styleClass="combo-hist" />
+                                            </children>
+                                        </VBox>
+                                        <VBox maxWidth="Infinity" prefWidth="200.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="filtro-etiqueta" text="ENTREGA" />
+                                                <ComboBox fx:id="cmbEntrega" maxWidth="Infinity" prefHeight="42.0" styleClass="combo-hist" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- TABLA DE PEDIDOS -->
+                        <VBox styleClass="panel">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" styleClass="panel-encabezado">
+                                    <children>
+                                        <VBox spacing="3.0">
+                                            <children>
+                                                <Label styleClass="panel-titulo" text="Pedidos" />
+                                                <Label fx:id="lblMostrando" styleClass="panel-subtitulo" />
+                                            </children>
+                                        </VBox>
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="lblActualizado" styleClass="actualizado" />
+                                    </children>
+                                </HBox>
+                                <VBox styleClass="panel-cuerpo">
+                                    <children>
+                                        <TableView fx:id="tabla" fixedCellSize="58.0" styleClass="tabla-hist">
+                                            <columns>
+                                                <TableColumn fx:id="colFolio" resizable="false" sortable="false" text="PEDIDO" />
+                                                <TableColumn fx:id="colFecha" resizable="false" sortable="false" text="FECHA Y HORA" />
+                                                <TableColumn fx:id="colEntrega" resizable="false" sortable="false" text="ENTREGA" />
+                                                <TableColumn fx:id="colCliente" resizable="false" sortable="false" text="CLIENTE" />
+                                                <TableColumn fx:id="colProductos" resizable="false" sortable="false" text="PRODUCTOS" />
+                                                <TableColumn fx:id="colEstado" resizable="false" sortable="false" text="ESTADO" />
+                                                <TableColumn fx:id="colAdelanto" resizable="false" sortable="false" text="ADELANTO" />
+                                                <TableColumn fx:id="colTotal" resizable="false" sortable="false" text="TOTAL" />
+                                                <TableColumn fx:id="colAcciones" resizable="false" sortable="false" text="" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- ================= PANEL DE DETALLE ================= -->
+        <StackPane fx:id="overlayDetalle" managed="false" onMouseClicked="#cerrarDetalle" styleClass="fondo-cajon" visible="false">
+            <children>
+                <VBox fx:id="cajon" maxHeight="Infinity" maxWidth="430.0" minWidth="430.0" prefWidth="430.0" styleClass="cajon" StackPane.alignment="CENTER_RIGHT">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" styleClass="cajon-encabezado">
+                            <children>
+                                <VBox spacing="3.0">
+                                    <children>
+                                        <Label styleClass="cajon-sup" text="DETALLE DEL PEDIDO" />
+                                        <Label fx:id="lblDetalleFolio" styleClass="cajon-folio" />
+                                    </children>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button mnemonicParsing="false" onAction="#cerrarDetalle" styleClass="cajon-cerrar" text="✕" />
+                            </children>
+                        </HBox>
+
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-cajon" VBox.vgrow="ALWAYS">
+                            <content>
+                                <VBox spacing="20.0" styleClass="cajon-cuerpo">
+                                    <children>
+
+                                        <HBox alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label fx:id="lblDetalleEstado" styleClass="estado" />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Label fx:id="lblDetalleFecha" styleClass="cajon-fecha" />
+                                            </children>
+                                        </HBox>
+
+                                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="tarjeta-cliente">
+                                            <children>
+                                                <Label fx:id="lblDetalleIniciales" alignment="CENTER" minHeight="40.0" minWidth="40.0" styleClass="avatar-grande" />
+                                                <VBox spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="cajon-pequeno" text="Cliente" />
+                                                        <Label fx:id="lblDetalleCliente" styleClass="cajon-valor" />
+                                                        <Label fx:id="lblDetalleTelefono" styleClass="cajon-pequeno" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+
+                                        <VBox spacing="3.0" styleClass="tarjeta-entrega">
+                                            <children>
+                                                <Label styleClass="cajon-pequeno" text="Fecha de entrega" />
+                                                <Label fx:id="lblDetalleEntrega" styleClass="cajon-valor" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="10.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <Label styleClass="seccion-titulo" text="Productos" />
+                                                        <Region HBox.hgrow="ALWAYS" />
+                                                        <Label fx:id="lblDetalleConceptos" styleClass="cajon-pequeno" />
+                                                    </children>
+                                                </HBox>
+                                                <VBox fx:id="vboxDetalleItems" styleClass="lista-items" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox fx:id="seccionObservaciones" spacing="8.0">
+                                            <children>
+                                                <Label styleClass="seccion-titulo" text="Observaciones" />
+                                                <Label fx:id="lblDetalleObs" styleClass="cajon-obs" wrapText="true" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="10.0" styleClass="bloque-pago">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <Label styleClass="pago-etiqueta" text="Adelanto" />
+                                                        <Region HBox.hgrow="ALWAYS" />
+                                                        <Label fx:id="lblDetalleAdelanto" styleClass="pago-valor" />
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <Label fx:id="lblEtiquetaSaldo" styleClass="pago-etiqueta" />
+                                                        <Region HBox.hgrow="ALWAYS" />
+                                                        <Label fx:id="lblDetalleSaldo" styleClass="pago-valor" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+
+                                        <HBox alignment="CENTER_LEFT" styleClass="bloque-total">
+                                            <children>
+                                                <Label styleClass="total-etiqueta" text="Total del pedido" />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Label fx:id="lblDetalleTotal" styleClass="total-valor" />
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                </VBox>
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+
+    </children>
+</StackPane>

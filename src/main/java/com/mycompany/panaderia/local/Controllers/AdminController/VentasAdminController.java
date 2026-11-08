@@ -42,7 +42,11 @@ public class VentasAdminController implements Initializable {
 
     @FXML
     private void abrirPedidos(ActionEvent event) throws IOException {
-        // Cambiar si tienes una vista específica de pedidos
+
+        cambiarPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
     }
 
     @FXML

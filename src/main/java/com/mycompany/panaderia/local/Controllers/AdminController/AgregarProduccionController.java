@@ -183,7 +183,7 @@ public class AgregarProduccionController {
             "/com/mycompany/panaderia/local/Administrador/ProduccionDiaria.fxml"
         );
     }
-    
+
     @FXML
     private void abrirMenuMateriales(ActionEvent event) {
         abrirPantalla(
@@ -230,6 +230,15 @@ public class AgregarProduccionController {
         );
     }
 
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }
+    
     /**
      * Conserva la función del botón Cancelar.
      */
