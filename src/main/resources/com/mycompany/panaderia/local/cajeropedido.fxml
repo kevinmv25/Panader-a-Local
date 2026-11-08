@@ -42,55 +42,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-padding: 15;" BorderPane.alignment="CENTER">
          <children>
             <TextField promptText="Buscar producto..." />
-            <FlowPane hgap="15.0" style="-fx-padding: 5;" vgap="15.0">
-               <children>
-
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                     <children>
-                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                           <children>
-                              <ImageView fx:id="imgPan1" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </StackPane>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Conchas" />
-                        <Label fx:id="lblPrecio1" style="-fx-font-size: 12px;" text="\$10.00" textFill="#555555" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                     <children>
-                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                           <children>
-                              <ImageView fx:id="imgPan2" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </StackPane>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Oreja" />
-                        <Label style="-fx-font-size: 12px;" text="\$12.00" textFill="#555555" VBox.vgrow="ALWAYS" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                     <children>
-                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                           <children>
-                              <ImageView fx:id="imgPan3" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </StackPane>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Croissantt" />
-                        <Label style="-fx-font-size: 12px;" text="\$18.00" textFill="#555555" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="180.0" prefWidth="140.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                     <children>
-                        <StackPane prefHeight="100.0" prefWidth="120.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 6;">
-                           <children>
-                              <ImageView fx:id="imgPan4" fitHeight="90.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </StackPane>
-                        <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Muffin" />
-                        <Label style="-fx-font-size: 12px;" text="\$20.00" textFill="#555555" />
-                     </children>
-                  </VBox>
-               </children>
-            </FlowPane>
+            <FlowPane fx:id="contenedorPanes" hgap="15.0" style="-fx-padding: 5;" vgap="15.0" />
             <ScrollPane fitToWidth="true" prefViewportHeight="600.0" prefViewportWidth="600.0" style="-fx-background: transparent; -fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
@@ -108,24 +60,30 @@
                   <Button fx:id="btnEditarPedido" mnemonicParsing="false" style="-fx-background-color: #c62828; -fx-text-fill: white;" text="Editar pedido" />
                </children>
             </HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tablaCuenta" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="50.0" text="Cant." />
-                <TableColumn prefWidth="130.0" text="Producto" />
-                <TableColumn prefWidth="90.0" text="Subtotal" />
+                <TableColumn fx:id="colCantidad" prefWidth="50.0" text="Cant." />
+                <TableColumn fx:id="colProducto" prefWidth="130.0" text="Producto" />
+                <TableColumn fx:id="colSubtotal" prefWidth="90.0" text="Subtotal" />
               </columns>
             </TableView>
+            <HBox spacing="10.0">
+               <children>
+                  <Button fx:id="btnQuitarUno" maxWidth="Infinity" mnemonicParsing="false" text="Quitar uno" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnVaciarCuenta" maxWidth="Infinity" mnemonicParsing="false" text="Vaciar cuenta" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
                   <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Total:" />
                   <HBox HBox.hgrow="ALWAYS" />
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="\$89.00" />
+                  <Label fx:id="lblTotalCuenta" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="\$0.00" />
                </children>
             </HBox>
             <Button maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #a5d6a7;" text="Efectivo" />
             <Button maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #90caf9;" text="Tarjeta" />
             <Button maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #b39ddb;" text="Transferencia" />
-            <Button maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #ef9a9a;" text="Devolución / Reembolso" />
+            <Button fx:id="btnDevolucion" maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #ef9a9a;" text="Devolución / Reembolso" />
             <Button maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold;" text="Finalizar venta" />
          </children>
       </VBox>
