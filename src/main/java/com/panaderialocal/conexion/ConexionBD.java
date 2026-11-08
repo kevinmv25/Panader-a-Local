@@ -1,32 +1,15 @@
 package com.panaderialocal.conexion;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-/**
- *
- * @author Sinuhe
- */
+import java.sql.*;
+import java.nio.file.*;
 public class ConexionBD {
-    // El archivo de la base de datos se guardará en la carpeta del proyecto
-    private static final String URL = "jdbc:sqlite:panaderia.db";
-
-    public static Connection conectar() {
-        Connection conexion = null;
-        try {
-            conexion = DriverManager.getConnection(URL);
-            // Habilitar claves foráneas en SQLite
-            conexion.createStatement().execute("PRAGMA foreign_keys = ON;");
-            System.out.println("Conexión a SQLite exitosa.");
-        } catch (SQLException e) {
-            System.err.println("Error al conectar a la base de datos: " + e.getMessage());
-        }
-        return conexion;
-    }
+ public static Connection conectar() {
+  try {
+   Path archivo=Path.of(System.getProperty("panaderia.db","panaderia.db")).toAbsolutePath();
+   if(!Files.isRegularFile(archivo)) throw new SQLException("No se encuentra la base de datos: "+archivo);
+   Connection c=DriverManager.getConnection("jdbc:sqlite:"+archivo);
+   try(Statement s=c.createStatement()) {
+    s.execute("PRAGMA foreign_keys=ON"); s.execute("PRAGMA busy_timeout=5000"); EsquemaBD.actualizar(c); return c;
+   } catch(SQLException e) { c.close(); throw e; }
+  } catch(SQLException e) { throw new IllegalStateException("No se pudo abrir SQLite: "+e.getMessage(),e); }
+ }
 }

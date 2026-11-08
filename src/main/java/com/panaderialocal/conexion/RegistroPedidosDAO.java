@@ -77,6 +77,7 @@ public class RegistroPedidosDAO {
             );
         }
 
+        total = VentasDAO.total(detalles).doubleValue();
         try (Connection con = conectar()) {
 
             boolean autocommit = con.getAutoCommit();
@@ -148,8 +149,8 @@ public class RegistroPedidosDAO {
 
                 String sqlDetalle = """
                     INSERT INTO detalle_pedido
-                    (id_pedido, id_pan, cantidad)
-                    VALUES (?, ?, ?)
+                    (id_pedido, id_pan, cantidad, precio_unitario)
+                    VALUES (?, ?, ?, ?)
                     """;
 
                 try (PreparedStatement ps =
@@ -168,6 +169,7 @@ public class RegistroPedidosDAO {
                         ps.setInt(1, idPedido);
                         ps.setInt(2, detalle.getIdPan());
                         ps.setInt(3, detalle.getCantidad());
+                        ps.setDouble(4, detalle.getPrecioUnitario());
 
                         ps.addBatch();
                     }
@@ -319,7 +321,7 @@ public class RegistroPedidosDAO {
         String sql = """
             SELECT dp.id_pan,
                    pa.nombre,
-                   pa.precio,
+                   dp.precio_unitario AS precio,
                    dp.cantidad
             FROM detalle_pedido dp
             INNER JOIN panes pa
@@ -523,6 +525,29 @@ public class RegistroPedidosDAO {
         }
     }
 
+    public void editarPedido(int id,List<DetallePedido> detalles,LocalDate fecha,String notas) throws SQLException {
+        double total=VentasDAO.total(detalles).doubleValue();
+        if(fecha==null) throw new SQLException("Indica la fecha de entrega.");
+        try(Connection c=conectar()) {
+            c.setAutoCommit(false);
+            try {
+                try(PreparedStatement ps=c.prepareStatement("UPDATE pedidos SET total=?,fecha_entrega=?,detalle_extra=? WHERE id_pedido=? AND estado NOT IN ('Cancelado','Completado','Entregado') AND COALESCE(adelanto,0)<=?")) {
+                    ps.setDouble(1,total);ps.setString(2,fecha.toString());ps.setString(3,notas);ps.setInt(4,id);ps.setDouble(5,total);
+                    if(ps.executeUpdate()!=1) throw new SQLException("Pedido cerrado o total menor que el adelanto. Ajusta primero el adelanto si corresponde.");
+                }
+                try(PreparedStatement ps=c.prepareStatement("DELETE FROM detalle_pedido WHERE id_pedido=?")) {ps.setInt(1,id);ps.executeUpdate();}
+                try(PreparedStatement ps=c.prepareStatement("INSERT INTO detalle_pedido(id_pedido,id_pan,cantidad,precio_unitario) VALUES(?,?,?,?)")) {
+                    for(DetallePedido d:detalles) {ps.setInt(1,id);ps.setInt(2,d.getIdPan());ps.setInt(3,d.getCantidad());ps.setDouble(4,d.getPrecioUnitario());ps.addBatch();}ps.executeBatch();
+                }
+                c.commit();
+            } catch(SQLException|RuntimeException e) {c.rollback();throw e;}
+        }
+    }
+    public String obtenerNotas(int id) throws SQLException {
+        try(Connection c=conectar();PreparedStatement ps=c.prepareStatement("SELECT detalle_extra FROM pedidos WHERE id_pedido=?")) {
+            ps.setInt(1,id);try(ResultSet rs=ps.executeQuery()) {return rs.next()?rs.getString(1):"";}
+        }
+    }
     // CONEXION A SQLITE
     private Connection conectar() throws SQLException {
 

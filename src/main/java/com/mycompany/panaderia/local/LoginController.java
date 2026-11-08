@@ -18,27 +18,50 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+
+        // BOTÓN INICIAR SESIÓN COMO ADMINISTRADOR
         btnIniciar.setOnAction(event -> {
+
             String correo = txtCorreo.getText();
             String password = txtPassword.getText();
 
-            if (correo.equals("admon@gmail.com") && password.equals("1234")) {
+            if (correo.equals("admon@gmail.com")
+                    && password.equals("1234")) {
+
                 try {
-                    App.mostrar("Administrador/loginAdministrador"); 
+                    App.mostrar("Administrador/loginAdministrador");
+
                 } catch (IOException ex) {
-                    System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    System.getLogger(
+                        LoginController.class.getName()
+                    ).log(
+                        System.Logger.Level.ERROR,
+                        "Error al abrir administrador",
+                        ex
+                    );
                 }
+
             } else {
-                lblMensaje.setText("Credenciales incorrectas o usuario no autorizado.");
+                lblMensaje.setText(
+                    "Credenciales incorrectas o usuario no autorizado."
+                );
             }
         });
 
-        // Botón Entrar como Cajero
+        // BOTÓN ENTRAR COMO CAJERO
         btnCajero.setOnAction(event -> {
+
             try {
-                App.mostrar("Cajero/cajeropedido"); 
+                App.mostrar("cajeropedido");
+
             } catch (IOException ex) {
-                System.getLogger(LoginController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                System.getLogger(
+                    LoginController.class.getName()
+                ).log(
+                    System.Logger.Level.ERROR,
+                    "Error al abrir cajero",
+                    ex
+                );
             }
         });
     }

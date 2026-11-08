@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PanDAO {
+    private void validar(String nombre,double precio) throws SQLException {
+        if(nombre==null || nombre.isBlank()) throw new SQLException("El nombre es obligatorio.");
+        com.panaderialocal.conexion.VentasDAO.importe(precio);
+    }
+
 
     public List<Pan> obtenerPanes() {
         List<Pan> panes = new ArrayList<>();
@@ -38,6 +43,7 @@ public class PanDAO {
     public boolean insertarPan(String nombre, String descripcion,
                                double precio, String foto) throws SQLException {
 
+        validar(nombre, precio);
         String sql = "INSERT INTO panes (nombre, descripcion, precio, foto) "
                    + "VALUES (?, ?, ?, ?)";
 
@@ -57,6 +63,7 @@ public class PanDAO {
     public boolean actualizarPan(int id, String nombre, String descripcion,
                                  double precio, String foto) throws SQLException {
 
+        validar(nombre, precio);
         String sql = "UPDATE panes SET nombre=?, descripcion=?, "
                    + "precio=?, foto=? WHERE id_pan=?";
 

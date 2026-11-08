@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -35,6 +36,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 
 public class RegistroPedidosController implements Initializable {
 
@@ -78,6 +81,20 @@ public class RegistroPedidosController implements Initializable {
         );
 
         txtPrecioUnitario.setEditable(false);
+
+        dpFechaEntrega.setValue(LocalDate.now());
+
+        dpFechaEntrega.setDayCellFactory(param -> new DateCell() {
+
+            @Override
+            public void updateItem(LocalDate fecha, boolean empty) {
+                super.updateItem(fecha, empty);
+
+                if (empty || fecha.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
 
         cbTipoPedido.getItems().setAll(
                 "Pendiente",
@@ -195,6 +212,15 @@ public class RegistroPedidosController implements Initializable {
             return;
         }
 
+        if (pan.getPrecio() <= 0) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "Precio inválido",
+                    "El producto seleccionado tiene un precio inválido."
+            );
+            return;
+        }
+
         detalles.add(new DetallePedido(pan, cantidad));
         actualizarTotal();
 
@@ -204,9 +230,14 @@ public class RegistroPedidosController implements Initializable {
     }
 
     private double calcularTotal() {
-        return detalles.stream()
-                .mapToDouble(DetallePedido::getSubtotal)
-                .sum();
+
+        double total = 0;
+
+        for (DetallePedido detalle : detalles) {
+            total += detalle.getSubtotal();
+        }
+
+        return total;
     }
 
     private void actualizarTotal() {
@@ -233,11 +264,71 @@ public class RegistroPedidosController implements Initializable {
             return;
         }
 
+        for (int i = 0; i < nombre.length(); i++) {
+
+            char letra = nombre.charAt(i);
+
+            if (!((letra >= 'A' && letra <= 'Z')
+                    || (letra >= 'a' && letra <= 'z')
+                    || letra == ' '
+                    || letra == 'á' || letra == 'é'
+                    || letra == 'í' || letra == 'ó'
+                    || letra == 'ú'
+                    || letra == 'Á' || letra == 'É'
+                    || letra == 'Í' || letra == 'Ó'
+                    || letra == 'Ú'
+                    || letra == 'ñ' || letra == 'Ñ'
+                    || letra == 'ü' || letra == 'Ü')) {
+
+                mostrarAlerta(
+                        Alert.AlertType.WARNING,
+                        "Nombre inválido",
+                        "El nombre del cliente solo debe contener letras."
+                );
+                return;
+            }
+        }
+
+        if (!telefono.isEmpty()) {
+
+            if (telefono.length() != 10) {
+                mostrarAlerta(
+                        Alert.AlertType.WARNING,
+                        "Teléfono inválido",
+                        "El teléfono debe contener exactamente 10 números."
+                );
+                return;
+            }
+
+            for (int i = 0; i < telefono.length(); i++) {
+
+                if (telefono.charAt(i) < '0'
+                        || telefono.charAt(i) > '9') {
+
+                    mostrarAlerta(
+                            Alert.AlertType.WARNING,
+                            "Teléfono inválido",
+                            "El teléfono solo debe contener números."
+                    );
+                    return;
+                }
+            }
+        }
+
         if (dpFechaEntrega.getValue() == null) {
             mostrarAlerta(
                     Alert.AlertType.WARNING,
                     "Falta la fecha",
                     "Selecciona la fecha de entrega."
+            );
+            return;
+        }
+
+        if (dpFechaEntrega.getValue().isBefore(LocalDate.now())) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "Fecha inválida",
+                    "La fecha de entrega no puede ser anterior a hoy."
             );
             return;
         }
@@ -292,7 +383,7 @@ public class RegistroPedidosController implements Initializable {
 
         txtNombreCliente.clear();
         txtTelefono.clear();
-        dpFechaEntrega.setValue(null);
+        dpFechaEntrega.setValue(LocalDate.now());
         txtObservaciones.clear();
 
         cbTipoPan.getSelectionModel().clearSelection();
