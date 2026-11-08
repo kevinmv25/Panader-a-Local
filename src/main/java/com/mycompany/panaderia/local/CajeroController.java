@@ -38,6 +38,7 @@ public class CajeroController {
     @FXML private Button btnSalir;
     @FXML private Button btnEditarPedido;
     @FXML private Button btnIrRegistro;
+    @FXML private Button btnDevolucion;
 
     @FXML private FlowPane contenedorPanes;
     @FXML private TableView<DetallePedido> tablaCuenta;
@@ -66,7 +67,8 @@ public class CajeroController {
         });
 
         btnEditarPedido.setOnAction(event -> abrirGestionPedidos());
-
+        btnDevolucion.setOnAction(event -> abrirDevolucion());
+        
         btnIrRegistro.setOnAction(event -> {
             try {
                 App.setRoot("Cajero/RegistroPedidos");
@@ -74,6 +76,28 @@ public class CajeroController {
                 ex.printStackTrace();
             }
         });
+        configurarCuenta();
+        cargarPanes();
+    }
+    
+    private void abrirDevolucion() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("devolucion.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage ventana = new Stage();
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.setTitle("Devolución / Reembolso");
+            ventana.setScene(new Scene(root, 850, 700));
+            ventana.setResizable(true);
+            ventana.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void abrirGestionPedidos() {
