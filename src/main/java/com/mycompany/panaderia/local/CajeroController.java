@@ -718,7 +718,7 @@ public class CajeroController {
             ventana.setTitle("Gestión de pedidos");
 
             ventana.setScene(
-                new Scene(root, 850, 600)
+                new Scene(root, Math.min(1280, javafx.stage.Screen.getPrimary().getVisualBounds().getWidth() - 48), Math.min(760, javafx.stage.Screen.getPrimary().getVisualBounds().getHeight() - 64))
             );
 
             ventana.showAndWait();

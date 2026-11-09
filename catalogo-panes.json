@@ -44,79 +44,79 @@
   {
     "nombre": "Violin",
     "precio": 14,
-    "foto": "",
+    "foto": "/images/catalogo/violin.png",
     "descripcion": "Violin de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Marias",
     "precio": 10,
-    "foto": "",
+    "foto": "/images/catalogo/marias.png",
     "descripcion": "Marias de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Tornillo",
     "precio": 14,
-    "foto": "",
+    "foto": "/images/catalogo/tornillo.png",
     "descripcion": "Tornillo de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Barquillo",
     "precio": 18,
-    "foto": "",
+    "foto": "/images/catalogo/barquillo.png",
     "descripcion": "Barquillo de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Budín",
     "precio": 16,
-    "foto": "",
+    "foto": "/images/catalogo/budin.png",
     "descripcion": "Budín de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Chamuco",
     "precio": 12,
-    "foto": "",
+    "foto": "/images/catalogo/chamuco.png",
     "descripcion": "Chamuco de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Payaso",
     "precio": 15,
-    "foto": "",
+    "foto": "/images/catalogo/payaso.png",
     "descripcion": "Payaso de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Mostacho",
     "precio": 14,
-    "foto": "",
+    "foto": "/images/catalogo/mostacho.png",
     "descripcion": "Mostacho de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Novia",
     "precio": 15,
-    "foto": "",
+    "foto": "/images/catalogo/novia.png",
     "descripcion": "Novia de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Tacón",
     "precio": 14,
-    "foto": "",
+    "foto": "/images/catalogo/tacon.png",
     "descripcion": "Tacón de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Anteojo",
     "precio": 15,
-    "foto": "",
+    "foto": "/images/catalogo/anteojo.png",
     "descripcion": "Anteojo de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Semita",
     "precio": 10,
-    "foto": "",
+    "foto": "/images/catalogo/semita.jpg",
     "descripcion": "Semita de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Chipote",
     "precio": 12,
-    "foto": "",
+    "foto": "/images/catalogo/chipote.png",
     "descripcion": "Chipote de panadería artesanal. Precio por pieza."
   },
   {
@@ -128,43 +128,43 @@
   {
     "nombre": "Pierna",
     "precio": 14,
-    "foto": "",
+    "foto": "/images/catalogo/pierna.jpg",
     "descripcion": "Pierna de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Bisquets",
     "precio": 12,
-    "foto": "",
+    "foto": "/images/catalogo/bisquets.png",
     "descripcion": "Bisquets de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Cocol",
     "precio": 10,
-    "foto": "",
+    "foto": "/images/catalogo/cocol.png",
     "descripcion": "Cocol de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Rosca de agua",
     "precio": 6,
-    "foto": "",
+    "foto": "/images/catalogo/rosca-de-agua.png",
     "descripcion": "Rosca de agua de panadería artesanal. Precio por pieza."
   },
   {
-    "nombre": "Resonador",
+    "nombre": "Resobado",
     "precio": 14,
-    "foto": "",
-    "descripcion": "Resonador de panadería artesanal. Precio por pieza."
+    "foto": "/images/catalogo/resobado.jpg",
+    "descripcion": "Resobado de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Pambazo",
     "precio": 6,
-    "foto": "",
+    "foto": "/images/catalogo/pambazo.png",
     "descripcion": "Pambazo de panadería artesanal. Precio por pieza."
   },
   {
     "nombre": "Micha",
     "precio": 4,
-    "foto": "",
+    "foto": "/images/catalogo/micha.jpg",
     "descripcion": "Micha de panadería artesanal. Precio por pieza."
   },
   {

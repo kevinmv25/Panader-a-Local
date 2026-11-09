@@ -45,7 +45,10 @@ public class EditarPedidoController {
         if(!validarPedidoEditable()) return;
         try {
             dao.editarPedido(pedidoActual.getIdPedido(),new java.util.ArrayList<>(tablaDetalles.getItems()),fechaEntrega.getValue(),txtMotivo.getText());
-            cargarPedido(); cargarPedidosDisponibles();
+            int id = pedidoActual.getIdPedido();
+            cargarPedidosDisponibles();
+            cmbPedidos.getItems().stream().filter(p -> p.getIdPedido() == id).findFirst().ifPresent(cmbPedidos::setValue);
+            cargarPedido();
             mostrarAlerta(Alert.AlertType.INFORMATION,"Pedido guardado","Productos, cantidades, fecha y notas actualizados.");
         } catch(Exception e) {mostrarAlerta(Alert.AlertType.ERROR,"No se guardo el pedido",e.getMessage());}
     }
@@ -71,6 +74,10 @@ public class EditarPedidoController {
     @FXML private TableColumn<DetallePedido, Double> colSubtotal;
 
     @FXML private Label lblTotal;
+    @FXML private Label lblAdelanto;
+    @FXML private Label lblEstado;
+    @FXML private Button btnAgregarLinea;
+    @FXML private Button btnQuitarLinea;
     @FXML private Label lblSaldo;
     @FXML private TextField txtAdelanto;
     @FXML private TextArea txtMotivo;
@@ -81,6 +88,15 @@ public class EditarPedidoController {
 
     @FXML
     public void initialize() {
+        tablaDetalles.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        for (var columna : java.util.List.of(colPrecio, colSubtotal)) {
+            columna.setCellFactory(c -> new javafx.scene.control.TableCell<DetallePedido, Double>() {
+                @Override protected void updateItem(Double valor, boolean vacio) {
+                    super.updateItem(valor, vacio);
+                    setText(vacio || valor == null ? null : moneda(valor));
+                }
+            });
+        }
         colProducto.setCellValueFactory(
             new PropertyValueFactory<>("nombreProducto")
         );
@@ -341,11 +357,15 @@ public class EditarPedidoController {
 
     private void actualizarImportes() {
         if (pedidoActual == null) {
+            lblAdelanto.setText("$0.00");
+            lblEstado.setText("Selecciona un pedido");
             lblTotal.setText("$0.00");
             lblSaldo.setText("$0.00");
             return;
         }
 
+        lblAdelanto.setText(moneda(adelantoActual));
+        lblEstado.setText(pedidoActual.getEstado());
         lblTotal.setText(moneda(pedidoActual.getTotal()));
         lblSaldo.setText(
             moneda(pedidoActual.getTotal() - adelantoActual)
@@ -358,6 +378,9 @@ public class EditarPedidoController {
             && !"Completado".equalsIgnoreCase(pedidoActual.getEstado())
             && !"Entregado".equalsIgnoreCase(pedidoActual.getEstado());
 
+        btnAgregarLinea.setDisable(!editable);
+        btnQuitarLinea.setDisable(!editable);
+        txtMotivo.setDisable(!editable);
         btnGuardarDetalles.setDisable(!editable);
         cmbPan.setDisable(!editable);txtCantidad.setDisable(!editable);fechaEntrega.setDisable(!editable);
         txtAdelanto.setDisable(!editable);
