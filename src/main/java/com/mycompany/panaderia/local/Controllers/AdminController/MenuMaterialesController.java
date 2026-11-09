@@ -84,9 +84,11 @@ public class MenuMaterialesController {
      * Acción para abrir pedidos.
      */
     @FXML
-    private void abrirPedidos(ActionEvent event) {
-        mostrarMensaje(
-            "La pantalla de Pedidos todavía no está configurada."
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
         );
     }
 

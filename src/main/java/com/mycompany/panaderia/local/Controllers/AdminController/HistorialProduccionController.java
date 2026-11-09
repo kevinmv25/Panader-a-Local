@@ -140,6 +140,15 @@ public class HistorialProduccionController {
         );
     }
     
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }
+    
      @FXML
     private void abrirMenuMateriales(ActionEvent event) throws IOException {
         abrirPantalla(

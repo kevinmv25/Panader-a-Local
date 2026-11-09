@@ -45,7 +45,7 @@
                 
                 <Button maxWidth="Infinity" onAction="#abrirVentas" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Ventas" />                
 
-                <Button maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Pedidos" />
+                <Button maxWidth="Infinity" onAction="#abrirPedidos" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;" text="Pedidos" />
 
                 <Region VBox.vgrow="ALWAYS" />
 

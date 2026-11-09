@@ -37,6 +37,7 @@ public class IntegrationCheck {
   panes.actualizarPan(a,"PRUEBA A EDITADO","nueva descripcion",3.75,"foto.png");
   ok(dao.obtenerDetallesPedido(pedido).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio del pedido");
   ok(new DevolucionDAO().obtenerLineasVenta(id).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio de venta");
+  ok(new HistorialPedidosDAO().obtenerItems(pedido).get(0).getPrecioUnitario()==2.5,"historial nuevo conserva el precio original del pedido");
   reject(()->ventas.registrarVenta(lineas,"Efectivo",new BigDecimal("20.00"),null),"rechaza precio de caja desactualizado");
   dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",4,2.5)),LocalDate.now().plusDays(2),"editado");
   ok(dao.obtenerPedido(pedido).getTotal()==10 && dao.obtenerDetallesPedido(pedido).size()==1,"edicion persiste lineas y total");

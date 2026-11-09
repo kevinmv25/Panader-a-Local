@@ -193,6 +193,15 @@ public class InventarioController implements Initializable {
             "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
         );
     }
+    
+        @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }
 
     @FXML
     private void abrirInicio(ActionEvent event) {

@@ -321,6 +321,15 @@ public class RegistroMaterialesController implements Initializable {
     }
     
     @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }
+    
+    @FXML
     private void cerrarSesion(ActionEvent event) throws IOException {
 
         abrirPantalla(

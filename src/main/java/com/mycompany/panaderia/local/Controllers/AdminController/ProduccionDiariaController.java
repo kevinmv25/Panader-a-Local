@@ -47,6 +47,16 @@ public class ProduccionDiariaController {
             "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
         );
     }
+    
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        abrirPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    }    
+    
     /**
      * Abre el historial de producción.
      */
