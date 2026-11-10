@@ -167,7 +167,7 @@ public class FormularioPanController {
                 txtPrecio.getText().trim().replace(",", ".")
             );
 
-            if (!Double.isFinite(precio) || precio < 0) {
+            if (!Double.isFinite(precio) || precio <= 0) {
                 throw new NumberFormatException();
             }
 

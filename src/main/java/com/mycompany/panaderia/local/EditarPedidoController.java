@@ -21,6 +21,43 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class EditarPedidoController {
+    @FXML private ComboBox<RegistroPedidosDAO.Pan> cmbPan;
+    @FXML private TextField txtCantidad;
+    @FXML private javafx.scene.control.DatePicker fechaEntrega;
+    @FXML private Button btnGuardarDetalles;
+    @FXML private void agregarLinea() {
+        if(!validarPedidoEditable()) return;
+        try {
+            var pan=cmbPan.getValue(); int n=Integer.parseInt(txtCantidad.getText().trim());
+            if(pan==null || n<1 || n>9999) throw new NumberFormatException();
+            var items=tablaDetalles.getItems();
+            for(int i=0;i<items.size();i++) if(items.get(i).getIdPan()==pan.getIdPan()) {
+                var viejo=items.get(i); items.set(i,new DetallePedido(viejo.getIdPan(),viejo.getNombreProducto(),n,viejo.getPrecioUnitario())); actualizarBorrador();return;
+            }
+            items.add(new DetallePedido(pan,n)); actualizarBorrador();
+        } catch(NumberFormatException e) {mostrarAlerta(Alert.AlertType.WARNING,"Cantidad invalida","Selecciona un pan e introduce de 1 a 9999 piezas.");}
+    }
+    @FXML private void quitarLinea() {
+        if(!validarPedidoEditable()) return;
+        tablaDetalles.getItems().remove(tablaDetalles.getSelectionModel().getSelectedItem()); actualizarBorrador();
+    }
+    @FXML private void guardarDetalles() {
+        if(!validarPedidoEditable()) return;
+        try {
+            dao.editarPedido(pedidoActual.getIdPedido(),new java.util.ArrayList<>(tablaDetalles.getItems()),fechaEntrega.getValue(),txtMotivo.getText());
+            int id = pedidoActual.getIdPedido();
+            cargarPedidosDisponibles();
+            cmbPedidos.getItems().stream().filter(p -> p.getIdPedido() == id).findFirst().ifPresent(cmbPedidos::setValue);
+            cargarPedido();
+            mostrarAlerta(Alert.AlertType.INFORMATION,"Pedido guardado","Productos, cantidades, fecha y notas actualizados.");
+        } catch(Exception e) {mostrarAlerta(Alert.AlertType.ERROR,"No se guardo el pedido",e.getMessage());}
+    }
+    private void actualizarBorrador() {
+        double total=tablaDetalles.getItems().stream().mapToDouble(DetallePedido::getSubtotal).sum();
+        lblTotal.setText(moneda(total));lblSaldo.setText(moneda(total-adelantoActual));
+        btnCompletar.setDisable(true);
+    }
+
 
     @FXML private Button btnCerrarX;
     @FXML private Button btnCerrar;
@@ -37,6 +74,10 @@ public class EditarPedidoController {
     @FXML private TableColumn<DetallePedido, Double> colSubtotal;
 
     @FXML private Label lblTotal;
+    @FXML private Label lblAdelanto;
+    @FXML private Label lblEstado;
+    @FXML private Button btnAgregarLinea;
+    @FXML private Button btnQuitarLinea;
     @FXML private Label lblSaldo;
     @FXML private TextField txtAdelanto;
     @FXML private TextArea txtMotivo;
@@ -47,6 +88,15 @@ public class EditarPedidoController {
 
     @FXML
     public void initialize() {
+        tablaDetalles.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        for (var columna : java.util.List.of(colPrecio, colSubtotal)) {
+            columna.setCellFactory(c -> new javafx.scene.control.TableCell<DetallePedido, Double>() {
+                @Override protected void updateItem(Double valor, boolean vacio) {
+                    super.updateItem(valor, vacio);
+                    setText(vacio || valor == null ? null : moneda(valor));
+                }
+            });
+        }
         colProducto.setCellValueFactory(
             new PropertyValueFactory<>("nombreProducto")
         );
@@ -60,6 +110,11 @@ public class EditarPedidoController {
             new PropertyValueFactory<>("subtotal")
         );
 
+        try { cmbPan.getItems().setAll(dao.obtenerPanes()); }
+        catch(SQLException e) {mostrarAlerta(Alert.AlertType.ERROR,"Error",e.getMessage());}
+        tablaDetalles.getSelectionModel().selectedItemProperty().addListener((o,a,d)-> {
+            if(d!=null) { cmbPan.getItems().stream().filter(p->p.getIdPan()==d.getIdPan()).findFirst().ifPresent(cmbPan::setValue);txtCantidad.setText(String.valueOf(d.getCantidad())); }
+        });
         cargarPedidosDisponibles();
         limpiarSeleccion();
     }
@@ -110,6 +165,8 @@ public class EditarPedidoController {
                 String.format(Locale.US, "%.2f", adelantoActual)
             );
 
+            fechaEntrega.setValue(java.time.LocalDate.parse(pedidoActual.getFechaEntrega()));
+            txtMotivo.setText(dao.obtenerNotas(pedidoActual.getIdPedido()));
             actualizarImportes();
             actualizarControles();
 
@@ -300,11 +357,15 @@ public class EditarPedidoController {
 
     private void actualizarImportes() {
         if (pedidoActual == null) {
+            lblAdelanto.setText("$0.00");
+            lblEstado.setText("Selecciona un pedido");
             lblTotal.setText("$0.00");
             lblSaldo.setText("$0.00");
             return;
         }
 
+        lblAdelanto.setText(moneda(adelantoActual));
+        lblEstado.setText(pedidoActual.getEstado());
         lblTotal.setText(moneda(pedidoActual.getTotal()));
         lblSaldo.setText(
             moneda(pedidoActual.getTotal() - adelantoActual)
@@ -317,6 +378,11 @@ public class EditarPedidoController {
             && !"Completado".equalsIgnoreCase(pedidoActual.getEstado())
             && !"Entregado".equalsIgnoreCase(pedidoActual.getEstado());
 
+        btnAgregarLinea.setDisable(!editable);
+        btnQuitarLinea.setDisable(!editable);
+        txtMotivo.setDisable(!editable);
+        btnGuardarDetalles.setDisable(!editable);
+        cmbPan.setDisable(!editable);txtCantidad.setDisable(!editable);fechaEntrega.setDisable(!editable);
         txtAdelanto.setDisable(!editable);
         btnGuardarAdelanto.setDisable(!editable);
         btnCancelarPedido.setDisable(!editable);

@@ -69,7 +69,7 @@ public class App extends Application {
 
     public static void entrarCajero() throws IOException {
         administrador = false;
-        setRoot("cajeroPedido"); 
+        setRoot("cajeropedido"); 
     }
 
     public static void cerrarSesion() throws IOException {

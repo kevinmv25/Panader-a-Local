@@ -403,8 +403,8 @@
 
 /* Pedidos */
 .insignia-pedidos {
-    -fx-background-color: -c-beige;
-    -fx-text-fill: -c-cafe-oscuro;
-    -fx-border-color: -c-dorado;
+    -fx-background-color: -fx-beige;
+    -fx-text-fill: -fx-cafe-oscuro;
+    -fx-border-color: -fx-dorado;
     -fx-border-radius: 5;
 }

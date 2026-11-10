@@ -1,0 +1,135 @@
+[
+  {
+    "nombre": "Mostacho",
+    "archivo": "/images/catalogo/mostacho.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 8,
+    "producto_fuente": "Bigote azucarado"
+  },
+  {
+    "nombre": "Bisquets",
+    "archivo": "/images/catalogo/bisquets.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 8,
+    "producto_fuente": "Bisquet"
+  },
+  {
+    "nombre": "Tornillo",
+    "archivo": "/images/catalogo/tornillo.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 8,
+    "producto_fuente": "Broca azucarada"
+  },
+  {
+    "nombre": "Budín",
+    "archivo": "/images/catalogo/budin.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 9,
+    "producto_fuente": "Budín"
+  },
+  {
+    "nombre": "Cocol",
+    "archivo": "/images/catalogo/cocol.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 11,
+    "producto_fuente": "Cocol ajonjolí"
+  },
+  {
+    "nombre": "Novia",
+    "archivo": "/images/catalogo/novia.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 18,
+    "producto_fuente": "Novia"
+  },
+  {
+    "nombre": "Payaso",
+    "archivo": "/images/catalogo/payaso.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 25,
+    "producto_fuente": "Payasos"
+  },
+  {
+    "nombre": "Pambazo",
+    "archivo": "/images/catalogo/pambazo.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 28,
+    "producto_fuente": "Pambazo"
+  },
+  {
+    "nombre": "Rosca de agua",
+    "archivo": "/images/catalogo/rosca-de-agua.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 30,
+    "producto_fuente": "Rosca CH"
+  },
+  {
+    "nombre": "Violin",
+    "archivo": "/images/catalogo/violin.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 18,
+    "producto_fuente": "Ochos (foto de referencia)"
+  },
+  {
+    "nombre": "Marias",
+    "archivo": "/images/catalogo/marias.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 11,
+    "producto_fuente": "Chamuco (foto de referencia)"
+  },
+  {
+    "nombre": "Tacón",
+    "archivo": "/images/catalogo/tacon.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 9,
+    "producto_fuente": "Cajita con nuez (foto de referencia)"
+  },
+  {
+    "nombre": "Chipote",
+    "archivo": "/images/catalogo/chipote.png",
+    "fuente": "https://panlacolonial.com/wp-content/uploads/2024/01/CATALOGO-LA-COLONIAL-2024.pdf",
+    "pagina": 8,
+    "producto_fuente": "Borrego (foto de referencia)"
+  },
+  {
+    "nombre": "Barquillo",
+    "archivo": "/images/catalogo/barquillo.png",
+    "fuente": "https://depanypanaderias.com/index.php/panes/nombres-de-panes-3",
+    "imagen_original": "https://depanypanaderias.com/images/panes/pan3/de-pan-y-panaderias-barquillo-de-crema-pastelera.png"
+  },
+  {
+    "nombre": "Chamuco",
+    "archivo": "/images/catalogo/chamuco.png",
+    "fuente": "https://depanypanaderias.com/index.php/panes/nombres-de-panes-3",
+    "imagen_original": "https://depanypanaderias.com/images/panes/pan3/de-pan-y-panaderias-chamucos.png"
+  },
+  {
+    "nombre": "Semita",
+    "archivo": "/images/catalogo/semita.jpg",
+    "fuente": "https://laroussecocina.mx/palabra/semita/",
+    "imagen_original": "https://laroussecocina.mx/wp-content/uploads/2018/01/semita-001-larousse-cocina_0-1.jpg"
+  },
+  {
+    "nombre": "Pierna",
+    "archivo": "/images/catalogo/pierna.jpg",
+    "fuente": "https://www.pasteleriasanjose.com/products/pan-dulce-pierna-pollo",
+    "imagen_original": "https://www.pasteleriasanjose.com/cdn/shop/products/pierna_de_pollo_2048x.jpg?v=1556037637"
+  },
+  {
+    "nombre": "Micha",
+    "archivo": "/images/catalogo/micha.jpg",
+    "fuente": "https://ednacochez.com/blogs/news/haz-tu-pan-michita-en-casa",
+    "imagen_original": "https://ednacochez.com/cdn/shop/articles/959BBE6E-0BA6-498D-9D1B-B4CE98A94D09_1_105_c-e1582761443974.jpg?v=1609952739"
+  },
+  {
+    "nombre": "Resobado",
+    "archivo": "/images/catalogo/resobado.jpg",
+    "fuente": "https://lifeandstyle.expansion.mx/taste/2015/08/20/panes-centenarios",
+    "imagen_original": "https://cherry-brightspot.s3.amazonaws.com/gex.lifeandstyle/uploads/asset/asset_file/8676/Sasha_L_S_Cuerpo.jpg"
+  },
+  {
+    "nombre": "Anteojo",
+    "archivo": "/images/catalogo/anteojo.png",
+    "fuente": "https://www.rappi.com.mx/restaurantes/1930042679-valerio-pasteleria",
+    "imagen_original": "https://images.rappi.com.mx/products/0792cef0-bb92-4c02-a973-0b48622d608e.png"
+  }
+]

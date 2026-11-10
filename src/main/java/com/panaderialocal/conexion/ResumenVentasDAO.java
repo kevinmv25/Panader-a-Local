@@ -60,7 +60,7 @@ public class ResumenVentasDAO {
             + "FROM detalle_venta dv "
             + "INNER JOIN ventas v ON v.id_venta = dv.id_venta "
             + "UNION ALL "
-            + "SELECT dp.id_pan, dp.cantidad, dp.cantidad * pa.precio, "
+            + "SELECT dp.id_pan, dp.cantidad, dp.cantidad * dp.precio_unitario, "
             + "COALESCE(date(" + HORA_PEDIDO + "), date(p.fecha_entrega)) "
             + "FROM detalle_pedido dp "
             + "INNER JOIN pedidos p ON p.id_pedido = dp.id_pedido "

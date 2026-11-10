@@ -71,10 +71,7 @@ public class CatalogoPanesController {
         abrirFormulario(null);
     }
 
-    /**
-     * Navega desde loginAdministrador.fxml
-     * hasta Administrador/ProduccionDiaria.fxml.
-     */
+
     @FXML
     private void abrirProduccion(ActionEvent event) {
         cambiarPantalla(
@@ -98,9 +95,7 @@ public class CatalogoPanesController {
             "/com/mycompany/panaderia/local/Administrador/menuMateriales.fxml"
         );
     }
-    /**
-     * Acción para abrir ventas.
-     */
+ 
     @FXML
     private void abrirVentas(ActionEvent event) throws IOException {
     abrirPantalla(
@@ -109,9 +104,15 @@ public class CatalogoPanesController {
         );
     }
 
-    /**
-     * Regresa a Login.fxml al cerrar sesión.
-     */
+    @FXML
+    private void abrirPedidos(ActionEvent event) throws IOException {
+
+        cambiarPantalla(
+                event,
+                "/com/mycompany/panaderia/local/Administrador/historialPedidos.fxml"
+        );
+    } 
+
     @FXML
     private void cerrarSesion(ActionEvent event) {
         cambiarPantalla(
@@ -120,9 +121,7 @@ public class CatalogoPanesController {
         );
     }
     
-    // ==========================================
-    // CAMBIAR DE INTERFAZ
-    // ==========================================
+
 
     private void abrirPantalla(ActionEvent event, String ruta)
             throws IOException {

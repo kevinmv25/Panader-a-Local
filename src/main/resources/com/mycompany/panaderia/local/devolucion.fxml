@@ -37,9 +37,82 @@
                         <Label styleClass="dv-titulo" text="Devolución / Reembolso" />
                         <Label styleClass="dv-subtitulo" text="El pan devuelto se descuenta del pedido que hizo el cliente." />
                     </children>
-                </VBox>
-                <Region HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#cerrar" styleClass="dv-btn-cerrar" text="×" />
+                </HBox>
+
+                <Label text="1. Selecciona la venta:" />
+
+                <ComboBox fx:id="cmbVentas"
+                          maxWidth="Infinity"
+                          promptText="Selecciona una venta" />
+
+                <Label text="2. Selecciona el pan en mal estado y cuántas piezas:" />
+
+                <TableView fx:id="tablaVenta"
+                           prefHeight="140.0"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colProducto" text="Producto" prefWidth="260.0" />
+                        <TableColumn fx:id="colPrecio" text="Precio" prefWidth="130.0" />
+                        <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="130.0" />
+                        <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="130.0" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Piezas a devolver:" />
+                        <Spinner fx:id="spCantidad" prefWidth="90.0" />
+                        <Button fx:id="btnAgregar"
+                                text="Agregar a la devolución"
+                                onAction="#agregarADevolucion" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="Saldo reembolsable de la venta:" />
+                        <Label fx:id="lblSaldo"
+                               text="\$0.00"
+                               style="-fx-font-weight: bold;" />
+                    </children>
+                </HBox>
+
+                <Label text="3. Productos que se devolverán:" />
+
+                <TableView fx:id="tablaDevolucion"
+                           prefHeight="120.0"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colDevProducto" text="Producto" prefWidth="360.0" />
+                        <TableColumn fx:id="colDevCantidad" text="Piezas" prefWidth="140.0" />
+                        <TableColumn fx:id="colDevImporte" text="Importe" prefWidth="140.0" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Button text="Quitar seleccionado"
+                                onAction="#quitarDeDevolucion" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label text="Total a devolver:"
+                               style="-fx-font-weight: bold; -fx-font-size: 15px;" />
+                        <Label fx:id="lblTotalDevolver"
+                               text="\$0.00"
+                               style="-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #b71c1c;" />
+                    </children>
+                </HBox>
+
+                <Label text="4. Motivo (obligatorio):" />
+
+                <TextArea fx:id="txtMotivo"
+                          prefHeight="65.0"
+                          promptText="Ej. Pan duro, con moho, mal sabor..." />
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnCerrar" text="Cerrar" onAction="#cerrar" />
+                        <Button fx:id="btnConfirmar"
+                                text="Confirmar devolución"
+                                style="-fx-background-color: #c62828; -fx-text-fill: white; -fx-font-weight: bold;"
+                                onAction="#confirmarDevolucion" />
+                    </children>
+                </HBox>
             </children>
         </HBox>
     </top>
