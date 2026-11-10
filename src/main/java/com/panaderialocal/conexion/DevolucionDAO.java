@@ -348,7 +348,8 @@ public class DevolucionDAO {
     }
 
     // QUITA LAS PIEZAS DEVUELTAS DE detalle_pedido Y RETORNA SU IMPORTE
-    // (precio actual del pan x piezas, igual que el resto del sistema)
+    // (precio_unitario guardado en cada renglon del pedido x piezas: el mismo
+    // precio que muestra la pantalla, aunque el precio del pan haya cambiado)
     private BigDecimal descontarProducto(
             Connection con,
             int idPedido,
@@ -363,17 +364,15 @@ public class DevolucionDAO {
         String consulta = """
             SELECT dp.id_detalle_pedido,
                    dp.cantidad,
-                   pa.precio
+                   dp.precio_unitario
             FROM detalle_pedido dp
-            INNER JOIN panes pa
-                ON pa.id_pan = dp.id_pan
             WHERE dp.id_pedido = ?
               AND dp.id_pan = ?
             ORDER BY dp.id_detalle_pedido
             """;
 
         List<int[]> renglones = new ArrayList<>();
-        double precio = 0;
+        List<BigDecimal> precios = new ArrayList<>();
         int disponible = 0;
 
         try (PreparedStatement ps = con.prepareStatement(consulta)) {
@@ -390,7 +389,9 @@ public class DevolucionDAO {
                         rs.getInt("cantidad")
                     });
 
-                    precio = rs.getDouble("precio");
+                    precios.add(BigDecimal.valueOf(
+                        rs.getDouble("precio_unitario")
+                    ));
                     disponible += rs.getInt("cantidad");
                 }
             }
@@ -412,14 +413,22 @@ public class DevolucionDAO {
         }
 
         int pendiente = linea.getCantidad();
+        BigDecimal importe = BigDecimal.ZERO;
 
-        for (int[] renglon : renglones) {
+        for (int i = 0; i < renglones.size(); i++) {
+
+            int[] renglon = renglones.get(i);
 
             if (pendiente == 0) {
                 break;
             }
 
             int quitar = Math.min(pendiente, renglon[1]);
+
+            // Cada renglon se descuenta a su propio precio.
+            importe = importe.add(
+                precios.get(i).multiply(BigDecimal.valueOf(quitar))
+            );
 
             // Si se devuelve todo el renglon se elimina, si no se resta.
             if (quitar == renglon[1]) {
@@ -448,9 +457,7 @@ public class DevolucionDAO {
             pendiente -= quitar;
         }
 
-        return BigDecimal.valueOf(precio)
-                .multiply(BigDecimal.valueOf(linea.getCantidad()))
-                .setScale(2, RoundingMode.HALF_UP);
+        return importe.setScale(2, RoundingMode.HALF_UP);
     }
 
     // REEMBOLSO CONTRA UNA VENTA (nunca mas de lo cobrado)
