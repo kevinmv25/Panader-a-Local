@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.panaderialocal.conexion;
 
 import com.panaderialocal.conexion.RegistroPedidosDAO.DetallePedido;
@@ -11,19 +7,80 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author aleja
- */
 public class DevolucionDAO {
-    // CONSULTAR VENTAS QUE TODAVIA TIENEN SALDO POR DEVOLVER
-    public List<VentaDevolucion> obtenerVentasConSaldo()
+
+    // La tabla devoluciones solo admite ventas (id_venta NOT NULL), por eso
+    // las devoluciones de pedidos se guardan en devoluciones_pedido.
+    private static boolean esquemaListo = false;
+
+    // CONSULTAR PEDIDOS Y VENTAS QUE SE PUEDEN DEVOLVER
+    public List<OrigenDevolucion> obtenerOrigenes()
             throws SQLException {
 
-        List<VentaDevolucion> ventas = new ArrayList<>();
+        List<OrigenDevolucion> origenes = new ArrayList<>();
+
+        origenes.addAll(consultarPedidos());
+        origenes.addAll(consultarVentas());
+
+        return origenes;
+    }
+
+    // PEDIDOS DE CLIENTES YA ENTREGADOS (el cliente ya recibio el pan)
+    private List<OrigenDevolucion> consultarPedidos()
+            throws SQLException {
+
+        List<OrigenDevolucion> pedidos = new ArrayList<>();
+
+        String sql = """
+            SELECT p.id_pedido,
+                   c.nombre AS cliente,
+                   p.fecha_entrega,
+                   p.estado,
+                   p.total
+            FROM pedidos p
+            INNER JOIN clientes c
+                ON c.id_cliente = p.id_cliente
+            WHERE p.estado IN ('Completado', 'Entregado')
+              AND p.total > 0.004
+            ORDER BY p.id_pedido DESC
+            LIMIT 50
+            """;
+
+        try (Connection con = conectar();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                BigDecimal total = BigDecimal.valueOf(
+                        rs.getDouble("total")
+                ).setScale(2, RoundingMode.HALF_UP);
+
+                pedidos.add(new OrigenDevolucion(
+                    true,
+                    rs.getInt("id_pedido"),
+                    "Pedido #" + rs.getInt("id_pedido")
+                        + " - " + rs.getString("cliente")
+                        + " - Entrega " + rs.getString("fecha_entrega")
+                        + " - " + rs.getString("estado")
+                        + " - Total $" + total,
+                    total
+                ));
+            }
+        }
+
+        return pedidos;
+    }
+
+    // VENTAS QUE TODAVIA TIENEN SALDO POR DEVOLVER
+    private List<OrigenDevolucion> consultarVentas()
+            throws SQLException {
+
+        List<OrigenDevolucion> ventas = new ArrayList<>();
 
         String sql = """
             SELECT id_venta, fecha, metodo_pago, total, devuelto
@@ -49,12 +106,23 @@ public class DevolucionDAO {
 
             while (rs.next()) {
 
-                ventas.add(new VentaDevolucion(
+                BigDecimal total = BigDecimal.valueOf(
+                        rs.getDouble("total")
+                ).setScale(2, RoundingMode.HALF_UP);
+
+                BigDecimal saldo = total.subtract(
+                        BigDecimal.valueOf(rs.getDouble("devuelto"))
+                ).setScale(2, RoundingMode.HALF_UP);
+
+                ventas.add(new OrigenDevolucion(
+                    false,
                     rs.getInt("id_venta"),
-                    rs.getString("fecha"),
-                    rs.getString("metodo_pago"),
-                    BigDecimal.valueOf(rs.getDouble("total")),
-                    BigDecimal.valueOf(rs.getDouble("devuelto"))
+                    "Venta #" + rs.getInt("id_venta")
+                        + " - " + rs.getString("fecha")
+                        + " - " + rs.getString("metodo_pago")
+                        + " - Total $" + total
+                        + " - Reembolsable $" + saldo,
+                    saldo
                 ));
             }
         }
@@ -62,9 +130,20 @@ public class DevolucionDAO {
         return ventas;
     }
 
-    // CONSULTAR LOS PRODUCTOS DE UNA VENTA
-    // El precio unitario se obtiene de subtotal / cantidad.
-    public List<DetallePedido> obtenerLineasVenta(int idVenta)
+    // CONSULTAR LOS PRODUCTOS DEL PEDIDO O DE LA VENTA
+    public List<DetallePedido> obtenerLineas(OrigenDevolucion origen)
+            throws SQLException {
+
+        if (origen.esPedido()) {
+            return new RegistroPedidosDAO()
+                    .obtenerDetallesPedido(origen.getId());
+        }
+
+        return obtenerLineasVenta(origen.getId());
+    }
+
+    // El precio unitario de una venta se obtiene de subtotal / cantidad.
+    private List<DetallePedido> obtenerLineasVenta(int idVenta)
             throws SQLException {
 
         List<DetallePedido> lineas = new ArrayList<>();
@@ -110,14 +189,23 @@ public class DevolucionDAO {
     }
 
     // REGISTRAR DEVOLUCION
-    public void registrarDevolucion(
-            int idVenta,
-            BigDecimal monto,
+    // Pedido: descuenta el pan devuelto del pedido y de su total.
+    // Venta: registra el reembolso contra la venta.
+    // Retorna el importe realmente devuelto.
+    public BigDecimal registrarDevolucion(
+            OrigenDevolucion origen,
+            List<LineaDevuelta> lineas,
             String motivo) throws SQLException {
 
-        if (monto == null || monto.signum() <= 0) {
+        if (origen == null) {
             throw new SQLException(
-                "El monto a devolver debe ser mayor que cero."
+                "Debe seleccionar un pedido o una venta."
+            );
+        }
+
+        if (lineas == null || lineas.isEmpty()) {
+            throw new SQLException(
+                "Debe indicar al menos un producto a devolver."
             );
         }
 
@@ -127,42 +215,23 @@ public class DevolucionDAO {
             );
         }
 
-        BigDecimal importe = monto.setScale(2, RoundingMode.HALF_UP);
-
         try (Connection con = conectar()) {
+
+            asegurarEsquema(con);
 
             boolean autocommit = con.getAutoCommit();
             con.setAutoCommit(false);
 
             try {
 
-                // Se vuelve a validar contra la BD: nunca se devuelve
-                // mas dinero del que se cobro en la venta.
-                BigDecimal saldo = obtenerSaldo(con, idVenta);
-
-                if (importe.compareTo(saldo) > 0) {
-                    throw new SQLException(
-                        "El monto excede el saldo reembolsable "
-                        + "de la venta (" + saldo + ")."
-                    );
-                }
-
-                String insertar = """
-                    INSERT INTO devoluciones
-                    (id_venta, motivo, monto_devuelto)
-                    VALUES (?, ?, ?)
-                    """;
-
-                try (PreparedStatement ps =
-                        con.prepareStatement(insertar)) {
-
-                    ps.setInt(1, idVenta);
-                    ps.setString(2, motivo.trim());
-                    ps.setDouble(3, importe.doubleValue());
-                    ps.executeUpdate();
-                }
+                BigDecimal monto = origen.esPedido()
+                        ? devolverDePedido(
+                            con, origen.getId(), lineas, motivo.trim())
+                        : devolverDeVenta(
+                            con, origen.getId(), lineas, motivo.trim());
 
                 con.commit();
+                return monto;
 
             } catch (SQLException | RuntimeException ex) {
 
@@ -176,8 +245,263 @@ public class DevolucionDAO {
         }
     }
 
+    // DESCUENTA EL PAN DEVUELTO DEL PEDIDO DEL CLIENTE
+    private BigDecimal devolverDePedido(
+            Connection con,
+            int idPedido,
+            List<LineaDevuelta> lineas,
+            String motivo) throws SQLException {
+
+        String consultaPedido = """
+            SELECT estado, total
+            FROM pedidos
+            WHERE id_pedido = ?
+            """;
+
+        BigDecimal total;
+
+        try (PreparedStatement ps =
+                con.prepareStatement(consultaPedido)) {
+
+            ps.setInt(1, idPedido);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (!rs.next()) {
+                    throw new SQLException("No se encontro el pedido.");
+                }
+
+                String estado = rs.getString("estado");
+
+                if (!"Completado".equalsIgnoreCase(estado)
+                        && !"Entregado".equalsIgnoreCase(estado)) {
+
+                    throw new SQLException(
+                        "Solo se puede devolver pan de pedidos "
+                        + "completados o entregados."
+                    );
+                }
+
+                total = BigDecimal.valueOf(rs.getDouble("total"))
+                        .setScale(2, RoundingMode.HALF_UP);
+            }
+        }
+
+        BigDecimal monto = BigDecimal.ZERO;
+
+        for (LineaDevuelta linea : lineas) {
+            monto = monto.add(
+                descontarProducto(con, idPedido, linea)
+            );
+        }
+
+        if (monto.compareTo(total) > 0) {
+            throw new SQLException(
+                "El importe a devolver excede el total del pedido."
+            );
+        }
+
+        // Nuevo total del pedido. Si el adelanto quedara mayor que el
+        // nuevo total, se ajusta para que el saldo no sea negativo.
+        BigDecimal nuevoTotal = total.subtract(monto);
+
+        String actualizar = """
+            UPDATE pedidos
+            SET total = ?,
+                adelanto = MIN(COALESCE(adelanto, 0), ?),
+                detalle_extra = CASE
+                    WHEN detalle_extra IS NULL
+                        OR TRIM(detalle_extra) = ''
+                        THEN ?
+                    ELSE detalle_extra || char(10) || ?
+                END
+            WHERE id_pedido = ?
+            """;
+
+        try (PreparedStatement ps =
+                con.prepareStatement(actualizar)) {
+
+            ps.setDouble(1, nuevoTotal.doubleValue());
+            ps.setDouble(2, nuevoTotal.doubleValue());
+            ps.setString(3, motivo);
+            ps.setString(4, motivo);
+            ps.setInt(5, idPedido);
+            ps.executeUpdate();
+        }
+
+        String insertar = """
+            INSERT INTO devoluciones_pedido
+            (id_pedido, motivo, monto_devuelto)
+            VALUES (?, ?, ?)
+            """;
+
+        try (PreparedStatement ps =
+                con.prepareStatement(insertar)) {
+
+            ps.setInt(1, idPedido);
+            ps.setString(2, motivo);
+            ps.setDouble(3, monto.doubleValue());
+            ps.executeUpdate();
+        }
+
+        return monto;
+    }
+
+    // QUITA LAS PIEZAS DEVUELTAS DE detalle_pedido Y RETORNA SU IMPORTE
+    // (precio actual del pan x piezas, igual que el resto del sistema)
+    private BigDecimal descontarProducto(
+            Connection con,
+            int idPedido,
+            LineaDevuelta linea) throws SQLException {
+
+        if (linea.getCantidad() <= 0) {
+            throw new SQLException(
+                "La cantidad a devolver debe ser mayor que cero."
+            );
+        }
+
+        String consulta = """
+            SELECT dp.id_detalle_pedido,
+                   dp.cantidad,
+                   pa.precio
+            FROM detalle_pedido dp
+            INNER JOIN panes pa
+                ON pa.id_pan = dp.id_pan
+            WHERE dp.id_pedido = ?
+              AND dp.id_pan = ?
+            ORDER BY dp.id_detalle_pedido
+            """;
+
+        List<int[]> renglones = new ArrayList<>();
+        double precio = 0;
+        int disponible = 0;
+
+        try (PreparedStatement ps = con.prepareStatement(consulta)) {
+
+            ps.setInt(1, idPedido);
+            ps.setInt(2, linea.getIdPan());
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    renglones.add(new int[] {
+                        rs.getInt("id_detalle_pedido"),
+                        rs.getInt("cantidad")
+                    });
+
+                    precio = rs.getDouble("precio");
+                    disponible += rs.getInt("cantidad");
+                }
+            }
+        }
+
+        if (renglones.isEmpty()) {
+            throw new SQLException(
+                "El producto " + linea.getProducto()
+                + " no esta en el pedido."
+            );
+        }
+
+        if (linea.getCantidad() > disponible) {
+            throw new SQLException(
+                "No se pueden devolver " + linea.getCantidad()
+                + " pieza(s) de " + linea.getProducto()
+                + ": el pedido solo tiene " + disponible + "."
+            );
+        }
+
+        int pendiente = linea.getCantidad();
+
+        for (int[] renglon : renglones) {
+
+            if (pendiente == 0) {
+                break;
+            }
+
+            int quitar = Math.min(pendiente, renglon[1]);
+
+            // Si se devuelve todo el renglon se elimina, si no se resta.
+            if (quitar == renglon[1]) {
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "DELETE FROM detalle_pedido "
+                        + "WHERE id_detalle_pedido = ?")) {
+
+                    ps.setInt(1, renglon[0]);
+                    ps.executeUpdate();
+                }
+
+            } else {
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "UPDATE detalle_pedido "
+                        + "SET cantidad = cantidad - ? "
+                        + "WHERE id_detalle_pedido = ?")) {
+
+                    ps.setInt(1, quitar);
+                    ps.setInt(2, renglon[0]);
+                    ps.executeUpdate();
+                }
+            }
+
+            pendiente -= quitar;
+        }
+
+        return BigDecimal.valueOf(precio)
+                .multiply(BigDecimal.valueOf(linea.getCantidad()))
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    // REEMBOLSO CONTRA UNA VENTA (nunca mas de lo cobrado)
+    private BigDecimal devolverDeVenta(
+            Connection con,
+            int idVenta,
+            List<LineaDevuelta> lineas,
+            String motivo) throws SQLException {
+
+        BigDecimal monto = BigDecimal.ZERO;
+
+        for (LineaDevuelta linea : lineas) {
+            monto = monto.add(linea.getImporte());
+        }
+
+        monto = monto.setScale(2, RoundingMode.HALF_UP);
+
+        BigDecimal saldo = obtenerSaldoVenta(con, idVenta);
+
+        if (monto.signum() <= 0) {
+            throw new SQLException(
+                "El monto a devolver debe ser mayor que cero."
+            );
+        }
+
+        if (monto.compareTo(saldo) > 0) {
+            throw new SQLException(
+                "El monto excede el saldo reembolsable "
+                + "de la venta (" + saldo + ")."
+            );
+        }
+
+        String insertar = """
+            INSERT INTO devoluciones
+            (id_venta, motivo, monto_devuelto)
+            VALUES (?, ?, ?)
+            """;
+
+        try (PreparedStatement ps = con.prepareStatement(insertar)) {
+
+            ps.setInt(1, idVenta);
+            ps.setString(2, motivo);
+            ps.setDouble(3, monto.doubleValue());
+            ps.executeUpdate();
+        }
+
+        return monto;
+    }
+
     // SALDO REEMBOLSABLE = TOTAL DE LA VENTA - LO YA DEVUELTO
-    private BigDecimal obtenerSaldo(Connection con, int idVenta)
+    private BigDecimal obtenerSaldoVenta(Connection con, int idVenta)
             throws SQLException {
 
         String sql = """
@@ -209,6 +533,30 @@ public class DevolucionDAO {
         throw new SQLException("No se encontro la venta.");
     }
 
+    // CREA LA TABLA devoluciones_pedido (una sola vez)
+    private void asegurarEsquema(Connection con) throws SQLException {
+
+        if (esquemaListo) {
+            return;
+        }
+
+        try (Statement st = con.createStatement()) {
+
+            st.execute("""
+                CREATE TABLE IF NOT EXISTS devoluciones_pedido (
+                    id_devolucion_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_pedido INTEGER NOT NULL,
+                    motivo TEXT,
+                    monto_devuelto REAL NOT NULL,
+                    fecha_hora TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido)
+                )
+                """);
+        }
+
+        esquemaListo = true;
+    }
+
     // CONEXION A SQLITE
     private Connection conectar() throws SQLException {
 
@@ -223,61 +571,80 @@ public class DevolucionDAO {
         return con;
     }
 
-    // MODELO DE VENTA PARA DEVOLUCIONES
-    public static class VentaDevolucion {
+    // MODELO: PEDIDO O VENTA SOBRE EL QUE SE HACE LA DEVOLUCION
+    public static class OrigenDevolucion {
 
-        private final int idVenta;
-        private final String fecha;
-        private final String metodoPago;
-        private final BigDecimal total;
-        private final BigDecimal devuelto;
+        private final boolean pedido;
+        private final int id;
+        private final String descripcion;
+        private final BigDecimal saldo;
 
-        public VentaDevolucion(
-                int idVenta,
-                String fecha,
-                String metodoPago,
-                BigDecimal total,
-                BigDecimal devuelto) {
+        public OrigenDevolucion(
+                boolean pedido,
+                int id,
+                String descripcion,
+                BigDecimal saldo) {
 
-            this.idVenta = idVenta;
-            this.fecha = fecha;
-            this.metodoPago = metodoPago;
-            this.total = total.setScale(2, RoundingMode.HALF_UP);
-            this.devuelto = devuelto.setScale(2, RoundingMode.HALF_UP);
+            this.pedido = pedido;
+            this.id = id;
+            this.descripcion = descripcion;
+            this.saldo = saldo;
         }
 
-        public int getIdVenta() {
-            return idVenta;
+        public boolean esPedido() {
+            return pedido;
         }
 
-        public String getFecha() {
-            return fecha;
+        public int getId() {
+            return id;
         }
 
-        public String getMetodoPago() {
-            return metodoPago;
-        }
-
-        public BigDecimal getTotal() {
-            return total;
-        }
-
-        public BigDecimal getDevuelto() {
-            return devuelto;
-        }
-
+        // Maximo que se puede devolver: total actual del pedido
+        // o saldo reembolsable de la venta.
         public BigDecimal getSaldo() {
-            return total.subtract(devuelto);
+            return saldo;
         }
 
         @Override
         public String toString() {
-            return "Venta #" + idVenta
-                    + " - " + (fecha == null ? "" : fecha)
-                    + " - " + metodoPago
-                    + " - Total $" + total
-                    + " - Reembolsable $" + getSaldo();
+            return descripcion;
         }
     }
-    
+
+    // MODELO: PRODUCTO QUE SE DEVUELVE
+    public static class LineaDevuelta {
+
+        private final int idPan;
+        private final String producto;
+        private final int cantidad;
+        private final BigDecimal importe;
+
+        public LineaDevuelta(
+                int idPan,
+                String producto,
+                int cantidad,
+                BigDecimal importe) {
+
+            this.idPan = idPan;
+            this.producto = producto;
+            this.cantidad = cantidad;
+            this.importe = importe;
+        }
+
+        public int getIdPan() {
+            return idPan;
+        }
+
+        public String getProducto() {
+            return producto;
+        }
+
+        public int getCantidad() {
+            return cantidad;
+        }
+
+        public BigDecimal getImporte() {
+            return importe;
+        }
+    }
 }
