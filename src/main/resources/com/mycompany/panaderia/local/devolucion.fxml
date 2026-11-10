@@ -15,11 +15,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="850.0"
-            styleClass="devolucion-root"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.mycompany.panaderia.local.DevolucionController">
+<BorderPane prefHeight="700.0" prefWidth="850.0" styleClass="devolucion-root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.DevolucionController">
 
     <stylesheets>
         <URL value="@estilos/devolucion.css" />
@@ -29,106 +25,33 @@
     <top>
         <HBox alignment="CENTER_LEFT" spacing="14.0">
             <padding>
-                <Insets bottom="14.0" left="34.0" right="34.0" top="22.0" />
+                <Insets bottom="8.0" left="34.0" right="34.0" top="16.0" />
             </padding>
             <children>
-                <VBox spacing="4.0">
+                <VBox spacing="2.0">
                     <children>
                         <Label styleClass="dv-titulo" text="Devolución / Reembolso" />
                         <Label styleClass="dv-subtitulo" text="El pan devuelto se descuenta del pedido que hizo el cliente." />
                     </children>
-                </HBox>
-
-                <Label text="1. Selecciona la venta:" />
-
-                <ComboBox fx:id="cmbVentas"
-                          maxWidth="Infinity"
-                          promptText="Selecciona una venta" />
-
-                <Label text="2. Selecciona el pan en mal estado y cuántas piezas:" />
-
-                <TableView fx:id="tablaVenta"
-                           prefHeight="140.0"
-                           VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colProducto" text="Producto" prefWidth="260.0" />
-                        <TableColumn fx:id="colPrecio" text="Precio" prefWidth="130.0" />
-                        <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="130.0" />
-                        <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="130.0" />
-                    </columns>
-                </TableView>
-
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <children>
-                        <Label text="Piezas a devolver:" />
-                        <Spinner fx:id="spCantidad" prefWidth="90.0" />
-                        <Button fx:id="btnAgregar"
-                                text="Agregar a la devolución"
-                                onAction="#agregarADevolucion" />
-                        <Pane HBox.hgrow="ALWAYS" />
-                        <Label text="Saldo reembolsable de la venta:" />
-                        <Label fx:id="lblSaldo"
-                               text="\$0.00"
-                               style="-fx-font-weight: bold;" />
-                    </children>
-                </HBox>
-
-                <Label text="3. Productos que se devolverán:" />
-
-                <TableView fx:id="tablaDevolucion"
-                           prefHeight="120.0"
-                           VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colDevProducto" text="Producto" prefWidth="360.0" />
-                        <TableColumn fx:id="colDevCantidad" text="Piezas" prefWidth="140.0" />
-                        <TableColumn fx:id="colDevImporte" text="Importe" prefWidth="140.0" />
-                    </columns>
-                </TableView>
-
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <children>
-                        <Button text="Quitar seleccionado"
-                                onAction="#quitarDeDevolucion" />
-                        <Pane HBox.hgrow="ALWAYS" />
-                        <Label text="Total a devolver:"
-                               style="-fx-font-weight: bold; -fx-font-size: 15px;" />
-                        <Label fx:id="lblTotalDevolver"
-                               text="\$0.00"
-                               style="-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #b71c1c;" />
-                    </children>
-                </HBox>
-
-                <Label text="4. Motivo (obligatorio):" />
-
-                <TextArea fx:id="txtMotivo"
-                          prefHeight="65.0"
-                          promptText="Ej. Pan duro, con moho, mal sabor..." />
-
-                <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                    <children>
-                        <Button fx:id="btnCerrar" text="Cerrar" onAction="#cerrar" />
-                        <Button fx:id="btnConfirmar"
-                                text="Confirmar devolución"
-                                style="-fx-background-color: #c62828; -fx-text-fill: white; -fx-font-weight: bold;"
-                                onAction="#confirmarDevolucion" />
-                    </children>
-                </HBox>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" onAction="#cerrar" styleClass="dv-btn-cerrar" text="×" />
             </children>
         </HBox>
     </top>
 
     <!-- CONTENIDO -->
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="dv-scroll" vbarPolicy="AS_NEEDED">
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="dv-scroll" vbarPolicy="AS_NEEDED">
             <content>
-                <VBox spacing="18.0" styleClass="dv-contenido">
+                <VBox spacing="14.0" styleClass="dv-contenido">
                     <padding>
-                        <Insets bottom="24.0" left="34.0" right="34.0" top="4.0" />
+                        <Insets bottom="14.0" left="34.0" right="34.0" top="4.0" />
                     </padding>
                     <children>
 
                         <!-- TARJETAS DE RESUMEN -->
-                        <HBox spacing="18.0">
+                        <HBox spacing="16.0">
                             <children>
                                 <HBox alignment="CENTER_LEFT" maxWidth="Infinity" prefWidth="0.0" spacing="14.0" styleClass="dv-kpi-primaria" HBox.hgrow="ALWAYS">
                                     <children>
@@ -137,7 +60,6 @@
                                             <children>
                                                 <Label styleClass="dv-kpi-etiqueta-primaria" text="Total a devolver" />
                                                 <Label fx:id="lblTotalDevolver" styleClass="dv-kpi-valor-claro" text="\$0.00" />
-                                                <Label styleClass="dv-kpi-detalle-primaria" text="Se descuenta del pedido" />
                                             </children>
                                         </VBox>
                                     </children>
@@ -150,7 +72,6 @@
                                             <children>
                                                 <Label styleClass="dv-kpi-etiqueta" text="Máximo a devolver" />
                                                 <Label fx:id="lblSaldo" styleClass="dv-kpi-valor" text="\$0.00" />
-                                                <Label styleClass="dv-kpi-detalle" text="Total actual del pedido o venta" />
                                             </children>
                                         </VBox>
                                     </children>
@@ -163,7 +84,6 @@
                                             <children>
                                                 <Label styleClass="dv-kpi-etiqueta" text="Piezas a devolver" />
                                                 <Label fx:id="lblPiezas" styleClass="dv-kpi-valor" text="0" />
-                                                <Label styleClass="dv-kpi-detalle" text="Pan en mal estado" />
                                             </children>
                                         </VBox>
                                     </children>
@@ -172,29 +92,21 @@
                         </HBox>
 
                         <!-- PASO 1: PEDIDO O VENTA -->
-                        <VBox styleClass="dv-panel">
+                        <VBox spacing="10.0" styleClass="dv-panel, dv-panel-cuerpo">
                             <children>
-                                <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="dv-panel-encabezado">
+                                <HBox alignment="CENTER_LEFT" spacing="12.0">
                                     <children>
                                         <Label alignment="CENTER" minHeight="28.0" minWidth="28.0" styleClass="dv-paso" text="1" />
-                                        <VBox spacing="2.0">
-                                            <children>
-                                                <Label styleClass="dv-panel-titulo" text="Pedido del cliente" />
-                                                <Label styleClass="dv-panel-subtitulo" text="Selecciona el pedido; el pan devuelto se descontará de ese pedido." />
-                                            </children>
-                                        </VBox>
+                                        <Label styleClass="dv-panel-titulo" text="Pedido del cliente" />
+                                        <Label styleClass="dv-panel-subtitulo" text="El pan devuelto se descontará de ese pedido." />
                                     </children>
                                 </HBox>
-                                <VBox styleClass="dv-panel-cuerpo">
-                                    <children>
-                                        <ComboBox fx:id="cmbOrigen" maxWidth="Infinity" prefHeight="40.0" promptText="Selecciona un pedido o una venta" styleClass="dv-combo" />
-                                    </children>
-                                </VBox>
+                                <ComboBox fx:id="cmbOrigen" maxWidth="Infinity" prefHeight="40.0" promptText="Selecciona un pedido o una venta" styleClass="dv-combo" />
                             </children>
                         </VBox>
 
-                        <!-- PASOS 2 Y 3: PAN DEL PEDIDO Y DEVOLUCION -->
-                        <HBox spacing="18.0">
+                        <!-- PASOS 2 Y 3: PAN DEL PEDIDO Y PAN A DEVOLVER -->
+                        <HBox spacing="16.0" VBox.vgrow="ALWAYS">
                             <children>
 
                                 <VBox maxWidth="Infinity" prefWidth="0.0" styleClass="dv-panel" HBox.hgrow="ALWAYS">
@@ -212,14 +124,14 @@
                                         </HBox>
                                         <VBox spacing="12.0" styleClass="dv-panel-cuerpo" VBox.vgrow="ALWAYS">
                                             <children>
-                                                <TableView fx:id="tablaVenta" prefHeight="200.0" styleClass="dv-tabla" VBox.vgrow="ALWAYS">
+                                                <TableView fx:id="tablaVenta" minHeight="90.0" prefHeight="180.0" styleClass="dv-tabla" VBox.vgrow="ALWAYS">
                                                     <columnResizePolicy>
                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                     </columnResizePolicy>
                                                     <columns>
                                                         <TableColumn fx:id="colProducto" prefWidth="130.0" text="Producto" />
                                                         <TableColumn fx:id="colPrecio" prefWidth="62.0" text="Precio" />
-                                                        <TableColumn fx:id="colCantidad" prefWidth="72.0" text="Cantidad" />
+                                                        <TableColumn fx:id="colCantidad" prefWidth="74.0" text="Cantidad" />
                                                         <TableColumn fx:id="colSubtotal" prefWidth="70.0" text="Subtotal" />
                                                     </columns>
                                                 </TableView>
@@ -228,7 +140,7 @@
                                                         <Label styleClass="dv-etiqueta" text="Piezas:" />
                                                         <Spinner fx:id="spCantidad" prefHeight="36.0" prefWidth="86.0" styleClass="dv-spinner" />
                                                         <Region HBox.hgrow="ALWAYS" />
-                                                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarADevolucion" prefHeight="36.0" styleClass="dv-btn-acento" text="Agregar a la devolución" />
+                                                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarADevolucion" prefHeight="36.0" styleClass="dv-btn-acento" text="+ Agregar" />
                                                     </children>
                                                 </HBox>
                                             </children>
@@ -251,7 +163,7 @@
                                         </HBox>
                                         <VBox spacing="12.0" styleClass="dv-panel-cuerpo" VBox.vgrow="ALWAYS">
                                             <children>
-                                                <TableView fx:id="tablaDevolucion" prefHeight="200.0" styleClass="dv-tabla" VBox.vgrow="ALWAYS">
+                                                <TableView fx:id="tablaDevolucion" minHeight="90.0" prefHeight="180.0" styleClass="dv-tabla" VBox.vgrow="ALWAYS">
                                                     <columnResizePolicy>
                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                                     </columnResizePolicy>
@@ -274,40 +186,27 @@
                             </children>
                         </HBox>
 
-                        <!-- PASO 4: MOTIVO -->
-                        <VBox styleClass="dv-panel">
-                            <children>
-                                <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="dv-panel-encabezado">
-                                    <children>
-                                        <Label alignment="CENTER" minHeight="28.0" minWidth="28.0" styleClass="dv-paso" text="4" />
-                                        <VBox spacing="2.0">
-                                            <children>
-                                                <Label styleClass="dv-panel-titulo" text="Motivo (obligatorio)" />
-                                                <Label styleClass="dv-panel-subtitulo" text="Queda registrado junto con el pan devuelto." />
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
-                                <VBox styleClass="dv-panel-cuerpo">
-                                    <children>
-                                        <TextArea fx:id="txtMotivo" prefHeight="80.0" promptText="Ej. Pan duro, con moho, mal sabor..." styleClass="dv-motivo" wrapText="true" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </VBox>
-
                     </children>
                 </VBox>
             </content>
         </ScrollPane>
     </center>
 
-    <!-- BARRA DE ACCIONES (siempre visible) -->
+    <!-- BARRA INFERIOR FIJA: PASO 4 (MOTIVO) Y ACCIONES -->
     <bottom>
-        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="dv-pie">
+        <HBox alignment="BOTTOM_LEFT" spacing="18.0" styleClass="dv-pie">
             <children>
-                <Label styleClass="dv-pie-texto" text="Entrega el dinero al cliente solo después de confirmar." />
-                <Region HBox.hgrow="ALWAYS" />
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <Label alignment="CENTER" minHeight="28.0" minWidth="28.0" styleClass="dv-paso" text="4" />
+                                <Label styleClass="dv-etiqueta" text="Motivo de la devolución (obligatorio)" />
+                            </children>
+                        </HBox>
+                        <TextArea fx:id="txtMotivo" minHeight="48.0" prefHeight="52.0" promptText="Ej. Pan duro, con moho, mal sabor..." styleClass="dv-motivo" wrapText="true" />
+                    </children>
+                </VBox>
                 <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" prefHeight="40.0" styleClass="dv-btn-secundario" text="Cerrar" />
                 <Button fx:id="btnConfirmar" mnemonicParsing="false" onAction="#confirmarDevolucion" prefHeight="40.0" styleClass="dv-btn-primario" text="Confirmar devolución" />
             </children>
