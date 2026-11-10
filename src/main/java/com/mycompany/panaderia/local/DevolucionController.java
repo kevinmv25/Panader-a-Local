@@ -415,13 +415,31 @@ public class DevolucionController {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    // Importe = subtotal de la línea x piezas devueltas / piezas del renglón.
-    // Si se devuelven todas las piezas, es exactamente lo que se cobró.
+    // Importe = piezas devueltas x precio con el que se cobró cada renglón.
+    // Se toman los renglones del mismo pan en orden, igual que el DAO, para que
+    // lo que muestra la pantalla sea exactamente lo que se descuenta aunque el
+    // mismo pan tenga renglones con precios distintos.
     private BigDecimal importeDe(DetallePedido linea, int cantidad) {
-        return subtotalDe(linea)
-                .multiply(BigDecimal.valueOf(cantidad))
-                .divide(BigDecimal.valueOf(linea.getCantidad()),
-                        2, RoundingMode.HALF_UP);
+
+        BigDecimal importe = BigDecimal.ZERO;
+        int pendiente = cantidad;
+
+        for (DetallePedido renglon : lineasOrigen) {
+
+            if (renglon.getIdPan() != linea.getIdPan() || pendiente == 0) {
+                continue;
+            }
+
+            int tomar = Math.min(pendiente, renglon.getCantidad());
+
+            importe = importe.add(
+                    BigDecimal.valueOf(renglon.getPrecioUnitario())
+                            .multiply(BigDecimal.valueOf(tomar)));
+
+            pendiente -= tomar;
+        }
+
+        return importe.setScale(2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calcularTotal() {
