@@ -1,15 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.panaderia.local;
 
 import com.panaderialocal.conexion.DevolucionDAO;
-import com.panaderialocal.conexion.DevolucionDAO.VentaDevolucion;
+import com.panaderialocal.conexion.DevolucionDAO.LineaDevuelta;
+import com.panaderialocal.conexion.DevolucionDAO.OrigenDevolucion;
 import com.panaderialocal.conexion.RegistroPedidosDAO.DetallePedido;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -29,12 +28,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-/**
- *
- * @author aleja
- */
 public class DevolucionController {
-    @FXML private ComboBox<VentaDevolucion> cmbVentas;
+
+    @FXML private ComboBox<OrigenDevolucion> cmbOrigen;
 
     @FXML private TableView<DetallePedido> tablaVenta;
     @FXML private TableColumn<DetallePedido, String> colProducto;
@@ -45,26 +41,32 @@ public class DevolucionController {
     @FXML private Spinner<Integer> spCantidad;
     @FXML private Button btnAgregar;
 
-    @FXML private TableView<LineaDevolucion> tablaDevolucion;
-    @FXML private TableColumn<LineaDevolucion, String> colDevProducto;
-    @FXML private TableColumn<LineaDevolucion, String> colDevCantidad;
-    @FXML private TableColumn<LineaDevolucion, String> colDevImporte;
+    @FXML private TableView<LineaDevuelta> tablaDevolucion;
+    @FXML private TableColumn<LineaDevuelta, String> colDevProducto;
+    @FXML private TableColumn<LineaDevuelta, String> colDevCantidad;
+    @FXML private TableColumn<LineaDevuelta, String> colDevImporte;
 
     @FXML private Label lblSaldo;
     @FXML private Label lblTotalDevolver;
+    @FXML private Label lblPiezas;
     @FXML private TextArea txtMotivo;
     @FXML private Button btnConfirmar;
     @FXML private Button btnCerrar;
 
+    // Hoja de estilos de esta pantalla (tambien se aplica a sus alertas).
+    private static final String ESTILOS = DevolucionController.class
+            .getResource("/com/mycompany/panaderia/local/estilos/devolucion.css")
+            .toExternalForm();
+
     private final DevolucionDAO dao = new DevolucionDAO();
 
-    private final ObservableList<DetallePedido> lineasVenta =
+    private final ObservableList<DetallePedido> lineasOrigen =
             FXCollections.observableArrayList();
 
-    private final ObservableList<LineaDevolucion> devolucion =
+    private final ObservableList<LineaDevuelta> devolucion =
             FXCollections.observableArrayList();
 
-    private VentaDevolucion ventaActual;
+    private OrigenDevolucion origenActual;
 
     @FXML
     public void initialize() {
@@ -108,8 +110,10 @@ public class DevolucionController {
                 )
         );
 
-        tablaVenta.setItems(lineasVenta);
-        tablaVenta.setPlaceholder(new Label("Selecciona una venta"));
+        tablaVenta.setItems(lineasOrigen);
+        tablaVenta.setPlaceholder(
+                new Label("Selecciona un pedido o una venta")
+        );
 
         tablaDevolucion.setItems(devolucion);
         tablaDevolucion.setPlaceholder(
@@ -118,7 +122,7 @@ public class DevolucionController {
 
         // El total a devolver se recalcula solo ante CUALQUIER cambio.
         devolucion.addListener(
-                (ListChangeListener<LineaDevolucion>) cambio -> {
+                (ListChangeListener<LineaDevuelta>) cambio -> {
                     actualizarTotal();
                     prepararCantidad(
                             tablaVenta.getSelectionModel().getSelectedItem()
@@ -126,66 +130,67 @@ public class DevolucionController {
                 }
         );
 
-        cmbVentas.getSelectionModel()
+        cmbOrigen.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, anterior, venta) ->
-                        cargarVenta(venta));
+                .addListener((observable, anterior, origen) ->
+                        cargarOrigen(origen));
 
         tablaVenta.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, anterior, linea) ->
                         prepararCantidad(linea));
 
-        cargarVentas();
-        cargarVenta(null);
+        cargarOrigenes();
+        cargarOrigen(null);
+        actualizarTotal();
     }
 
-    private void cargarVentas() {
+    private void cargarOrigenes() {
         try {
-            cmbVentas.getSelectionModel().clearSelection();
+            cmbOrigen.getSelectionModel().clearSelection();
 
-            ObservableList<VentaDevolucion> ventas =
+            ObservableList<OrigenDevolucion> origenes =
                     FXCollections.observableArrayList(
-                            dao.obtenerVentasConSaldo()
+                            dao.obtenerOrigenes()
                     );
 
-            cmbVentas.setItems(ventas);
+            cmbOrigen.setItems(origenes);
 
-            cmbVentas.setPromptText(
-                    ventas.isEmpty()
-                            ? "No hay ventas con saldo por devolver"
-                            : "Selecciona una venta"
+            cmbOrigen.setPromptText(
+                    origenes.isEmpty()
+                            ? "No hay pedidos ni ventas por devolver"
+                            : "Selecciona un pedido o una venta"
             );
 
         } catch (SQLException ex) {
             mostrarAlerta(
                     Alert.AlertType.ERROR,
-                    "Error al cargar las ventas",
+                    "Error al cargar los pedidos",
                     ex.getMessage()
             );
         }
     }
 
-    private void cargarVenta(VentaDevolucion venta) {
+    private void cargarOrigen(OrigenDevolucion origen) {
 
         devolucion.clear();
-        lineasVenta.clear();
-        ventaActual = venta;
+        lineasOrigen.clear();
+        origenActual = origen;
 
-        if (venta == null) {
+        if (origen == null) {
             lblSaldo.setText(moneda(BigDecimal.ZERO));
             prepararCantidad(null);
             return;
         }
 
         try {
-            lineasVenta.setAll(dao.obtenerLineasVenta(venta.getIdVenta()));
-            lblSaldo.setText(moneda(venta.getSaldo()));
+            lineasOrigen.setAll(dao.obtenerLineas(origen));
+            lblSaldo.setText(moneda(origen.getSaldo()));
 
         } catch (SQLException ex) {
             mostrarAlerta(
                     Alert.AlertType.ERROR,
-                    "Error al cargar la venta",
+                    "Error al cargar los productos",
                     ex.getMessage()
             );
         }
@@ -211,7 +216,7 @@ public class DevolucionController {
 
         DetallePedido linea = tablaVenta.getSelectionModel().getSelectedItem();
 
-        if (ventaActual == null || linea == null) {
+        if (origenActual == null || linea == null) {
             mostrarAlerta(
                     Alert.AlertType.WARNING,
                     "Producto requerido",
@@ -237,7 +242,7 @@ public class DevolucionController {
         int nuevaCantidad = cantidad
                 + (indice >= 0 ? devolucion.get(indice).getCantidad() : 0);
 
-        LineaDevolucion nueva = new LineaDevolucion(
+        LineaDevuelta nueva = new LineaDevuelta(
                 linea.getIdPan(),
                 linea.getNombreProducto(),
                 nuevaCantidad,
@@ -250,13 +255,12 @@ public class DevolucionController {
                         : BigDecimal.ZERO)
                 .add(nueva.getImporte());
 
-        if (totalPrevisto.compareTo(ventaActual.getSaldo()) > 0) {
+        if (totalPrevisto.compareTo(origenActual.getSaldo()) > 0) {
             mostrarAlerta(
                     Alert.AlertType.WARNING,
                     "Importe excedido",
-                    "La devolución no puede superar el saldo reembolsable "
-                            + "de la venta (" + moneda(ventaActual.getSaldo())
-                            + ")."
+                    "La devolución no puede superar el máximo a devolver ("
+                            + moneda(origenActual.getSaldo()) + ")."
             );
             return;
         }
@@ -288,11 +292,11 @@ public class DevolucionController {
     @FXML
     private void confirmarDevolucion() {
 
-        if (ventaActual == null) {
+        if (origenActual == null) {
             mostrarAlerta(
                     Alert.AlertType.WARNING,
-                    "Venta requerida",
-                    "Selecciona la venta a la que pertenece el pan."
+                    "Pedido requerido",
+                    "Selecciona el pedido al que pertenece el pan."
             );
             return;
         }
@@ -323,10 +327,8 @@ public class DevolucionController {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar devolución");
         confirmacion.setHeaderText("Devolver al cliente: " + moneda(total));
-        confirmacion.setContentText(
-                "Venta #" + ventaActual.getIdVenta()
-                        + ". Entrega el dinero solo después de confirmar."
-        );
+        confirmacion.setContentText(textoConfirmacion(total));
+        aplicarEstilo(confirmacion);
 
         Optional<ButtonType> respuesta = confirmacion.showAndWait();
 
@@ -335,20 +337,25 @@ public class DevolucionController {
         }
 
         try {
-            dao.registrarDevolucion(
-                    ventaActual.getIdVenta(),
-                    total,
+            // El DAO devuelve el importe realmente registrado.
+            BigDecimal devuelto = dao.registrarDevolucion(
+                    origenActual,
+                    new ArrayList<>(devolucion),
                     descripcionMotivo(motivo)
             );
 
             mostrarAlerta(
                     Alert.AlertType.INFORMATION,
                     "Devolución registrada",
-                    "Devuelve " + moneda(total) + " al cliente."
+                    (origenActual.esPedido()
+                            ? "El pan devuelto se descontó del pedido #"
+                                    + origenActual.getId() + ".\n"
+                            : "")
+                            + "Devuelve " + moneda(devuelto) + " al cliente."
             );
 
             txtMotivo.clear();
-            cargarVentas();
+            cargarOrigenes();
 
         } catch (SQLException ex) {
             mostrarAlerta(
@@ -374,7 +381,22 @@ public class DevolucionController {
         int indice = indiceEnDevolucion(linea.getIdPan());
         int yaAgregada = indice >= 0 ? devolucion.get(indice).getCantidad() : 0;
 
-        return linea.getCantidad() - yaAgregada;
+        return cantidadEnOrigen(linea.getIdPan()) - yaAgregada;
+    }
+
+    // Un pedido puede traer el mismo pan en varios renglones: el DAO descuenta
+    // de todos ellos, asi que el maximo a devolver es la suma de las piezas.
+    private int cantidadEnOrigen(int idPan) {
+
+        int total = 0;
+
+        for (DetallePedido linea : lineasOrigen) {
+            if (linea.getIdPan() == idPan) {
+                total += linea.getCantidad();
+            }
+        }
+
+        return total;
     }
 
     private int indiceEnDevolucion(int idPan) {
@@ -393,7 +415,7 @@ public class DevolucionController {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    // Importe = subtotal de la línea x piezas devueltas / piezas vendidas.
+    // Importe = subtotal de la línea x piezas devueltas / piezas del renglón.
     // Si se devuelven todas las piezas, es exactamente lo que se cobró.
     private BigDecimal importeDe(DetallePedido linea, int cantidad) {
         return subtotalDe(linea)
@@ -406,7 +428,7 @@ public class DevolucionController {
 
         BigDecimal total = BigDecimal.ZERO;
 
-        for (LineaDevolucion linea : devolucion) {
+        for (LineaDevuelta linea : devolucion) {
             total = total.add(linea.getImporte());
         }
 
@@ -414,19 +436,41 @@ public class DevolucionController {
     }
 
     private void actualizarTotal() {
+
+        int piezas = 0;
+
+        for (LineaDevuelta linea : devolucion) {
+            piezas += linea.getCantidad();
+        }
+
         lblTotalDevolver.setText(moneda(calcularTotal()));
+        lblPiezas.setText(String.valueOf(piezas));
         btnConfirmar.setDisable(devolucion.isEmpty());
     }
 
-    // Queda en la BD qué pan se devolvió, ya que la tabla devoluciones
-    // solo guarda venta, motivo y monto.
+    private String textoConfirmacion(BigDecimal totalDevolver) {
+
+        if (origenActual.esPedido()) {
+            return "Pedido #" + origenActual.getId()
+                    + ": el pan devuelto se descontará del pedido y su "
+                    + "total pasará de " + moneda(origenActual.getSaldo())
+                    + " a "
+                    + moneda(origenActual.getSaldo().subtract(totalDevolver))
+                    + ".\nEntrega el dinero solo después de confirmar.";
+        }
+
+        return "Venta #" + origenActual.getId()
+                + ". Entrega el dinero solo después de confirmar.";
+    }
+
+    // Queda registrado qué pan se devolvió y por qué.
     private String descripcionMotivo(String motivo) {
 
         StringBuilder texto = new StringBuilder("Devolución de: ");
 
         for (int i = 0; i < devolucion.size(); i++) {
 
-            LineaDevolucion linea = devolucion.get(i);
+            LineaDevuelta linea = devolucion.get(i);
 
             if (i > 0) {
                 texto.append(", ");
@@ -451,41 +495,19 @@ public class DevolucionController {
         alerta.setTitle(titulo);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
+        aplicarEstilo(alerta);
         alerta.showAndWait();
     }
 
-    // Línea de la devolución en curso (producto, piezas e importe).
-    private static final class LineaDevolucion {
+    // Aplica la paleta El Lirio Rojo a los cuadros de dialogo.
+    private void aplicarEstilo(Alert alerta) {
 
-        private final int idPan;
-        private final String producto;
-        private final int cantidad;
-        private final BigDecimal importe;
+        DialogPane panel = alerta.getDialogPane();
 
-        private LineaDevolucion(
-                int idPan, String producto, int cantidad, BigDecimal importe) {
-
-            this.idPan = idPan;
-            this.producto = producto;
-            this.cantidad = cantidad;
-            this.importe = importe;
+        if (!panel.getStylesheets().contains(ESTILOS)) {
+            panel.getStylesheets().add(ESTILOS);
         }
 
-        private int getIdPan() {
-            return idPan;
-        }
-
-        private String getProducto() {
-            return producto;
-        }
-
-        private int getCantidad() {
-            return cantidad;
-        }
-
-        private BigDecimal getImporte() {
-            return importe;
-        }
+        panel.getStyleClass().add("dialogo-devolucion");
     }
-    
 }
