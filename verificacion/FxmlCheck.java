@@ -7,6 +7,9 @@ import java.nio.file.*;
 import java.util.concurrent.*;
 public class FxmlCheck {
  static Boolean confirmarEliminacion;
+ static java.util.Queue<String> alertasPedido=new java.util.ArrayDeque<>();
+ static void ejecutar(Object c,String nombre)throws Exception {var m=c.getClass().getDeclaredMethod(nombre);m.setAccessible(true);m.invoke(c);}
+
  public static void main(String[] args) throws Exception {
   System.setProperty("panaderia.db",args[0]);
   var done=new CountDownLatch(1);var failures=new java.util.concurrent.atomic.AtomicInteger();
@@ -18,6 +21,9 @@ public class FxmlCheck {
      boolean confirmar=confirmarEliminacion; confirmarEliminacion=null;
      var tipo=dialog.getButtonTypes().stream().filter(t->confirmar ? t.getButtonData()==javafx.scene.control.ButtonBar.ButtonData.OK_DONE : t==javafx.scene.control.ButtonType.CANCEL).findFirst().orElseThrow();
      ((javafx.scene.control.Button)dialog.lookupButton(tipo)).fire();continue;
+    }
+    if(!alertasPedido.isEmpty() && w instanceof javafx.stage.Stage st && st.getTitle().equals(alertasPedido.peek()) && w.getScene().getRoot() instanceof javafx.scene.control.DialogPane d) {
+     alertasPedido.remove();((javafx.scene.control.Button)d.lookupButton(javafx.scene.control.ButtonType.OK)).fire();continue;
     }
     System.err.println("UNEXPECTED DIALOG: "+w.getScene().getRoot());failures.incrementAndGet();w.hide();}
   }),1,1,TimeUnit.SECONDS);
@@ -39,6 +45,32 @@ public class FxmlCheck {
        var vaciar=caja.getClass().getDeclaredMethod("vaciarCuenta");vaciar.setAccessible(true);vaciar.invoke(caja);
        if(!grupos.isEmpty())throw new AssertionError("No vacia la cuenta");
        System.out.println("CAJA OK: separa productos de igual precio y vacia la cuenta");
+      }
+      if(loader.getController() instanceof com.mycompany.panaderia.local.EditarPedidoController editar) {
+       var dao=new com.panaderialocal.conexion.RegistroPedidosDAO();
+       new panaderialocal.conexion.PanDAO().insertarPan("PEDIDO UI","",12,"");
+       var pan=dao.obtenerPanes().stream().filter(p->p.getNombre().equals("PEDIDO UI")).findFirst().orElseThrow();
+       dao.registrarPedido("CLIENTE UI","",java.time.LocalDate.now(),"Pendiente","",12,java.util.List.of(new com.panaderialocal.conexion.RegistroPedidosDAO.DetallePedido(pan,1)));
+       var pedido=dao.obtenerTodosLosPedidos().stream().max(java.util.Comparator.comparingInt(p->p.getIdPedido())).orElseThrow();
+       ejecutar(editar,"cargarPedidosDisponibles");var ns=loader.getNamespace();
+       ((javafx.scene.control.ComboBox)ns.get("cmbPedidos")).setValue(pedido);ejecutar(editar,"cargarPedido");
+       ((javafx.scene.control.ComboBox)ns.get("cmbPan")).setValue(pan);
+       ((javafx.scene.control.TextField)ns.get("txtCantidad")).setText("2");ejecutar(editar,"agregarLinea");
+       ((javafx.scene.control.TextField)ns.get("txtAdelanto")).setText("5");
+       alertasPedido.add("Adelanto guardado");ejecutar(editar,"guardarAdelanto");
+       if(!((javafx.scene.control.Label)ns.get("lblTotal")).getText().equals("$24.00") || !((javafx.scene.control.Label)ns.get("lblSaldo")).getText().equals("$19.00"))throw new AssertionError("Adelanto pierde totales del borrador");
+       if(!((javafx.scene.control.Button)ns.get("btnCompletar")).isDisabled())throw new AssertionError("Permite completar sin guardar");
+       ((javafx.scene.control.DatePicker)ns.get("fechaEntrega")).setValue(java.time.LocalDate.now().plusDays(3));
+       ((javafx.scene.control.TextArea)ns.get("txtMotivo")).setText("Notas desde formulario");
+       alertasPedido.add("Pedido guardado");ejecutar(editar,"guardarDetalles");
+       if(dao.obtenerPedido(pedido.getIdPedido()).getTotal()!=24 || dao.obtenerDetallesPedido(pedido.getIdPedido()).get(0).getCantidad()!=2 || !dao.obtenerNotas(pedido.getIdPedido()).equals("Notas desde formulario"))throw new AssertionError("Edicion UI no persistida");
+       ((javafx.scene.control.DatePicker)ns.get("fechaEntrega")).setValue(java.time.LocalDate.now().plusDays(4));
+       if(!((javafx.scene.control.Button)ns.get("btnCompletar")).isDisabled())throw new AssertionError("Fecha cambiada no marca pendiente");
+       alertasPedido.add("Pedido guardado");ejecutar(editar,"guardarDetalles");
+       alertasPedido.add("Cancelar pedido");alertasPedido.add("Pedido cancelado");ejecutar(editar,"cancelarPedido");
+       if(!dao.obtenerPedido(pedido.getIdPedido()).getEstado().equals("Cancelado") || !((javafx.scene.control.Button)ns.get("btnGuardarDetalles")).isDisabled())throw new AssertionError("Cancelar UI no persiste/bloquea");
+       if(!alertasPedido.isEmpty())throw new AssertionError("Falta confirmacion");
+       System.out.println("HU7 UI OK: editar, adelanto, totales, guardar fecha/notas y cancelar persistidos");
       }
       if(loader.getController() instanceof com.mycompany.panaderia.local.Controllers.FormularioPanController form) {
        var stage=new javafx.stage.Stage();stage.setScene(new Scene(root));
@@ -69,7 +101,7 @@ public class FxmlCheck {
     }
    }catch(Exception e){failures.incrementAndGet();e.printStackTrace();}finally{done.countDown();}
   });
-  if(!done.await(90,TimeUnit.SECONDS)) failures.incrementAndGet();
+  if(!done.await(150,TimeUnit.SECONDS)) failures.incrementAndGet();
   watcher.shutdownNow();Platform.exit();System.out.println("FXML FAILURES: "+failures.get());System.exit(failures.get()==0?0:1);
  }
 }

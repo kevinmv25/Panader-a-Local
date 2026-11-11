@@ -41,6 +41,15 @@ public class IntegrationCheck {
   reject(()->ventas.registrarVenta(lineas,"Efectivo",new BigDecimal("20.00"),null),"rechaza precio de caja desactualizado");
   dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",4,2.5)),LocalDate.now().plusDays(2),"editado");
   ok(dao.obtenerPedido(pedido).getTotal()==10 && dao.obtenerDetallesPedido(pedido).size()==1,"edicion persiste lineas y total");
+  var historico=new HistorialPedidosDAO().obtenerPedidos().stream().filter(p->p.getIdPedido()==pedido).findFirst().orElseThrow();
+  ok(historico.getTotal()==10 && historico.getArticulos()==4 && historico.getConceptos()==1 && historico.getFechaEntrega().equals(LocalDate.now().plusDays(2).toString()) && historico.getObservaciones().equals("editado"),"historial refleja cantidades, total, fecha y notas editadas");
+  ok(new HistorialPedidosDAO().obtenerItems(pedido).size()==1 && new HistorialPedidosDAO().obtenerItems(pedido).get(0).getSubtotal()==10,"historial elimina lineas retiradas y recalcula subtotal");
+  var panActual=dao.obtenerPanes().stream().filter(p->p.getIdPan()==a).findFirst().orElseThrow();
+  ok(panActual.getNombre().equals("PRUEBA A EDITADO") && panActual.getPrecio()==3.75,"registro de pedidos usa nombre y precio actualizados");
+  ok(new com.panaderialocal.conexion.DAO.ProduccionDAO().obtenerPanes().stream().anyMatch(p->p[0].equals(String.valueOf(a)) && p[1].equals("PRUEBA A EDITADO")),"produccion usa el nombre actualizado del pan");
+  int nuevaVenta=ventas.registrarVenta(List.of(new DetallePedido(panActual,2)),"Efectivo",new BigDecimal("10"),null);
+  ok(scalar("SELECT total FROM ventas WHERE id_venta="+nuevaVenta)==7.5,"nueva venta aplica precio modificado");
+  double ingresosAntes=new ResumenVentasDAO().obtenerTotales(LocalDate.now().minusDays(30),LocalDate.now().plusDays(1)).getTotal();
   dao.actualizarAdelanto(pedido,8);
   reject(()->dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",1,2.5)),LocalDate.now(),"no"),"rechaza total menor al adelanto");
   ok(dao.obtenerPedido(pedido).getTotal()==10,"edicion fallida conserva pedido");
@@ -48,6 +57,11 @@ public class IntegrationCheck {
   ok(dao.obtenerDetallesPedido(pedido).get(0).getCantidad()==4,"rollback conserva detalles originales");
   dao.cancelarPedido(pedido,"cliente cancelo");
   ok(dao.obtenerPedido(pedido).getEstado().equals("Cancelado"),"cancelacion persistida");
+  var cancelado=new HistorialPedidosDAO().obtenerPedidos().stream().filter(p->p.getIdPedido()==pedido).findFirst().orElseThrow();
+  ok(cancelado.getEstado().equals("Cancelado") && cancelado.getAdelanto()==8 && cancelado.getObservaciones().contains("cliente cancelo"),"cancelacion refleja estado, adelanto y motivo en historial");
+  ok(new ResumenVentasDAO().obtenerTotales(LocalDate.now().minusDays(30),LocalDate.now().plusDays(1)).getTotal()==ingresosAntes,"pedido cancelado no suma ingresos de venta");
+  ok(new DevolucionDAO().obtenerOrigenes().stream().noneMatch(o->o.esPedido() && o.getId()==pedido),"pedido cancelado no aparece como pedido disponible en devoluciones");
+  reject(()->dao.actualizarAdelanto(pedido,1),"no permite cambiar adelanto de cancelados");
   reject(()->dao.editarPedido(pedido,lineas,LocalDate.now(),""),"no permite editar cancelados");
   reject(()->dao.completarPedido(pedido,""),"no completa cancelados");
   dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,lineas);

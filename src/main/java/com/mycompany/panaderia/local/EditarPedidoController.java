@@ -52,7 +52,12 @@ public class EditarPedidoController {
             mostrarAlerta(Alert.AlertType.INFORMATION,"Pedido guardado","Productos, cantidades, fecha y notas actualizados.");
         } catch(Exception e) {mostrarAlerta(Alert.AlertType.ERROR,"No se guardo el pedido",e.getMessage());}
     }
+    private boolean cambiosPendientes;
+    private boolean cargandoPedido;
+
     private void actualizarBorrador() {
+        if (cargandoPedido || pedidoActual == null) return;
+        cambiosPendientes = true;
         double total=tablaDetalles.getItems().stream().mapToDouble(DetallePedido::getSubtotal).sum();
         lblTotal.setText(moneda(total));lblSaldo.setText(moneda(total-adelantoActual));
         btnCompletar.setDisable(true);
@@ -115,6 +120,8 @@ public class EditarPedidoController {
         tablaDetalles.getSelectionModel().selectedItemProperty().addListener((o,a,d)-> {
             if(d!=null) { cmbPan.getItems().stream().filter(p->p.getIdPan()==d.getIdPan()).findFirst().ifPresent(cmbPan::setValue);txtCantidad.setText(String.valueOf(d.getCantidad())); }
         });
+        fechaEntrega.valueProperty().addListener((o, antes, despues) -> actualizarBorrador());
+        txtMotivo.textProperty().addListener((o, antes, despues) -> actualizarBorrador());
         cargarPedidosDisponibles();
         limpiarSeleccion();
     }
@@ -149,7 +156,9 @@ public class EditarPedidoController {
         }
 
         try {
+            cargandoPedido = true;
             pedidoActual = dao.obtenerPedido(seleccionado.getIdPedido());
+            cmbPan.getItems().setAll(dao.obtenerPanes());
 
             tablaDetalles.setItems(
                 FXCollections.observableArrayList(
@@ -167,6 +176,7 @@ public class EditarPedidoController {
 
             fechaEntrega.setValue(java.time.LocalDate.parse(pedidoActual.getFechaEntrega()));
             txtMotivo.setText(dao.obtenerNotas(pedidoActual.getIdPedido()));
+            cambiosPendientes = false;
             actualizarImportes();
             actualizarControles();
 
@@ -176,6 +186,8 @@ public class EditarPedidoController {
                 "Error",
                 e.getMessage()
             );
+        } finally {
+            cargandoPedido = false;
         }
     }
 
@@ -206,8 +218,10 @@ public class EditarPedidoController {
                 adelanto
             );
 
-            adelantoActual = adelanto;
-            actualizarImportes();
+            adelantoActual = dao.obtenerAdelanto(pedidoActual.getIdPedido());
+            lblAdelanto.setText(moneda(adelantoActual));
+            if (cambiosPendientes) actualizarBorrador();
+            else actualizarImportes();
 
             mostrarAlerta(
                 Alert.AlertType.INFORMATION,
@@ -232,6 +246,11 @@ public class EditarPedidoController {
 
     @FXML
     private void completarPedido() {
+        if (cambiosPendientes) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Cambios sin guardar",
+                    "Guarda los cambios del pedido antes de completarlo.");
+            return;
+        }
         if (!validarPedidoEditable()) {
             return;
         }
@@ -386,11 +405,12 @@ public class EditarPedidoController {
         txtAdelanto.setDisable(!editable);
         btnGuardarAdelanto.setDisable(!editable);
         btnCancelarPedido.setDisable(!editable);
-        btnCompletar.setDisable(!editable);
+        btnCompletar.setDisable(!editable || cambiosPendientes);
     }
 
     private void limpiarSeleccion() {
         pedidoActual = null;
+        cambiosPendientes = false;
         adelantoActual = 0;
 
         if (tablaDetalles != null) {
