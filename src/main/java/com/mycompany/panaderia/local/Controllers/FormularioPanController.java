@@ -29,6 +29,7 @@ public class FormularioPanController {
     @FXML private ImageView imgVistaPrevia;
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
+    @FXML private Button btnEliminar;
 
     private final PanDAO panDAO = new PanDAO();
 
@@ -42,6 +43,8 @@ public class FormularioPanController {
         this.actualizarCatalogo = actualizar;
 
         boolean modificar = pan != null;
+        btnEliminar.setVisible(modificar);
+        btnEliminar.setManaged(modificar);
 
         lblTitulo.setText(modificar
                 ? "Modificar Pan" : "Registrar Nuevo Pan");
@@ -213,6 +216,29 @@ public class FormularioPanController {
         } catch (Exception e) {
             e.printStackTrace();
             mostrarMensaje("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void eliminarPan() {
+        if (panSeleccionado == null) return;
+        ButtonType eliminar = new ButtonType("Eliminar pan", ButtonBar.ButtonData.OK_DONE);
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION,
+                "Se eliminara de la base de datos el pan «" + panSeleccionado.getNombre()
+                        + "». Esta accion no se puede deshacer.", eliminar, ButtonType.CANCEL);
+        confirmacion.initOwner(btnCancelar.getScene().getWindow());
+        confirmacion.setTitle("Eliminar pan");
+        confirmacion.setHeaderText("¿Eliminar este pan del catalogo?");
+        if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) != eliminar) return;
+        try {
+            if (!panDAO.eliminarPan(panSeleccionado.getIdPan())) {
+                mostrarMensaje("El pan ya no existe en la base de datos. Vuelve a abrir el catalogo.");
+                return;
+            }
+            if (actualizarCatalogo != null) actualizarCatalogo.run();
+            cerrarVentana();
+        } catch (Exception e) {
+            mostrarMensaje("No se pudo eliminar el pan: " + e.getMessage());
         }
     }
 

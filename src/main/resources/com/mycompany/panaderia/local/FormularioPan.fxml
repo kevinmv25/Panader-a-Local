@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -95,6 +96,8 @@
                 <Insets top="15" bottom="15" left="30" right="30" />
             </padding>
             <children>
+                <Button fx:id="btnEliminar" text="Eliminar pan" onAction="#eliminarPan" visible="false" managed="false" prefWidth="135" prefHeight="40" style="-fx-background-color: #B83232; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 7;" />
+                <Pane HBox.hgrow="ALWAYS" />
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" prefWidth="115" prefHeight="40" style="-fx-background-color: #EEEEEE; -fx-text-fill: #333333; -fx-font-weight: bold; -fx-background-radius: 7;" />
                 <Button fx:id="btnGuardar" text="Guardar Cambios" onAction="#guardarPan" prefWidth="155" prefHeight="40" style="-fx-background-color: #E68000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 7;" />
             </children>

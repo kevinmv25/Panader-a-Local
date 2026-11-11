@@ -36,7 +36,7 @@ public class IntegrationCheck {
   ok(dao.obtenerPedido(pedido).getTotal()==12.5,"pedido recalcula total en base de datos");
   panes.actualizarPan(a,"PRUEBA A EDITADO","nueva descripcion",3.75,"foto.png");
   ok(dao.obtenerDetallesPedido(pedido).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio del pedido");
-  ok(new DevolucionDAO().obtenerLineasVenta(id).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio de venta");
+  ok(new DevolucionDAO().obtenerLineas(new DevolucionDAO.OrigenDevolucion(false,id,"prueba",new BigDecimal("12.50"))).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio de venta");
   ok(new HistorialPedidosDAO().obtenerItems(pedido).get(0).getPrecioUnitario()==2.5,"historial nuevo conserva el precio original del pedido");
   reject(()->ventas.registrarVenta(lineas,"Efectivo",new BigDecimal("20.00"),null),"rechaza precio de caja desactualizado");
   dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",4,2.5)),LocalDate.now().plusDays(2),"editado");
@@ -56,12 +56,20 @@ public class IntegrationCheck {
   var resumen=new ResumenVentasDAO();LocalDate desde=LocalDate.now().minusDays(30),hasta=LocalDate.now().plusDays(1);
   resumen.obtenerTotales(desde,hasta);resumen.totalesPorMetodo(desde,hasta);resumen.ventasPorHora(desde,hasta);resumen.ventasPorDia(desde,hasta);resumen.ultimasVentas(desde,hasta,null,50);resumen.productosTop(desde,hasta,50);
   new InventarioDAO().obtenerMateriales();var produccion=new com.panaderialocal.conexion.DAO.ProduccionDAO();produccion.obtenerPanes();produccion.obtenerResumen(LocalDate.now());produccion.obtenerHistorial(desde,hasta);
-  new DevolucionDAO().registrarDevolucion(id,new BigDecimal("2.50"),"prueba");new DevolucionDAO().obtenerVentasConSaldo();
+  new DevolucionDAO().registrarDevolucion(new DevolucionDAO.OrigenDevolucion(false,id,"prueba",new BigDecimal("12.50")), List.of(new DevolucionDAO.LineaDevuelta(a,"A",1,new BigDecimal("2.50"))),"prueba");new DevolucionDAO().obtenerOrigenes();
   ok(true,"consultas de reportes, materiales, produccion y devoluciones");
   try(Connection c=ConexionBD.conectar();Statement st=c.createStatement()) {
    try(ResultSet rs=st.executeQuery("PRAGMA integrity_check")){ok(rs.next()&&rs.getString(1).equals("ok"),"integridad de SQLite");}
    try(ResultSet rs=st.executeQuery("PRAGMA foreign_key_check")){ok(!rs.next(),"claves foraneas sin errores");}
   }
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+a+" AND nombre='PRUEBA A EDITADO' AND descripcion='nueva descripcion' AND precio=3.75 AND foto='foto.png'")==1,"edicion persiste todos los campos al volver a consultar SQLite");
+  reject(()->panes.eliminarPan(a),"impide eliminar pan con historial");
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+a)==1,"rechazo conserva el pan y sus referencias");
+  panes.insertarPan("BORRABLE","prueba",12,"");
+  int borrable=(int)scalar("SELECT max(id_pan) FROM panes");
+  ok(panes.eliminarPan(borrable),"elimina pan sin referencias");
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+borrable)==0,"eliminacion persistida en SQLite");
+  ok(!panes.eliminarPan(borrable),"detecta pan previamente eliminado");
   reject(()->panes.actualizarPan(a,"","",1, ""),"rechaza nombre vacio");
  }
 }
