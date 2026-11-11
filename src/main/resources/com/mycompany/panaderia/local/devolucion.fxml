@@ -35,7 +35,7 @@
                     </children>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#cerrar" styleClass="dv-btn-cerrar" text="×" />
+                <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" prefHeight="40.0" styleClass="dv-btn-secundario" text="Regresar" />
             </children>
         </HBox>
     </top>
@@ -207,7 +207,6 @@
                         <TextArea fx:id="txtMotivo" minHeight="48.0" prefHeight="52.0" promptText="Ej. Pan duro, con moho, mal sabor..." styleClass="dv-motivo" wrapText="true" />
                     </children>
                 </VBox>
-                <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" prefHeight="40.0" styleClass="dv-btn-secundario" text="Cerrar" />
                 <Button fx:id="btnConfirmar" mnemonicParsing="false" onAction="#confirmarDevolucion" prefHeight="40.0" styleClass="dv-btn-primario" text="Confirmar devolución" />
             </children>
         </HBox>
