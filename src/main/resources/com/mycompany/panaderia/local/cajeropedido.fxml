@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -16,26 +17,15 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.mycompany.panaderia.local.CajeroController"
-            prefWidth="1280.0"
-            prefHeight="720.0"
-            style="-fx-background-color: #F5D081;">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F5D081;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.panaderia.local.CajeroController">
 
     <!-- BARRA SUPERIOR -->
 
     <top>
-        <HBox alignment="CENTER_LEFT"
-              prefHeight="85.0"
-              spacing="20.0"
-              style="-fx-background-color: #422817;">
+        <HBox alignment="CENTER_LEFT" prefHeight="85.0" spacing="20.0" style="-fx-background-color: #422817;">
 
             <padding>
-                <Insets top="12.0"
-                        bottom="12.0"
-                        left="25.0"
-                        right="25.0"/>
+                <Insets bottom="12.0" left="25.0" right="25.0" top="12.0" />
             </padding>
 
             <children>
@@ -43,42 +33,22 @@
                 <VBox spacing="2.0">
                     <children>
 
-                        <Label text="El Lirio Rojo"
-                               style="-fx-font-family: Georgia;
-                                      -fx-font-size: 29px;
-                                      -fx-font-weight: bold;
-                                      -fx-text-fill: white;"/>
+                        <Label style="-fx-font-family: Georgia;                                       -fx-font-size: 29px;                                       -fx-font-weight: bold;                                       -fx-text-fill: white;" text="El Lirio Rojo" />
 
-                        <Label text="P A N A D E R I A   A R T E S A N A L"
-                               style="-fx-font-size: 9px;
-                                      -fx-text-fill: #F5D081;"/>
+                        <Label style="-fx-font-size: 9px;                                       -fx-text-fill: #F5D081;" text="P A N A D E R I A   A R T E S A N A L" />
 
                     </children>
                 </VBox>
 
-                <Separator orientation="VERTICAL"
-                           prefHeight="60.0"/>
+                <Separator orientation="VERTICAL" prefHeight="60.0" />
 
-                <Label text="PANES"
-                       style="-fx-font-family: Georgia;
-                              -fx-font-size: 27px;
-                              -fx-font-weight: bold;
-                              -fx-text-fill: white;"/>
+                <Label style="-fx-font-family: Georgia;                               -fx-font-size: 27px;                               -fx-font-weight: bold;                               -fx-text-fill: white;" text="PANES" />
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
 
-                <Label text="Cajero"
-                       style="-fx-font-size: 13px;
-                              -fx-text-fill: white;"/>
+                <Label style="-fx-font-size: 13px;                               -fx-text-fill: white;" text="Cajero" />
 
-                <Button fx:id="btnSalir"
-                        text="Salir"
-                        prefWidth="95.0"
-                        prefHeight="40.0"
-                        style="-fx-background-color: #FFF8EC;
-                               -fx-text-fill: #422817;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 10;"/>
+                <Button fx:id="btnSalir" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #FFF8EC;                                -fx-text-fill: #422817;                                -fx-font-weight: bold;                                -fx-background-radius: 10;" text="Salir" />
 
             </children>
         </HBox>
@@ -87,105 +57,49 @@
     <!-- CONTENIDO PRINCIPAL -->
 
     <center>
-        <HBox spacing="10.0"
-              style="-fx-background-color: #F5D081;">
+        <HBox spacing="10.0" style="-fx-background-color: #F5D081;">
 
             <padding>
-                <Insets top="12.0"
-                        bottom="12.0"
-                        left="12.0"
-                        right="12.0"/>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
             </padding>
 
             <children>
 
                 <!-- MENU LATERAL -->
 
-                <VBox prefWidth="200.0"
-                      minWidth="200.0"
-                      spacing="12.0"
-                      style="-fx-background-color: #FFF8EC;
-                             -fx-background-radius: 15;
-                             -fx-padding: 12;">
+                <VBox minWidth="200.0" prefWidth="200.0" spacing="12.0" style="-fx-background-color: #FFF8EC;                              -fx-background-radius: 15;                              -fx-padding: 12;">
 
                     <children>
 
-                        <Button onAction="#abrirGestionPedidos" text="Pedidos y adelantos"
-                                prefWidth="175.0"
-                                prefHeight="42.0"
-                                style="-fx-background-color: #F9E4BE;
-                                       -fx-text-fill: #422817;
-                                       -fx-font-weight: bold;
-                                       -fx-background-radius: 12;"/>
+                        <Button onAction="#abrirGestionPedidos" prefHeight="42.0" prefWidth="175.0" style="-fx-background-color: #F9E4BE;                                        -fx-text-fill: #422817;                                        -fx-font-weight: bold;                                        -fx-background-radius: 12;" text="Pedidos y adelantos" />
 
-                        <Button fx:id="btnIrRegistro"
-                                text="Registrar Pedido"
-                                prefWidth="175.0"
-                                prefHeight="42.0"
-                                style="-fx-background-color: #FFE5AA;
-                                       -fx-text-fill: #422817;
-                                       -fx-font-weight: bold;
-                                       -fx-border-color: #F0B858;
-                                       -fx-border-radius: 12;
-                                       -fx-background-radius: 12;"/>
+                        <Button fx:id="btnIrRegistro" prefHeight="42.0" prefWidth="175.0" style="-fx-background-color: #FFE5AA;                                        -fx-text-fill: #422817;                                        -fx-font-weight: bold;                                        -fx-border-color: #F0B858;                                        -fx-border-radius: 12;                                        -fx-background-radius: 12;" text="Registrar Pedido" />
 
-                        <Button fx:id="btnEditarPedido"
-                                text="Editar pedido"
-                                prefWidth="175.0"
-                                prefHeight="42.0"
-                                style="-fx-background-color: #F9E4BE;
-                                       -fx-text-fill: #422817;
-                                       -fx-font-weight: bold;
-                                       -fx-background-radius: 12;"/>
+                        <Button fx:id="btnEditarPedido" prefHeight="42.0" prefWidth="175.0" style="-fx-background-color: #F9E4BE;                                        -fx-text-fill: #422817;                                        -fx-font-weight: bold;                                        -fx-background-radius: 12;" text="Editar pedido" />
 
                     </children>
                 </VBox>
 
                 <!-- CATALOGO CENTRAL -->
 
-                <VBox spacing="15.0"
-                      HBox.hgrow="ALWAYS"
-                      style="-fx-background-color: #FFF8EC;
-                             -fx-background-radius: 15;
-                             -fx-padding: 12;">
+                <VBox spacing="15.0" style="-fx-background-color: #FFF8EC;                              -fx-background-radius: 15;                              -fx-padding: 12;" HBox.hgrow="ALWAYS">
 
                     <children>
 
                         <!-- BUSCADOR -->
 
-                        <TextField fx:id="txtBuscarProducto"
-                                   promptText="Buscar producto..."
-                                   prefHeight="35.0"
-                                   maxWidth="Infinity"
-                                   style="-fx-background-color: white;
-                                          -fx-border-color: #E9BD6B;
-                                          -fx-border-radius: 10;
-                                          -fx-background-radius: 10;
-                                          -fx-padding: 8;"/>
+                        <TextField fx:id="txtBuscarProducto" maxWidth="Infinity" prefHeight="35.0" promptText="Buscar producto..." style="-fx-background-color: white;                                           -fx-border-color: #E9BD6B;                                           -fx-border-radius: 10;                                           -fx-background-radius: 10;                                           -fx-padding: 8;" />
 
                         <!-- AREA DE PANES -->
 
-                        <ScrollPane fitToWidth="true"
-                                    hbarPolicy="NEVER"
-                                    VBox.vgrow="ALWAYS"
-                                    style="-fx-background: #FFF8EC;
-                                           -fx-background-color: transparent;
-                                           -fx-border-color: transparent;">
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #FFF8EC;                                            -fx-background-color: transparent;                                            -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
 
                             <content>
 
-                                <FlowPane fx:id="contenedorPanes"
-                                          alignment="TOP_LEFT"
-                                          hgap="15.0"
-                                          vgap="15.0"
-                                          prefWrapLength="510.0"
-                                          style="-fx-background-color: #FFF8EC;">
+                                <FlowPane fx:id="contenedorPanes" alignment="TOP_LEFT" hgap="15.0" prefWrapLength="510.0" style="-fx-background-color: #FFF8EC;" vgap="15.0">
 
                                     <padding>
-                                        <Insets top="5.0"
-                                                bottom="15.0"
-                                                left="5.0"
-                                                right="5.0"/>
+                                        <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
 
                                     <children>
@@ -195,72 +109,39 @@
                                             PARA SCENE BUILDER
                                         -->
 
-                                        <VBox alignment="CENTER"
-                                              spacing="8.0"
-                                              prefWidth="150.0"
-                                              prefHeight="190.0"
-                                              style="-fx-background-color: white;
-                                                     -fx-background-radius: 12;
-                                                     -fx-border-color: #E9BD6B;
-                                                     -fx-border-radius: 12;
-                                                     -fx-padding: 8;">
+                                        <VBox alignment="CENTER" prefHeight="190.0" prefWidth="150.0" spacing="8.0" style="-fx-background-color: white;                                                      -fx-background-radius: 12;                                                      -fx-border-color: #E9BD6B;                                                      -fx-border-radius: 12;                                                      -fx-padding: 8;">
 
                                             <children>
 
                                                 <!-- IMAGEN DEL PAN -->
 
-                                                <ImageView fitWidth="110.0"
-                                                           fitHeight="75.0"
-                                                           preserveRatio="true">
+                                                <ImageView fitHeight="75.0" fitWidth="110.0" preserveRatio="true">
 
                                                     <image>
-                                                        <Image url="@../../../../images/Bolillo.png"/>
+                                                        <Image url="@../../../../images/Bolillo.png" />
                                                     </image>
 
                                                 </ImageView>
 
                                                 <!-- NOMBRE -->
 
-                                                <Label text="Bolillo"
-                                                       alignment="CENTER"
-                                                       wrapText="true"
-                                                       style="-fx-font-family: Georgia;
-                                                              -fx-font-size: 13px;
-                                                              -fx-font-weight: bold;
-                                                              -fx-text-fill: #422817;"/>
+                                                <Label alignment="CENTER" style="-fx-font-family: Georgia;                                                               -fx-font-size: 13px;                                                               -fx-font-weight: bold;                                                               -fx-text-fill: #422817;" text="Bolillo" wrapText="true" />
 
                                                 <!-- PRECIO -->
 
-                                                <Label text="\$2.50"
-                                                       style="-fx-font-size: 12px;
-                                                              -fx-font-weight: bold;
-                                                              -fx-text-fill: #D97706;"/>
+                                                <Label style="-fx-font-size: 12px;                                                               -fx-font-weight: bold;                                                               -fx-text-fill: #D97706;" text="\$2.50" />
 
                                                 <!-- CONTROLES DE CANTIDAD -->
 
-                                                <HBox alignment="CENTER"
-                                                      spacing="8.0">
+                                                <HBox alignment="CENTER" spacing="8.0">
 
                                                     <children>
 
-                                                        <Button text="-"
-                                                                prefWidth="30.0"
-                                                                prefHeight="25.0"
-                                                                style="-fx-background-color: #E9BD6B;
-                                                                       -fx-text-fill: #422817;
-                                                                       -fx-font-weight: bold;"/>
+                                                        <Button prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: #E9BD6B;                                                                        -fx-text-fill: #422817;                                                                        -fx-font-weight: bold;" text="-" />
 
-                                                        <Label text="0"
-                                                               style="-fx-font-size: 13px;
-                                                                      -fx-font-weight: bold;
-                                                                      -fx-text-fill: #422817;"/>
+                                                        <Label style="-fx-font-size: 13px;                                                                       -fx-font-weight: bold;                                                                       -fx-text-fill: #422817;" text="0" />
 
-                                                        <Button text="+"
-                                                                prefWidth="30.0"
-                                                                prefHeight="25.0"
-                                                                style="-fx-background-color: #422817;
-                                                                       -fx-text-fill: white;
-                                                                       -fx-font-weight: bold;"/>
+                                                        <Button prefHeight="25.0" prefWidth="30.0" style="-fx-background-color: #422817;                                                                        -fx-text-fill: white;                                                                        -fx-font-weight: bold;" text="+" />
 
                                                     </children>
                                                 </HBox>
@@ -281,76 +162,47 @@
 
                 <!-- PANEL DERECHO DEL PEDIDO -->
 
-                <VBox prefWidth="350.0"
-                      minWidth="350.0"
-                      spacing="10.0"
-                      style="-fx-background-color: #FFF8EC;
-                             -fx-background-radius: 15;
-                             -fx-padding: 12;">
+                <VBox minWidth="350.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: #FFF8EC;                              -fx-background-radius: 15;                              -fx-padding: 12;">
 
                     <children>
 
                         <!-- TABLA DE PRODUCTOS -->
 
-                        <TableView fx:id="tablaPedido"
-                                   prefHeight="310.0"
-                                   VBox.vgrow="ALWAYS"
-                                   style="-fx-background-color: white;
-                                          -fx-border-color: #E9BD6B;
-                                          -fx-border-radius: 10;">
+                        <TableView fx:id="tablaPedido" prefHeight="310.0" prefWidth="343.0" style="-fx-background-color: white;                                           -fx-border-color: #E9BD6B;                                           -fx-border-radius: 10;" VBox.vgrow="ALWAYS">
 
                             <columns>
 
-                                <TableColumn fx:id="colProducto"
-                                             text="Pan / precio"
-                                             prefWidth="160.0"/>
+                                <TableColumn fx:id="colProducto" prefWidth="160.0" style="-fx-background-color: #FFE5AA;" text="Pan / precio" />
 
-                                <TableColumn fx:id="colCantidad"
-                                             text="Cant."
-                                             prefWidth="55.0"/>
+                                <TableColumn fx:id="colCantidad" prefWidth="55.0" style="-fx-background-color: #FFE5AA;" text="Cant." />
 
-                                <TableColumn fx:id="colSubtotal"
-                                             text="Subtotal"
-                                             prefWidth="100.0"/>
+                                <TableColumn fx:id="colSubtotal" prefWidth="100.0" style="-fx-background-color: #FFE5AA;" text="Subtotal" />
 
                             </columns>
                         </TableView>
 
                         <!-- TOTAL DEL PEDIDO -->
 
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="10.0"
-                              prefHeight="48.0"
-                              style="-fx-background-color: #FFE5AA;
-                                     -fx-background-radius: 10;
-                                     -fx-padding: 10;">
+                        <HBox alignment="CENTER_LEFT" prefHeight="48.0" spacing="10.0" style="-fx-background-color: #FFE5AA;                                      -fx-background-radius: 10;                                      -fx-padding: 10;">
 
                             <children>
 
-                                <Label text="Total:"
-                                       style="-fx-font-family: Georgia;
-                                              -fx-font-size: 22px;
-                                              -fx-font-weight: bold;
-                                              -fx-text-fill: #422817;"/>
+                                <Label style="-fx-font-family: Georgia;                                               -fx-font-size: 22px;                                               -fx-font-weight: bold;                                               -fx-text-fill: #422817;" text="Total:" />
 
-                                <Region HBox.hgrow="ALWAYS"/>
+                                <Region HBox.hgrow="ALWAYS" />
 
-                                <Label fx:id="lblTotal"
-                                       text="0.00"
-                                       style="-fx-font-size: 22px;
-                                              -fx-font-weight: bold;
-                                              -fx-text-fill: #422817;"/>
+                                <Label fx:id="lblTotal" style="-fx-font-size: 22px;                                               -fx-font-weight: bold;                                               -fx-text-fill: #422817;" text="0.00" />
 
                             </children>
                         </HBox>
 
-                        <HBox spacing="8"><Button fx:id="btnQuitarUno" text="Quitar una pieza"/><Button fx:id="btnVaciarCuenta" text="Vaciar cuenta"/></HBox>
-                        <Label text="Forma de pago"/>
-                        <ComboBox fx:id="cmbPago" maxWidth="Infinity"/>
-                        <TextField fx:id="txtRecibido" promptText="Efectivo recibido"/>
-                        <TextField fx:id="txtReferencia" promptText="Referencia de tarjeta / transferencia"/>
-                        <Button fx:id="btnDevolucion" text="Devoluciones" maxWidth="Infinity"/>
-                        <Button fx:id="btnFinalizar" text="Finalizar venta" onAction="#finalizarVenta" maxWidth="Infinity" prefHeight="42" style="-fx-background-color: #422817; -fx-text-fill: white;"/>
+                        <HBox spacing="8"><Button fx:id="btnQuitarUno" style="-fx-background-color: #F5D081;" text="Quitar una pieza" /><Button fx:id="btnVaciarCuenta" style="-fx-background-color: #F5D081;" text="Vaciar cuenta" /></HBox>
+                        <Label text="Forma de pago" />
+                        <ComboBox fx:id="cmbPago" maxWidth="Infinity" />
+                        <TextField fx:id="txtRecibido" promptText="Efectivo recibido" />
+                        <TextField fx:id="txtReferencia" promptText="Referencia de tarjeta / transferencia" />
+                        <Button fx:id="btnDevolucion" maxWidth="Infinity" text="Devoluciones" />
+                        <Button fx:id="btnFinalizar" maxWidth="Infinity" onAction="#finalizarVenta" prefHeight="42" style="-fx-background-color: #422817; -fx-text-fill: white;" text="Finalizar venta" />
                     </children>
                 </VBox>
 
