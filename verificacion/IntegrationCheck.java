@@ -64,6 +64,18 @@ public class IntegrationCheck {
   reject(()->dao.actualizarAdelanto(pedido,1),"no permite cambiar adelanto de cancelados");
   reject(()->dao.editarPedido(pedido,lineas,LocalDate.now(),""),"no permite editar cancelados");
   reject(()->dao.completarPedido(pedido,""),"no completa cancelados");
+  dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now().plusDays(1),"Pendiente","sin azucar",12.5,5.5,lineas);
+  int conAdelanto=(int)scalar("SELECT max(id_pedido) FROM pedidos");
+  ok(dao.obtenerAdelanto(conAdelanto)==5.5 && dao.obtenerNotas(conAdelanto).equals("sin azucar"),"pedido nuevo guarda adelanto y detalle extra");
+  ok(dao.obtenerPedido(conAdelanto).getAdelanto()==5.5 && dao.obtenerPedido(conAdelanto).getSaldo()==7.0,"pedido consultado informa adelanto y saldo por cobrar");
+  dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now().plusDays(1),"Pendiente","",12.5,lineas);
+  ok(dao.obtenerAdelanto((int)scalar("SELECT max(id_pedido) FROM pedidos"))==0,"pedido sin adelanto queda en cero");
+  double pedidosAntes=scalar("SELECT COUNT(*) FROM pedidos");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,13,lineas),"rechaza adelanto mayor al total");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,-1,lineas),"rechaza adelanto negativo");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,1.005,lineas),"rechaza adelanto con mas de dos decimales");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Cancelado","",12.5,1,lineas),"rechaza adelanto en pedido cancelado");
+  ok(scalar("SELECT COUNT(*) FROM pedidos")==pedidosAntes,"adelanto invalido no deja pedidos parciales");
   dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,lineas);
   int completo=(int)scalar("SELECT max(id_pedido) FROM pedidos");dao.completarPedido(completo,"");
   ok(scalar("SELECT COUNT(*) FROM pedidos WHERE fecha_completado IS NOT NULL AND id_pedido="+completo)==1,"fecha de completado registrada sin abrir reportes");
