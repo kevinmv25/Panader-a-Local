@@ -1,6 +1,7 @@
 
 package com.mycompany.panaderia.local.Controllers;
 
+import com.mycompany.panaderia.local.ImagenesCatalogo;
 import com.mycompany.panaderia.local.Pan;
 import panaderialocal.conexion.PanDAO;
 
@@ -98,7 +99,8 @@ public class FormularioPanController {
         );
 
         if (archivo != null) {
-            txtFoto.setText(archivo.getAbsolutePath());
+            // Se copia a images/catalogo y se guarda /images/catalogo/<archivo>
+            txtFoto.setText(ImagenesCatalogo.guardar(archivo));
             mostrarImagen(txtFoto.getText());
         }
     }
