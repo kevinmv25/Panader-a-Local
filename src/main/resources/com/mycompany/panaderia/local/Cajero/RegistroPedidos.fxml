@@ -275,23 +275,80 @@
                             </HBox>
                         </VBox>
 
-                        <!-- OBSERVACIONES -->
-                        <VBox spacing="10.0"
+                        <!-- ADELANTO Y DETALLE EXTRA -->
+                        <VBox spacing="14.0"
                               style="-fx-background-color: #FFF8EC;
                                      -fx-background-radius: 12;
                                      -fx-border-color: #E9BD6B;
                                      -fx-border-radius: 12;
                                      -fx-padding: 20;">
 
-                            <Label text="Observaciones del pedido"
-                                   style="-fx-font-size: 17px;
-                                          -fx-font-weight: bold;
-                                          -fx-text-fill: #422817;"/>
+                            <VBox spacing="4.0">
+                                <Label text="Adelanto y detalle extra"
+                                       style="-fx-font-size: 18px;
+                                              -fx-font-weight: bold;
+                                              -fx-text-fill: #422817;"/>
 
-                            <TextArea fx:id="txtObservaciones"
-                                      promptText="Indicaciones especiales para el pedido..."
-                                      prefRowCount="3"
-                                      wrapText="true"/>
+                                <Label text="Registra si el cliente dejó un adelanto y las preferencias para ajustar el pedido."
+                                       wrapText="true"
+                                       style="-fx-font-size: 13px;
+                                              -fx-text-fill: #6B4A2E;"/>
+                            </VBox>
+
+                            <GridPane hgap="15.0" vgap="12.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50.0"
+                                                       hgrow="ALWAYS"/>
+                                    <ColumnConstraints percentWidth="50.0"
+                                                       hgrow="ALWAYS"/>
+                                </columnConstraints>
+
+                                <Label text="Adelanto que dejó el cliente ($)"
+                                       GridPane.columnIndex="0"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <TextField fx:id="txtAdelanto"
+                                           promptText="0.00 (sin adelanto)"
+                                           maxWidth="Infinity"
+                                           GridPane.columnIndex="0"
+                                           GridPane.rowIndex="1"/>
+
+                                <Label text="Saldo por cobrar"
+                                       GridPane.columnIndex="1"
+                                       GridPane.rowIndex="0"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <HBox alignment="CENTER_LEFT"
+                                      GridPane.columnIndex="1"
+                                      GridPane.rowIndex="1">
+                                    <Label fx:id="lblSaldoPendiente"
+                                           text="\$ 0.00"
+                                           style="-fx-font-size: 17px;
+                                                  -fx-font-weight: bold;
+                                                  -fx-text-fill: #422817;
+                                                  -fx-background-color: #FFE7AD;
+                                                  -fx-background-radius: 8;
+                                                  -fx-padding: 6 12;"/>
+                                </HBox>
+                            </GridPane>
+
+                            <Label fx:id="lblAvisoAdelanto"
+                                   visible="false"
+                                   managed="false"
+                                   wrapText="true"
+                                   style="-fx-font-size: 12px;
+                                          -fx-text-fill: #B3261E;"/>
+
+                            <VBox spacing="6.0">
+                                <Label text="Detalle extra del pedido"
+                                       style="-fx-text-fill: #6B4A2E;"/>
+
+                                <TextArea fx:id="txtObservaciones"
+                                          promptText="Preferencias del cliente: sin azúcar, decoración, dedicatoria, indicaciones de entrega..."
+                                          prefRowCount="3"
+                                          wrapText="true"/>
+                            </VBox>
                         </VBox>
 
                         <!-- ACCIONES -->
