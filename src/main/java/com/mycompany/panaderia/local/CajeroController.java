@@ -72,6 +72,7 @@ public class CajeroController {
     @FXML private Button btnEditarPedido;
     @FXML private Button btnIrRegistro;
     @FXML private Button btnDevolucion;
+    @FXML private Button btnDeudores;    
 
     // PRODUCTOS
     @FXML private FlowPane contenedorPanes;
@@ -149,7 +150,14 @@ public class CajeroController {
                 e -> abrirDevolucion()
             );
         }
+        
+                // DEUDORES
+        if (btnDeudores != null) {
+            btnDeudores.setOnAction(e -> abrirDeudores());
+        }
+        
 
+        
         // REGISTRAR PEDIDOS
         if (btnIrRegistro != null) {
             btnIrRegistro.setOnAction(e -> {
@@ -772,7 +780,38 @@ public class CajeroController {
             e.printStackTrace();
         }
     }
+    
+    
+        // ABRIR REGISTRO DE DEUDORES
+    private void abrirDeudores() {
 
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("deudores.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Stage ventana = new Stage();
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.setTitle("Registro de deudores");
+            ventana.setScene(new Scene(root, 850, 650));
+            ventana.setResizable(true);
+            ventana.showAndWait();
+
+        } catch (IOException e) {
+
+            mostrarAlerta(
+                Alert.AlertType.ERROR,
+                "Error",
+                "No se pudo abrir el registro de deudores."
+            );
+
+            e.printStackTrace();
+        }
+    }
+    
     // MOSTRAR ALERTAS
     private void mostrarAlerta(
             Alert.AlertType tipo,
@@ -823,3 +862,4 @@ public class CajeroController {
         }
     }
 }
+    

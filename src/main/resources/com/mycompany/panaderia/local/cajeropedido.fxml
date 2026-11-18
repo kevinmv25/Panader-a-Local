@@ -350,6 +350,7 @@
                         <TextField fx:id="txtRecibido" promptText="Efectivo recibido"/>
                         <TextField fx:id="txtReferencia" promptText="Referencia de tarjeta / transferencia"/>
                         <Button fx:id="btnDevolucion" text="Devoluciones" maxWidth="Infinity"/>
+                        <Button fx:id="btnDeudores" text="Deudores" maxWidth="Infinity"/>
                         <Button fx:id="btnFinalizar" text="Finalizar venta" onAction="#finalizarVenta" maxWidth="Infinity" prefHeight="42" style="-fx-background-color: #422817; -fx-text-fill: white;"/>
                     </children>
                 </VBox>

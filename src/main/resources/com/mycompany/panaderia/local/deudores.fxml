@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" style="-fx-background-color: #FFF8EC;"
+      xmlns="http://javafx.com/javafx/23"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mycompany.panaderia.local.DeudorController">
+
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <Label text="Registro de deudores"
+           style="-fx-font-family: Georgia; -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #422817;"/>
+
+    <GridPane hgap="10" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints minWidth="110"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Nombre *" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtNombre" promptText="Nombre del cliente"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Teléfono" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTelefono" promptText="Ej. 2281234567"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Monto adeudado *" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtMonto" promptText="Ej. 85.50"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Descripción" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextArea fx:id="txtDescripcion" prefRowCount="2" wrapText="true"
+                  promptText="Qué se llevó o notas de la deuda"
+                  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnLimpiar" text="Limpiar" onAction="#limpiar"/>
+        <Button fx:id="btnGuardar" text="Registrar deudor" onAction="#guardarDeudor"
+                style="-fx-background-color: #422817; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <TableView fx:id="tablaDeudores" VBox.vgrow="ALWAYS" prefHeight="260">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Cliente" prefWidth="160"/>
+            <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="110"/>
+            <TableColumn fx:id="colMonto" text="Monto" prefWidth="90"/>
+            <TableColumn fx:id="colFecha" text="Fecha" prefWidth="140"/>
+            <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="200"/>
+            <TableColumn fx:id="colEstado" text="Estado" prefWidth="90"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Label text="Total pendiente:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="lblTotalAdeudado" text="/$0.00"
+               style="-fx-font-weight: bold; -fx-text-fill: #D97706;"/>
+        <Button fx:id="btnCerrar" text="Cerrar" onAction="#cerrar"/>
+    </HBox>
+</VBox>

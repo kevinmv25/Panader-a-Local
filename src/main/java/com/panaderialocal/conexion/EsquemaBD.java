@@ -13,6 +13,18 @@ public final class EsquemaBD {
    if(!columna(c,"ventas","efectivo_recibido")) s.execute("ALTER TABLE ventas ADD COLUMN efectivo_recibido REAL");
    if(!columna(c,"pedidos","fecha_completado")) s.execute("ALTER TABLE pedidos ADD COLUMN fecha_completado TEXT");
    s.execute("CREATE TRIGGER IF NOT EXISTS trg_pedido_completado AFTER UPDATE OF estado ON pedidos WHEN NEW.estado IN ('Completado','Entregado') AND OLD.estado NOT IN ('Completado','Entregado') AND NEW.fecha_completado IS NULL BEGIN UPDATE pedidos SET fecha_completado=CURRENT_TIMESTAMP WHERE id_pedido=NEW.id_pedido; END");
+      s.execute("""
+       CREATE TABLE IF NOT EXISTS deudores (
+           id_deudor INTEGER PRIMARY KEY AUTOINCREMENT,
+           nombre TEXT NOT NULL,
+           telefono TEXT,
+           monto REAL NOT NULL CHECK (monto > 0),
+           fecha_deuda TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+           descripcion TEXT,
+           estado TEXT NOT NULL DEFAULT 'Pendiente'
+               CHECK (estado IN ('Pendiente','Pagada'))
+       )
+       """);
    c.commit();
   } catch(SQLException e) { c.rollback(); throw e; } finally { c.setAutoCommit(true); }
  }
