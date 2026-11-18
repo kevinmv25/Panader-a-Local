@@ -79,4 +79,18 @@ public class PanDAO {
             return ps.executeUpdate() > 0;
         }
     }
+    // Las claves foraneas impiden borrar panes utilizados en el historial.
+    public boolean eliminarPan(int id) throws SQLException {
+        try (Connection conn = ConexionBD.conectar();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM panes WHERE id_pan=?")) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() == 1;
+        } catch (SQLException e) {
+            if (e.getMessage() != null && e.getMessage().contains("FOREIGN KEY constraint failed")) {
+                throw new SQLException("Este pan tiene ventas, pedidos o registros de produccion. "
+                        + "No se puede eliminar para conservar el historial.", e);
+            }
+            throw e;
+        }
+    }
 }

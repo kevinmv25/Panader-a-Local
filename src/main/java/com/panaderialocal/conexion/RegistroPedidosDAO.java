@@ -1,6 +1,8 @@
 
 package com.panaderialocal.conexion;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +38,7 @@ public class RegistroPedidosDAO {
         return panes;
     }
 
-    // REGISTRAR PEDIDO
+    // REGISTRAR PEDIDO (sin adelanto)
     public void registrarPedido(
             String nombreCliente,
             String telefono,
@@ -44,6 +46,24 @@ public class RegistroPedidosDAO {
             String estado,
             String observaciones,
             double total,
+            List<DetallePedido> detalles) throws SQLException {
+
+        registrarPedido(
+            nombreCliente, telefono, fechaEntrega, estado,
+            observaciones, total, 0, detalles
+        );
+    }
+
+    // REGISTRAR PEDIDO CON ADELANTO Y DETALLE EXTRA
+    // "observaciones" se guarda como detalle_extra (preferencias del cliente)
+    public void registrarPedido(
+            String nombreCliente,
+            String telefono,
+            LocalDate fechaEntrega,
+            String estado,
+            String observaciones,
+            double total,
+            double adelanto,
             List<DetallePedido> detalles) throws SQLException {
 
         if (nombreCliente == null ||
@@ -77,7 +97,12 @@ public class RegistroPedidosDAO {
             );
         }
 
-        total = VentasDAO.total(detalles).doubleValue();
+        BigDecimal totalPedido = VentasDAO.total(detalles);
+        total = totalPedido.doubleValue();
+
+        BigDecimal anticipo =
+            validarAdelanto(adelanto, totalPedido, estado);
+
         try (Connection con = conectar()) {
 
             boolean autocommit = con.getAutoCommit();
@@ -93,7 +118,7 @@ public class RegistroPedidosDAO {
                     INSERT INTO pedidos
                     (id_cliente, fecha_entrega, estado,
                      adelanto, detalle_extra, total)
-                    VALUES (?, ?, ?, 0, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?)
                     """;
 
                 int idPedido;
@@ -107,20 +132,21 @@ public class RegistroPedidosDAO {
                     ps.setInt(1, idCliente);
                     ps.setString(2, fechaEntrega.toString());
                     ps.setString(3, estado);
+                    ps.setDouble(4, anticipo.doubleValue());
 
                     if (observaciones == null ||
                         observaciones.trim().isEmpty()) {
 
-                        ps.setNull(4, java.sql.Types.VARCHAR);
+                        ps.setNull(5, java.sql.Types.VARCHAR);
 
                     } else {
 
                         ps.setString(
-                            4, observaciones.trim()
+                            5, observaciones.trim()
                         );
                     }
 
-                    ps.setDouble(5, total);
+                    ps.setDouble(6, total);
                     ps.executeUpdate();
 
                     try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -189,6 +215,45 @@ public class RegistroPedidosDAO {
                 con.setAutoCommit(autocommit);
             }
         }
+    }
+
+    // VALIDAR EL ADELANTO AL REGISTRAR UN PEDIDO
+    private BigDecimal validarAdelanto(
+            double adelanto,
+            BigDecimal total,
+            String estado) throws SQLException {
+
+        if (!Double.isFinite(adelanto) || adelanto < 0) {
+            throw new SQLException(
+                "El adelanto no puede ser negativo."
+            );
+        }
+
+        BigDecimal anticipo;
+
+        try {
+            anticipo = BigDecimal.valueOf(adelanto)
+                .setScale(2, RoundingMode.UNNECESSARY);
+
+        } catch (ArithmeticException ex) {
+            throw new SQLException("Usa hasta dos decimales.");
+        }
+
+        if (anticipo.compareTo(total) > 0) {
+            throw new SQLException(
+                "El adelanto no puede ser mayor que el total del pedido."
+            );
+        }
+
+        if (anticipo.signum() > 0
+                && "Cancelado".equalsIgnoreCase(estado.trim())) {
+
+            throw new SQLException(
+                "Un pedido cancelado no puede registrar adelanto."
+            );
+        }
+
+        return anticipo;
     }
 
     // BUSCAR O REGISTRAR CLIENTE
@@ -283,7 +348,9 @@ public class RegistroPedidosDAO {
                    p.fecha_pedido,
                    p.fecha_entrega,
                    p.estado,
-                   p.total
+                   p.total,
+                   p.adelanto,
+                   p.detalle_extra
             FROM pedidos p
             INNER JOIN clientes c
                 ON p.id_cliente = c.id_cliente
@@ -304,7 +371,9 @@ public class RegistroPedidosDAO {
                     rs.getString("fecha_pedido"),
                     rs.getString("fecha_entrega"),
                     rs.getString("estado"),
-                    rs.getDouble("total")
+                    rs.getDouble("total"),
+                    rs.getDouble("adelanto"),
+                    rs.getString("detalle_extra")
                 ));
             }
         }
@@ -363,7 +432,9 @@ public class RegistroPedidosDAO {
                    p.fecha_pedido,
                    p.fecha_entrega,
                    p.estado,
-                   p.total
+                   p.total,
+                   p.adelanto,
+                   p.detalle_extra
             FROM pedidos p
             INNER JOIN clientes c
                 ON p.id_cliente = c.id_cliente
@@ -386,7 +457,9 @@ public class RegistroPedidosDAO {
                         rs.getString("fecha_pedido"),
                         rs.getString("fecha_entrega"),
                         rs.getString("estado"),
-                        rs.getDouble("total")
+                        rs.getDouble("total"),
+                        rs.getDouble("adelanto"),
+                        rs.getString("detalle_extra")
                     );
                 }
             }
@@ -664,6 +737,8 @@ public class RegistroPedidosDAO {
         private final String fechaEntrega;
         private final String estado;
         private final double total;
+        private final double adelanto;
+        private final String detalleExtra;
 
         public PedidoReciente(
                 int idPedido,
@@ -674,6 +749,21 @@ public class RegistroPedidosDAO {
                 String estado,
                 double total) {
 
+            this(idPedido, cliente, telefono, fechaPedido,
+                 fechaEntrega, estado, total, 0, null);
+        }
+
+        public PedidoReciente(
+                int idPedido,
+                String cliente,
+                String telefono,
+                String fechaPedido,
+                String fechaEntrega,
+                String estado,
+                double total,
+                double adelanto,
+                String detalleExtra) {
+
             this.idPedido = idPedido;
             this.cliente = cliente;
             this.telefono = telefono;
@@ -681,6 +771,8 @@ public class RegistroPedidosDAO {
             this.fechaEntrega = fechaEntrega;
             this.estado = estado;
             this.total = total;
+            this.adelanto = adelanto;
+            this.detalleExtra = detalleExtra;
         }
 
         public int getIdPedido() {
@@ -709,6 +801,18 @@ public class RegistroPedidosDAO {
 
         public double getTotal() {
             return total;
+        }
+
+        public double getAdelanto() {
+            return adelanto;
+        }
+
+        public double getSaldo() {
+            return Math.max(0, total - adelanto);
+        }
+
+        public String getDetalleExtra() {
+            return detalleExtra;
         }
 
         @Override

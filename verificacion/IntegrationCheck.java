@@ -36,11 +36,20 @@ public class IntegrationCheck {
   ok(dao.obtenerPedido(pedido).getTotal()==12.5,"pedido recalcula total en base de datos");
   panes.actualizarPan(a,"PRUEBA A EDITADO","nueva descripcion",3.75,"foto.png");
   ok(dao.obtenerDetallesPedido(pedido).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio del pedido");
-  ok(new DevolucionDAO().obtenerLineasVenta(id).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio de venta");
+  ok(new DevolucionDAO().obtenerLineas(new DevolucionDAO.OrigenDevolucion(false,id,"prueba",new BigDecimal("12.50"))).get(0).getPrecioUnitario()==2.5,"cambiar pan conserva precio de venta");
   ok(new HistorialPedidosDAO().obtenerItems(pedido).get(0).getPrecioUnitario()==2.5,"historial nuevo conserva el precio original del pedido");
   reject(()->ventas.registrarVenta(lineas,"Efectivo",new BigDecimal("20.00"),null),"rechaza precio de caja desactualizado");
   dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",4,2.5)),LocalDate.now().plusDays(2),"editado");
   ok(dao.obtenerPedido(pedido).getTotal()==10 && dao.obtenerDetallesPedido(pedido).size()==1,"edicion persiste lineas y total");
+  var historico=new HistorialPedidosDAO().obtenerPedidos().stream().filter(p->p.getIdPedido()==pedido).findFirst().orElseThrow();
+  ok(historico.getTotal()==10 && historico.getArticulos()==4 && historico.getConceptos()==1 && historico.getFechaEntrega().equals(LocalDate.now().plusDays(2).toString()) && historico.getObservaciones().equals("editado"),"historial refleja cantidades, total, fecha y notas editadas");
+  ok(new HistorialPedidosDAO().obtenerItems(pedido).size()==1 && new HistorialPedidosDAO().obtenerItems(pedido).get(0).getSubtotal()==10,"historial elimina lineas retiradas y recalcula subtotal");
+  var panActual=dao.obtenerPanes().stream().filter(p->p.getIdPan()==a).findFirst().orElseThrow();
+  ok(panActual.getNombre().equals("PRUEBA A EDITADO") && panActual.getPrecio()==3.75,"registro de pedidos usa nombre y precio actualizados");
+  ok(new com.panaderialocal.conexion.DAO.ProduccionDAO().obtenerPanes().stream().anyMatch(p->p[0].equals(String.valueOf(a)) && p[1].equals("PRUEBA A EDITADO")),"produccion usa el nombre actualizado del pan");
+  int nuevaVenta=ventas.registrarVenta(List.of(new DetallePedido(panActual,2)),"Efectivo",new BigDecimal("10"),null);
+  ok(scalar("SELECT total FROM ventas WHERE id_venta="+nuevaVenta)==7.5,"nueva venta aplica precio modificado");
+  double ingresosAntes=new ResumenVentasDAO().obtenerTotales(LocalDate.now().minusDays(30),LocalDate.now().plusDays(1)).getTotal();
   dao.actualizarAdelanto(pedido,8);
   reject(()->dao.editarPedido(pedido,List.of(new DetallePedido(a,"A",1,2.5)),LocalDate.now(),"no"),"rechaza total menor al adelanto");
   ok(dao.obtenerPedido(pedido).getTotal()==10,"edicion fallida conserva pedido");
@@ -48,20 +57,45 @@ public class IntegrationCheck {
   ok(dao.obtenerDetallesPedido(pedido).get(0).getCantidad()==4,"rollback conserva detalles originales");
   dao.cancelarPedido(pedido,"cliente cancelo");
   ok(dao.obtenerPedido(pedido).getEstado().equals("Cancelado"),"cancelacion persistida");
+  var cancelado=new HistorialPedidosDAO().obtenerPedidos().stream().filter(p->p.getIdPedido()==pedido).findFirst().orElseThrow();
+  ok(cancelado.getEstado().equals("Cancelado") && cancelado.getAdelanto()==8 && cancelado.getObservaciones().contains("cliente cancelo"),"cancelacion refleja estado, adelanto y motivo en historial");
+  ok(new ResumenVentasDAO().obtenerTotales(LocalDate.now().minusDays(30),LocalDate.now().plusDays(1)).getTotal()==ingresosAntes,"pedido cancelado no suma ingresos de venta");
+  ok(new DevolucionDAO().obtenerOrigenes().stream().noneMatch(o->o.esPedido() && o.getId()==pedido),"pedido cancelado no aparece como pedido disponible en devoluciones");
+  reject(()->dao.actualizarAdelanto(pedido,1),"no permite cambiar adelanto de cancelados");
   reject(()->dao.editarPedido(pedido,lineas,LocalDate.now(),""),"no permite editar cancelados");
   reject(()->dao.completarPedido(pedido,""),"no completa cancelados");
+  dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now().plusDays(1),"Pendiente","sin azucar",12.5,5.5,lineas);
+  int conAdelanto=(int)scalar("SELECT max(id_pedido) FROM pedidos");
+  ok(dao.obtenerAdelanto(conAdelanto)==5.5 && dao.obtenerNotas(conAdelanto).equals("sin azucar"),"pedido nuevo guarda adelanto y detalle extra");
+  ok(dao.obtenerPedido(conAdelanto).getAdelanto()==5.5 && dao.obtenerPedido(conAdelanto).getSaldo()==7.0,"pedido consultado informa adelanto y saldo por cobrar");
+  dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now().plusDays(1),"Pendiente","",12.5,lineas);
+  ok(dao.obtenerAdelanto((int)scalar("SELECT max(id_pedido) FROM pedidos"))==0,"pedido sin adelanto queda en cero");
+  double pedidosAntes=scalar("SELECT COUNT(*) FROM pedidos");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,13,lineas),"rechaza adelanto mayor al total");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,-1,lineas),"rechaza adelanto negativo");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,1.005,lineas),"rechaza adelanto con mas de dos decimales");
+  reject(()->dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Cancelado","",12.5,1,lineas),"rechaza adelanto en pedido cancelado");
+  ok(scalar("SELECT COUNT(*) FROM pedidos")==pedidosAntes,"adelanto invalido no deja pedidos parciales");
   dao.registrarPedido("PRUEBA CLIENTE","",LocalDate.now(),"Pendiente","",12.5,lineas);
   int completo=(int)scalar("SELECT max(id_pedido) FROM pedidos");dao.completarPedido(completo,"");
   ok(scalar("SELECT COUNT(*) FROM pedidos WHERE fecha_completado IS NOT NULL AND id_pedido="+completo)==1,"fecha de completado registrada sin abrir reportes");
   var resumen=new ResumenVentasDAO();LocalDate desde=LocalDate.now().minusDays(30),hasta=LocalDate.now().plusDays(1);
   resumen.obtenerTotales(desde,hasta);resumen.totalesPorMetodo(desde,hasta);resumen.ventasPorHora(desde,hasta);resumen.ventasPorDia(desde,hasta);resumen.ultimasVentas(desde,hasta,null,50);resumen.productosTop(desde,hasta,50);
   new InventarioDAO().obtenerMateriales();var produccion=new com.panaderialocal.conexion.DAO.ProduccionDAO();produccion.obtenerPanes();produccion.obtenerResumen(LocalDate.now());produccion.obtenerHistorial(desde,hasta);
-  new DevolucionDAO().registrarDevolucion(id,new BigDecimal("2.50"),"prueba");new DevolucionDAO().obtenerVentasConSaldo();
+  new DevolucionDAO().registrarDevolucion(new DevolucionDAO.OrigenDevolucion(false,id,"prueba",new BigDecimal("12.50")), List.of(new DevolucionDAO.LineaDevuelta(a,"A",1,new BigDecimal("2.50"))),"prueba");new DevolucionDAO().obtenerOrigenes();
   ok(true,"consultas de reportes, materiales, produccion y devoluciones");
   try(Connection c=ConexionBD.conectar();Statement st=c.createStatement()) {
    try(ResultSet rs=st.executeQuery("PRAGMA integrity_check")){ok(rs.next()&&rs.getString(1).equals("ok"),"integridad de SQLite");}
    try(ResultSet rs=st.executeQuery("PRAGMA foreign_key_check")){ok(!rs.next(),"claves foraneas sin errores");}
   }
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+a+" AND nombre='PRUEBA A EDITADO' AND descripcion='nueva descripcion' AND precio=3.75 AND foto='foto.png'")==1,"edicion persiste todos los campos al volver a consultar SQLite");
+  reject(()->panes.eliminarPan(a),"impide eliminar pan con historial");
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+a)==1,"rechazo conserva el pan y sus referencias");
+  panes.insertarPan("BORRABLE","prueba",12,"");
+  int borrable=(int)scalar("SELECT max(id_pan) FROM panes");
+  ok(panes.eliminarPan(borrable),"elimina pan sin referencias");
+  ok(scalar("SELECT COUNT(*) FROM panes WHERE id_pan="+borrable)==0,"eliminacion persistida en SQLite");
+  ok(!panes.eliminarPan(borrable),"detecta pan previamente eliminado");
   reject(()->panes.actualizarPan(a,"","",1, ""),"rechaza nombre vacio");
  }
 }

@@ -1,0 +1,454 @@
+/* ============================================================
+   Pantalla: Devolucion / Reembolso (Cajero)
+   Paleta El Lirio Rojo. Autocontenida: no modifica tema.css
+   ni resumenVentas.css, solo la usa devolucion.fxml y los
+   cuadros de dialogo de DevolucionController.
+   ============================================================ */
+
+.devolucion-root,
+.dialogo-devolucion {
+    -c-cafe-oscuro:  #422817;   /* letras principales  */
+    -c-cafe-medio:   #6B4A2E;   /* letras secundarias  */
+    -c-amarillo:     #F4CC79;   /* fondo general       */
+    -c-crema:        #FFF8EC;   /* fondo de tarjetas   */
+    -c-crema-calido: #F8E5C1;   /* encabezados         */
+    -c-destacado:    #FFE7AD;   /* elementos destacados*/
+    -c-blanco:       #FFFFFF;   /* filas y campos      */
+    -c-dorado:       #E9BD6B;   /* bordes y detalles   */
+    -c-beige:        #EAD2AE;
+    -c-naranja:      #E88709;
+    -c-negro:        #1D1B1A;
+}
+
+.devolucion-root {
+    -fx-background-color: -c-amarillo;
+    -fx-font-family: "Segoe UI", "System";
+}
+
+/* ---------- Encabezado ---------- */
+
+.dv-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.dv-subtitulo {
+    -fx-font-size: 13px;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+/* ---------- Botones ---------- */
+
+.dv-btn-cerrar {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 10;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 13 4 13;
+    -fx-cursor: hand;
+}
+.dv-btn-cerrar:hover { -fx-background-color: -c-destacado; }
+
+.dv-btn-primario {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-background-radius: 10;
+    -fx-text-fill: -c-crema;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 24 8 24;
+    -fx-cursor: hand;
+}
+.dv-btn-primario:hover   { -fx-background-color: -c-cafe-medio; }
+.dv-btn-primario:pressed { -fx-background-color: -c-negro; }
+.dv-btn-primario:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+.dv-btn-acento {
+    -fx-background-color: -c-dorado;
+    -fx-background-radius: 10;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.dv-btn-acento:hover   { -fx-background-color: -c-amarillo; }
+.dv-btn-acento:pressed { -fx-background-color: -c-crema-calido; }
+.dv-btn-acento:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+.dv-btn-secundario {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.2;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+.dv-btn-secundario:hover   { -fx-background-color: -c-destacado; }
+.dv-btn-secundario:pressed { -fx-background-color: -c-crema-calido; }
+
+/* ---------- Contenedor con scroll ---------- */
+
+.dv-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.dv-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+.dv-contenido {
+    -fx-background-color: transparent;
+}
+.dv-scroll .scroll-bar {
+    -fx-background-color: transparent;
+}
+.dv-scroll .scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.dv-scroll .scroll-bar .thumb {
+    -fx-background-color: -c-dorado;
+    -fx-background-radius: 6;
+}
+.dv-scroll .scroll-bar .increment-button,
+.dv-scroll .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+.dv-scroll .scroll-bar .increment-arrow,
+.dv-scroll .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/* ---------- Tarjetas de resumen (KPI) ---------- */
+
+.dv-kpi,
+.dv-kpi-primaria {
+    -fx-background-radius: 15;
+    -fx-padding: 20 22 18 22;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.12), 14, 0.1, 0, 4);
+}
+
+.dv-kpi {
+    -fx-background-color: -c-crema;
+    -fx-border-color: -c-beige;
+    -fx-border-radius: 15;
+}
+
+.dv-kpi-primaria {
+    -fx-background-color: linear-gradient(to bottom right, -c-cafe-medio, -c-cafe-oscuro);
+}
+
+.dv-kpi-icono,
+.dv-kpi-icono-acento,
+.dv-kpi-icono-primaria {
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-background-radius: 11;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+.dv-kpi-icono          { -fx-background-color: -c-crema-calido; -fx-text-fill: -c-cafe-medio; }
+.dv-kpi-icono-acento   { -fx-background-color: -c-destacado;    -fx-text-fill: -c-naranja; }
+.dv-kpi-icono-primaria { -fx-background-color: rgba(255,248,236,0.16); -fx-text-fill: -c-amarillo; }
+
+.dv-kpi-etiqueta           { -fx-font-size: 13px; -fx-text-fill: -c-cafe-medio; }
+.dv-kpi-etiqueta-primaria  { -fx-font-size: 13px; -fx-text-fill: -c-beige; }
+
+.dv-kpi-valor {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+.dv-kpi-valor-claro {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-crema;
+}
+
+.dv-kpi-detalle          { -fx-font-size: 11px; -fx-text-fill: -c-cafe-medio; }
+.dv-kpi-detalle-primaria { -fx-font-size: 11px; -fx-text-fill: -c-amarillo; -fx-font-weight: bold; }
+
+/* ---------- Paneles ---------- */
+
+.dv-panel {
+    -fx-background-color: -c-crema;
+    -fx-background-radius: 15;
+    -fx-border-color: -c-beige;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.12), 14, 0.1, 0, 4);
+}
+
+.dv-panel-encabezado {
+    -fx-background-color: -c-crema-calido;
+    -fx-background-radius: 15 15 0 0;
+    -fx-padding: 14 20 12 20;
+}
+
+.dv-panel-cuerpo {
+    -fx-padding: 16 20 18 20;
+}
+
+.dv-paso {
+    -fx-background-color: -c-destacado;
+    -fx-background-radius: 14;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 14;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+.dv-panel-titulo {
+    -fx-font-family: Georgia;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+.dv-panel-subtitulo {
+    -fx-font-size: 12px;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+.dv-etiqueta {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -c-cafe-oscuro;
+}
+
+/* ---------- Selector de pedido o venta ---------- */
+
+.dv-combo {
+    -fx-background-color: -c-blanco;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 10;
+    -fx-control-inner-background: #FFFFFF;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.dv-combo > .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 13px;
+    -fx-padding: 0 12 0 12;
+}
+.dv-combo > .arrow-button {
+    -fx-background-color: transparent;
+}
+.dv-combo > .arrow-button > .arrow {
+    -fx-background-color: -c-cafe-oscuro;
+}
+.dv-combo:focused,
+.dv-combo:showing {
+    -fx-border-color: -c-naranja;
+}
+
+/* Lista desplegable (los colores van en hexadecimal porque la
+   ventana emergente no siempre hereda las variables de .root) */
+.combo-box-popup > .list-view {
+    -fx-background-color: #FFF8EC;
+    -fx-background-radius: 10;
+    -fx-border-color: #E9BD6B;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(66,40,23,0.20), 12, 0.1, 0, 4);
+}
+.combo-box-popup > .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #422817;
+    -fx-font-size: 13px;
+    -fx-padding: 9 14 9 14;
+}
+.combo-box-popup > .list-view .list-cell:filled:hover {
+    -fx-background-color: #FFE7AD;
+}
+.combo-box-popup > .list-view .list-cell:filled:selected {
+    -fx-background-color: #F8E5C1;
+    -fx-text-fill: #422817;
+}
+
+/* ---------- Selector de piezas ---------- */
+
+.dv-spinner {
+    -fx-background-color: -c-blanco;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 10;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.dv-spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.dv-spinner .increment-arrow-button,
+.dv-spinner .decrement-arrow-button {
+    -fx-background-color: transparent;
+}
+.dv-spinner .increment-arrow-button .increment-arrow,
+.dv-spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: -c-cafe-medio;
+}
+.dv-spinner:focused {
+    -fx-border-color: -c-naranja;
+}
+.dv-spinner:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* ---------- Tablas ---------- */
+
+.dv-tabla {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-control-inner-background: -c-crema;
+    -fx-table-cell-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.dv-tabla .column-header-background {
+    -fx-background-color: -c-crema-calido;
+    -fx-background-radius: 8;
+}
+.dv-tabla .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 34;
+    -fx-border-color: transparent;
+}
+.dv-tabla .column-header .label {
+    -fx-text-fill: -c-cafe-medio;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+.dv-tabla .filler {
+    -fx-background-color: transparent;
+}
+.dv-tabla .table-row-cell {
+    -fx-cell-size: 38;
+}
+.dv-tabla .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.dv-tabla .table-row-cell:filled {
+    -fx-background-color: -c-blanco;
+    -fx-border-color: transparent transparent -c-crema-calido transparent;
+}
+.dv-tabla .table-row-cell:filled:hover {
+    -fx-background-color: rgba(255, 231, 173, 0.45);
+}
+.dv-tabla .table-row-cell:filled:selected {
+    -fx-background-color: -c-destacado;
+}
+.dv-tabla .table-cell {
+    -fx-text-fill: -c-cafe-medio;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 0 10 0 10;
+}
+.dv-tabla .table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: -c-cafe-oscuro;
+}
+.dv-tabla .placeholder .label {
+    -fx-text-fill: -c-cafe-medio;
+    -fx-font-size: 13px;
+}
+
+/* ---------- Motivo ---------- */
+
+.dv-motivo {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: -c-dorado;
+    -fx-border-radius: 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-prompt-text-fill: derive(-c-cafe-medio, 45%);
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.dv-motivo .content {
+    -fx-background-color: -c-blanco;
+    -fx-background-radius: 10;
+    -fx-padding: 6 8 6 8;
+}
+.dv-motivo:focused {
+    -fx-border-color: -c-naranja;
+}
+
+/* ---------- Barra inferior ---------- */
+
+.dv-pie {
+    -fx-background-color: -c-crema;
+    -fx-border-color: -c-dorado transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 14 34 14 34;
+}
+.dv-pie-texto {
+    -fx-font-size: 12px;
+    -fx-text-fill: -c-cafe-medio;
+}
+
+/* ---------- Cuadros de dialogo (alertas y confirmacion) ---------- */
+
+.dialogo-devolucion {
+    -fx-background-color: -c-crema;
+    -fx-font-family: "Segoe UI", "System";
+}
+.dialogo-devolucion .header-panel {
+    -fx-background-color: -c-crema-calido;
+    -fx-padding: 14 20 14 20;
+}
+.dialogo-devolucion .header-panel .label {
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-family: Georgia;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.dialogo-devolucion > .content.label {
+    -fx-text-fill: -c-cafe-medio;
+    -fx-font-size: 13px;
+    -fx-padding: 14 20 14 20;
+}
+.dialogo-devolucion .button-bar .container {
+    -fx-background-color: -c-crema;
+}
+.dialogo-devolucion .button {
+    -fx-background-color: -c-crema-calido;
+    -fx-background-radius: 8;
+    -fx-text-fill: -c-cafe-oscuro;
+    -fx-font-weight: bold;
+    -fx-padding: 7 20 7 20;
+    -fx-cursor: hand;
+}
+.dialogo-devolucion .button:hover {
+    -fx-background-color: -c-destacado;
+}
+.dialogo-devolucion .button:default {
+    -fx-background-color: -c-cafe-oscuro;
+    -fx-text-fill: -c-crema;
+}
+.dialogo-devolucion .button:default:hover {
+    -fx-background-color: -c-cafe-medio;
+}

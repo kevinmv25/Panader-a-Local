@@ -8,12 +8,15 @@ import com.panaderialocal.conexion.RegistroPedidosDAO.PedidoReciente;
 import com.mycompany.panaderia.local.App;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -33,8 +36,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
@@ -64,6 +69,15 @@ public class RegistroPedidosController implements Initializable {
 
     @FXML private Label lblTotal;
     @FXML private TextArea txtObservaciones;
+
+    // ADELANTO Y DETALLE EXTRA
+    @FXML private TextField txtAdelanto;
+    @FXML private Label lblSaldoPendiente;
+    @FXML private Label lblAvisoAdelanto;
+
+    // importes: hasta 7 enteros y 2 decimales
+    private static final Pattern FORMATO_IMPORTE =
+            Pattern.compile("\\d{0,7}([.]\\d{0,2})?");
 
     private final RegistroPedidosDAO dao = new RegistroPedidosDAO();
 
@@ -117,6 +131,14 @@ public class RegistroPedidosController implements Initializable {
                         txtPrecioUnitario.clear();
                     }
                 });
+
+        // ADELANTO: solo importes con hasta dos decimales
+        txtAdelanto.setTextFormatter(new TextFormatter<String>(cambio ->
+                FORMATO_IMPORTE.matcher(cambio.getControlNewText()).matches()
+                        ? cambio : null));
+
+        txtAdelanto.textProperty().addListener(
+                (observable, anterior, nuevo) -> actualizarSaldo());
 
         btnAgregarProducto.setOnAction(e -> agregarProducto());
         btnLimpiar.setOnAction(e -> limpiarFormulario());
@@ -248,6 +270,60 @@ public class RegistroPedidosController implements Initializable {
                         calcularTotal()
                 )
         );
+
+        actualizarSaldo();
+    }
+
+    private BigDecimal totalDecimal() {
+        return BigDecimal.valueOf(calcularTotal())
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    // Vacío = sin adelanto. Devuelve null si el texto no es un importe válido.
+    private BigDecimal leerAdelanto() {
+
+        String texto = txtAdelanto.getText() == null
+                ? "" : txtAdelanto.getText().trim();
+
+        if (texto.isEmpty()) {
+            return BigDecimal.ZERO.setScale(2);
+        }
+
+        try {
+            return new BigDecimal(texto).setScale(2, RoundingMode.UNNECESSARY);
+
+        } catch (NumberFormatException | ArithmeticException ex) {
+            return null;
+        }
+    }
+
+    private String importe(BigDecimal valor) {
+        return String.format(Locale.US, "$ %.2f", valor);
+    }
+
+    // Saldo por cobrar = total del pedido - adelanto (se ve mientras se captura)
+    private void actualizarSaldo() {
+
+        BigDecimal total = totalDecimal();
+        BigDecimal adelanto = leerAdelanto();
+
+        String aviso = "";
+
+        if (adelanto == null) {
+            adelanto = BigDecimal.ZERO;
+            aviso = "Escribe el adelanto como importe, por ejemplo 150 o 150.50.";
+
+        } else if (adelanto.compareTo(total) > 0) {
+            aviso = "El adelanto no puede ser mayor que el total del pedido.";
+        }
+
+        lblSaldoPendiente.setText(
+                importe(total.subtract(adelanto).max(BigDecimal.ZERO))
+        );
+
+        lblAvisoAdelanto.setText(aviso);
+        lblAvisoAdelanto.setVisible(!aviso.isEmpty());
+        lblAvisoAdelanto.setManaged(!aviso.isEmpty());
     }
 
     private void guardarPedido() {
@@ -351,6 +427,28 @@ public class RegistroPedidosController implements Initializable {
             return;
         }
 
+        BigDecimal adelanto = leerAdelanto();
+
+        if (adelanto == null) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "Adelanto inválido",
+                    "Escribe el adelanto como importe, por ejemplo 150 o 150.50."
+            );
+            return;
+        }
+
+        BigDecimal total = totalDecimal();
+
+        if (adelanto.compareTo(total) > 0) {
+            mostrarAlerta(
+                    Alert.AlertType.WARNING,
+                    "Adelanto inválido",
+                    "El adelanto no puede ser mayor que el total del pedido."
+            );
+            return;
+        }
+
         try {
             dao.registrarPedido(
                     nombre,
@@ -359,13 +457,23 @@ public class RegistroPedidosController implements Initializable {
                     cbTipoPedido.getValue(),
                     txtObservaciones.getText().trim(),
                     calcularTotal(),
+                    adelanto.doubleValue(),
                     new ArrayList<>(detalles)
             );
+
+            String resumen =
+                    "El pedido y sus productos se guardaron correctamente.";
+
+            if (adelanto.signum() > 0) {
+                resumen += "\nAdelanto registrado: " + importe(adelanto)
+                        + "\nSaldo por cobrar: "
+                        + importe(total.subtract(adelanto));
+            }
 
             mostrarAlerta(
                     Alert.AlertType.INFORMATION,
                     "Pedido registrado",
-                    "El pedido y sus productos se guardaron correctamente."
+                    resumen
             );
 
             limpiarFormulario();
@@ -385,6 +493,7 @@ public class RegistroPedidosController implements Initializable {
         txtTelefono.clear();
         dpFechaEntrega.setValue(LocalDate.now());
         txtObservaciones.clear();
+        txtAdelanto.clear();
 
         cbTipoPan.getSelectionModel().clearSelection();
         cbTipoPedido.getSelectionModel().selectFirst();
@@ -464,6 +573,40 @@ public class RegistroPedidosController implements Initializable {
                     )
             );
 
+            TableColumn<PedidoReciente, String> colAdelanto =
+                    new TableColumn<>("Adelanto");
+            colAdelanto.setCellValueFactory(
+                    dato -> new SimpleStringProperty(
+                            String.format(
+                                    Locale.US,
+                                    "$ %.2f",
+                                    dato.getValue().getAdelanto()
+                            )
+                    )
+            );
+
+            TableColumn<PedidoReciente, String> colSaldo =
+                    new TableColumn<>("Saldo por cobrar");
+            colSaldo.setCellValueFactory(
+                    dato -> new SimpleStringProperty(
+                            String.format(
+                                    Locale.US,
+                                    "$ %.2f",
+                                    dato.getValue().getSaldo()
+                            )
+                    )
+            );
+
+            TableColumn<PedidoReciente, String> colDetalleExtra =
+                    new TableColumn<>("Detalle extra");
+            colDetalleExtra.setPrefWidth(260);
+            colDetalleExtra.setCellValueFactory(
+                    dato -> new SimpleStringProperty(
+                            textoSeguro(dato.getValue().getDetalleExtra())
+                                    .replace("\n", " · ")
+                    )
+            );
+
             tabla.getColumns().addAll(
                     colId,
                     colCliente,
@@ -471,7 +614,10 @@ public class RegistroPedidosController implements Initializable {
                     colFechaPedido,
                     colFechaEntrega,
                     colEstado,
-                    colTotal
+                    colTotal,
+                    colAdelanto,
+                    colSaldo,
+                    colDetalleExtra
             );
 
             tabla.setColumnResizePolicy(
@@ -509,7 +655,10 @@ public class RegistroPedidosController implements Initializable {
 
             Stage ventana = new Stage();
             ventana.setTitle("El Lirio Rojo - Pedidos recientes");
-            ventana.setScene(new Scene(contenido, 1050, 500));
+            ventana.setScene(new Scene(
+                    contenido,
+                    Math.min(1320, Screen.getPrimary().getVisualBounds().getWidth() - 40),
+                    500));
             ventana.show();
 
         } catch (SQLException ex) {
