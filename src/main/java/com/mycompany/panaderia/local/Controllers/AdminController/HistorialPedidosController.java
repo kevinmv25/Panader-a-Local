@@ -5,7 +5,6 @@ import com.panaderialocal.conexion.HistorialPedidosDAO.ItemPedido;
 import com.panaderialocal.conexion.HistorialPedidosDAO.PedidoHistorial;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -151,14 +150,11 @@ public class HistorialPedidosController implements Initializable {
     /** Carga historialPedidos.css desde la misma carpeta donde esta el FXML. */
     private void enlazarCss(URL ubicacionFxml) {
 
-        final String css;
-
-        try {
-            css = ubicacionFxml.toURI().resolve("historialPedidos.css").toString();
-        } catch (URISyntaxException | RuntimeException ex) {
-            System.err.println("No se pudo ubicar historialPedidos.css: " + ex.getMessage());
-            return;
-        }
+        // Se arma con texto (no con URI.resolve) para que tambien funcione
+        // cuando la app corre desde un .jar (direcciones jar:file:...!/...)
+        String direccion = ubicacionFxml.toExternalForm();
+        final String css = direccion.substring(0, direccion.lastIndexOf('/') + 1)
+                + "historialPedidos.css";
 
         System.out.println("historialPedidos.css -> " + css);
 

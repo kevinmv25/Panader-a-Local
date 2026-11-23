@@ -223,7 +223,7 @@ public class InventarioController implements Initializable {
     private void abrirVentas(ActionEvent event) {
         abrirPantalla(
             event,
-            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+            "/com/mycompany/panaderia/local/resumenVentas.fxml"
         );
     }
     

@@ -316,7 +316,7 @@ public class RegistroMaterialesController implements Initializable {
 
         abrirPantalla(
                 event,
-                "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+                "/com/mycompany/panaderia/local/resumenVentas.fxml"
         );
     }
     

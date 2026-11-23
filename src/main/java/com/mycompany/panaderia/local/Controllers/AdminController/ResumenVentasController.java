@@ -90,9 +90,7 @@ public class ResumenVentasController implements Initializable {
     private static final DateTimeFormatter FMT_DIA_MES =
             DateTimeFormatter.ofPattern("dd/MM");
 
-    // =========================================================
-    // INICIALIZAR
-    // =========================================================
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         URL css = getClass().getResource(

@@ -76,7 +76,7 @@ public class MenuMaterialesController {
     private void abrirVentas(ActionEvent event) throws IOException {
     abrirPantalla(
             event,
-            "/com/mycompany/panaderia/local/Administrador/ventas.fxml"
+            "/com/mycompany/panaderia/local/resumenVentas.fxml"
         );
     }
 
