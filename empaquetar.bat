@@ -6,10 +6,11 @@ rem ============================================================
 rem  Genera la aplicacion de escritorio "El Lirio Rojo"
 rem  Uso: doble clic en este archivo (debe estar junto a pom.xml)
 rem  Cierra la aplicacion antes de ejecutarlo.
+rem
+rem  Necesita: JDK 23 o mayor (con jpackage) y Maven.
+rem  Busca ambos solos; si no los encuentra, avisa que hacer.
 rem ============================================================
 
-set "JAVA_HOME=C:\Users\Sinuhe\tools\openjdk-23+37_windows-x64_bin\jdk-23"
-set "MVN=C:\Program Files\Apache NetBeans\java\maven\bin\mvn.cmd"
 set "JAR=Panaderia-Local-1.0-SNAPSHOT-fat.jar"
 set "APP=El Lirio Rojo"
 set "LOGO_PNG=src\main\resources\com\mycompany\panaderia\local\iconos\logo_el_lirio_rojo_hd.png"
@@ -21,31 +22,79 @@ if not exist pom.xml (
     exit /b 1
 )
 
+rem ---------- Buscar el JDK (debe traer jpackage) ----------
+set "JDK="
+if defined JAVA_HOME if exist "%JAVA_HOME%\bin\jpackage.exe" set "JDK=%JAVA_HOME%"
+if not defined JDK (
+    for /f "delims=" %%P in ('where jpackage 2^>nul') do if not defined JDK for %%D in ("%%~dpP..") do set "JDK=%%~fD"
+)
+if not defined JDK if exist "C:\Users\Sinuhe\tools\openjdk-23+37_windows-x64_bin\jdk-23\bin\jpackage.exe" set "JDK=C:\Users\Sinuhe\tools\openjdk-23+37_windows-x64_bin\jdk-23"
+
+if not defined JDK (
+    echo.
+    echo ERROR: no se encontro un JDK con jpackage en esta computadora.
+    echo Instala el JDK 23 ^(no solo el JRE^) y vuelve a ejecutar este archivo.
+    echo Si ya lo tienes instalado, define la variable JAVA_HOME con su carpeta.
+    pause
+    exit /b 1
+)
+
+findstr /r /c:"JAVA_VERSION=.2[3-9]" "%JDK%\release" >nul 2>nul
+if errorlevel 1 (
+    echo AVISO: el JDK encontrado no parece ser version 23 o mayor.
+    echo El proyecto necesita JDK 23 o superior para compilar.
+)
+
+set "JAVA_HOME=%JDK%"
+echo JDK: %JDK%
+
+rem ---------- Buscar Maven ----------
+set "MVN="
+where mvn >nul 2>nul && set "MVN=mvn"
+if not defined MVN if defined MAVEN_HOME if exist "%MAVEN_HOME%\bin\mvn.cmd" set "MVN=%MAVEN_HOME%\bin\mvn.cmd"
+if not defined MVN (
+    for /d %%N in ("C:\Program Files\Apache NetBeans*") do if exist "%%~N\java\maven\bin\mvn.cmd" set "MVN=%%~N\java\maven\bin\mvn.cmd"
+)
+if defined MVN (echo Maven: encontrado) else (echo Maven: no encontrado)
+
+rem ---------- Icono (solo si falta icono\logo.ico) ----------
 echo.
 echo Preparando el icono de la aplicacion...
 set "OPCION_ICONO="
 if not exist "%ICONO%" (
     if exist "%LOGO_PNG%" (
         if exist herramientas\ConvertirIco.java (
-            "%JAVA_HOME%\bin\java.exe" herramientas\ConvertirIco.java "%LOGO_PNG%" "%ICONO%"
+            "%JDK%\bin\java.exe" herramientas\ConvertirIco.java "%LOGO_PNG%" "%ICONO%"
         )
     )
 )
 if exist "%ICONO%" (
     set "OPCION_ICONO=--icon icono\logo.ico"
-    echo Icono: %ICONO%
+    echo Icono: listo
 ) else (
-    echo AVISO: no hay %ICONO%. Se usara el icono por defecto de Java.
+    echo AVISO: no hay icono\logo.ico. Se usara el icono por defecto de Java.
 )
 
 echo.
-echo [1/5] Compilando el proyecto (puede tardar un poco)...
-call "%MVN%" --no-transfer-progress clean package
-if errorlevel 1 (
-    echo.
-    echo ERROR al compilar. Revisa los mensajes de arriba.
-    pause
-    exit /b 1
+echo [1/5] Compilando el proyecto ^(puede tardar un poco^)...
+if defined MVN (
+    call "%MVN%" --no-transfer-progress clean package
+    if errorlevel 1 (
+        echo.
+        echo ERROR al compilar. Revisa los mensajes de arriba.
+        pause
+        exit /b 1
+    )
+) else (
+    if exist "target\%JAR%" (
+        echo AVISO: no se encontro Maven. Se usara el .jar que ya existe en target.
+    ) else (
+        echo ERROR: no se encontro Maven y tampoco existe target\%JAR%
+        echo En NetBeans haz clic derecho en el proyecto, elige Clean and Build,
+        echo y luego ejecuta este archivo otra vez.
+        pause
+        exit /b 1
+    )
 )
 
 if not exist "target\%JAR%" (
@@ -58,7 +107,7 @@ if not exist "target\%JAR%" (
 
 echo.
 echo [2/5] Comprobando que la plantilla de base de datos quedo dentro del programa...
-"%JAVA_HOME%\bin\jar.exe" tf "target\%JAR%" | findstr /c:"plantilla/panaderia.db" >nul
+"%JDK%\bin\jar.exe" tf "target\%JAR%" | findstr /c:"plantilla/panaderia.db" >nul
 if errorlevel 1 (
     echo ADVERTENCIA: NO se encontro plantilla/panaderia.db dentro del programa.
     echo En una computadora nueva la app no podra crear su base de datos.
@@ -83,12 +132,12 @@ echo.
 echo [4/5] Borrando la version anterior y generando la aplicacion...
 if exist "dist\%APP%" rmdir /s /q "dist\%APP%"
 if exist "dist\%APP%" (
-    echo ERROR: no se pudo borrar dist\%APP%. Cierra la aplicacion y vuelve a intentar.
+    echo ERROR: no se pudo borrar la version anterior. Cierra la aplicacion y vuelve a intentar.
     pause
     exit /b 1
 )
 
-"%JAVA_HOME%\bin\jpackage.exe" --type app-image --name "%APP%" --input paquete --main-jar %JAR% --main-class com.mycompany.panaderia.local.Launcher --dest dist %OPCION_ICONO%
+"%JDK%\bin\jpackage.exe" --type app-image --name "%APP%" --input paquete --main-jar %JAR% --main-class com.mycompany.panaderia.local.Launcher --dest dist %OPCION_ICONO%
 if errorlevel 1 (
     echo.
     echo ERROR al generar la aplicacion con jpackage.
